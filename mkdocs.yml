@@ -1,0 +1,99 @@
+site_name: Agent Modeling Language
+site_description: A portable, human-readable format for describing cloud AI agents
+site_url: https://alirion-io.github.io/aml/
+repo_url: https://github.com/alirion-io/aml
+repo_name: alirion-io/aml
+docs_dir: docs
+
+theme:
+  name: material
+  logo: assets/alirion-icon-transparent_dark.svg
+  favicon: assets/favicon.png
+  palette:
+    - scheme: slate
+      primary: custom
+      accent: cyan
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+    - scheme: default
+      primary: custom
+      accent: cyan
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+  font:
+    text: Sora
+    code: JetBrains Mono
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.tracking
+    - navigation.path
+    - navigation.top
+    - navigation.footer
+    - search.highlight
+    - search.suggest
+    - search.share
+    - content.code.copy
+    - content.code.annotate
+    - toc.follow
+    - toc.integrate
+
+plugins:
+  - search
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.tabbed:
+      alternate_style: true
+  - tables
+  - attr_list
+  - md_in_html
+  - toc:
+      permalink: true
+      toc_depth: 3
+
+extra_css:
+  - stylesheets/extra.css
+
+
+
+nav:
+  - Home: index.md
+  - Specifications:
+    - Introduction: 00-introduction.md
+    - Agent Definition: 01-agent-definition.md
+    - Tool Definition: 02-tool-definition.md
+    - Knowledge Base: 03-kb-definition.md
+    - IAM Policy Definition: 04-iam-definition.md
+    - Model Definition: 05-model-definition.md
+    - Memory Collection: 06-collection-definition.md
+    - Guardrail Definition: 07-guardrail-definition.md
+    - JSON Schema in YAML: 08-json-schema.md
+  - Examples:
+    - Agents:
+      - Support Agent: support-agent.agent.md
+      - Translator Agent: translator.agent.md
+    - Tools:
+      - Send Email: send-email.tool.md
+      - Glossary Lookup: glossary-lookup.tool.md
+    - Knowledge Bases:
+      - Brand Guidelines: brand-guidelines.kb.md
+      - Legal Policies: legal-policies.kb.md
+    - Memory Collections:
+      - Customer Preferences: customer-preferences.collection.md
+    - Models:
+      - Claude 4 Sonnet (Bedrock): claude-4-sonnet.model.md
+      - GPT-4o (OpenAI): gpt-4o.model.md
+    - Guardrails:
+      - Bedrock PII Scan: bedrock-pii-scan.guardrail.md
+

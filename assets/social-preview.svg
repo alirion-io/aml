@@ -1,0 +1,97 @@
+<svg width="1280" height="640" viewBox="0 0 1280 640" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Brand gradient: teal to green (from logo) -->
+    <linearGradient id="brandGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#1a6b8a"/>
+      <stop offset="100%" stop-color="#3d9b7a"/>
+    </linearGradient>
+    <!-- Accent gradient for text highlight -->
+    <linearGradient id="accentGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#22d3ee"/>
+      <stop offset="100%" stop-color="#3d9b7a"/>
+    </linearGradient>
+    <!-- Subtle radial glow behind logo -->
+    <radialGradient id="glowGrad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#22d3ee" stop-opacity="0.08"/>
+      <stop offset="100%" stop-color="#0f1117" stop-opacity="0"/>
+    </radialGradient>
+    <!-- Grid pattern -->
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1e2436" stroke-width="0.8"/>
+    </pattern>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1280" height="640" fill="#0f1117"/>
+
+  <!-- Subtle grid overlay -->
+  <rect width="1280" height="640" fill="url(#grid)" opacity="0.6"/>
+
+  <!-- Top accent line -->
+  <rect x="0" y="0" width="1280" height="3" fill="url(#brandGrad)"/>
+
+  <!-- Glow behind logo area -->
+  <ellipse cx="220" cy="300" rx="280" ry="220" fill="url(#glowGrad)"/>
+
+  <!-- === Alirion logo (scaled up, centered left) === -->
+  <!-- Wave path 1 (main) scaled ~3.5x, translated to ~(60,300) -->
+  <g transform="translate(48, 195) scale(0.72)">
+    <path d="M80 256 C112 148, 192 148, 228 256 C264 364, 344 364, 376 256"
+          fill="none" stroke="url(#brandGrad)" stroke-width="32" stroke-linecap="round"/>
+    <path d="M144 256 C176 168, 236 168, 272 256"
+          fill="none" stroke="url(#brandGrad)" stroke-width="18" stroke-linecap="round" opacity="0.5"/>
+  </g>
+
+  <!-- Vertical divider -->
+  <line x1="400" y1="160" x2="400" y2="480" stroke="#1e2436" stroke-width="1.5"/>
+
+  <!-- === Text block === -->
+  <!-- "AML" large -->
+  <text x="456" y="290"
+        font-family="'Segoe UI', 'Inter', 'Helvetica Neue', Arial, sans-serif"
+        font-size="148" font-weight="800" letter-spacing="-4"
+        fill="url(#accentGrad)">AML</text>
+
+  <!-- "Agent Modeling Language" -->
+  <text x="460" y="358"
+        font-family="'Segoe UI', 'Inter', 'Helvetica Neue', Arial, sans-serif"
+        font-size="34" font-weight="400" letter-spacing="1"
+        fill="#94a3b8">Agent Modeling Language</text>
+
+  <!-- Divider line under subtitle -->
+  <rect x="460" y="382" width="580" height="2" fill="url(#brandGrad)" opacity="0.5"/>
+
+  <!-- Tagline -->
+  <text x="460" y="430"
+        font-family="'Segoe UI', 'Inter', 'Helvetica Neue', Arial, sans-serif"
+        font-size="22" font-weight="300" fill="#64748b" letter-spacing="0.3">
+    Framework-agnostic · Human-readable · Production-ready
+  </text>
+
+  <!-- Pill tags -->
+  <!-- Tag 1: Markdown + YAML -->
+  <rect x="460" y="468" width="168" height="36" rx="18" fill="#1e2436" stroke="#22d3ee" stroke-width="1" stroke-opacity="0.4"/>
+  <text x="544" y="491" text-anchor="middle"
+        font-family="'Segoe UI', 'Inter', monospace, sans-serif"
+        font-size="15" fill="#22d3ee" letter-spacing="0.5">Markdown + YAML</text>
+
+  <!-- Tag 2: Cloud-native -->
+  <rect x="642" y="468" width="140" height="36" rx="18" fill="#1e2436" stroke="#3d9b7a" stroke-width="1" stroke-opacity="0.4"/>
+  <text x="712" y="491" text-anchor="middle"
+        font-family="'Segoe UI', 'Inter', monospace, sans-serif"
+        font-size="15" fill="#3d9b7a" letter-spacing="0.5">Cloud-native</text>
+
+  <!-- Tag 3: Governed -->
+  <rect x="796" y="468" width="120" height="36" rx="18" fill="#1e2436" stroke="#1a6b8a" stroke-width="1" stroke-opacity="0.5"/>
+  <text x="856" y="491" text-anchor="middle"
+        font-family="'Segoe UI', 'Inter', monospace, sans-serif"
+        font-size="15" fill="#94a3b8" letter-spacing="0.5">Governed</text>
+
+  <!-- Bottom: alirion.io branding -->
+  <text x="1240" y="620" text-anchor="end"
+        font-family="'Segoe UI', 'Inter', 'Helvetica Neue', Arial, sans-serif"
+        font-size="18" fill="#334155" letter-spacing="1">alirion.io</text>
+
+  <!-- Bottom accent line -->
+  <rect x="0" y="637" width="1280" height="3" fill="url(#brandGrad)" opacity="0.4"/>
+</svg>

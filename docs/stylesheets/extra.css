@@ -1,0 +1,410 @@
+/* ============================================================
+   Strands-inspired theme for MkDocs Material
+   Mimics https://strandsagents.com/docs/ design
+   ============================================================ */
+
+/* ---------- Dark scheme (slate) custom colors ---------- */
+[data-md-color-scheme="slate"] {
+  /* Background layers */
+  --md-default-bg-color:        #0f1117;
+  --md-default-fg-color:        #e2e8f0;
+  --md-default-fg-color--light: #94a3b8;
+  --md-default-fg-color--lighter: #64748b;
+  --md-default-fg-color--lightest: #334155;
+
+  /* Sidebar */
+  --md-sidebar-bg:              #13161f;
+
+  /* Primary (header + active nav) */
+  --md-primary-fg-color:        #0f1117;
+  --md-primary-fg-color--light: #1e2436;
+  --md-primary-fg-color--dark:  #080a0f;
+  --md-primary-bg-color:        #e2e8f0;
+  --md-primary-bg-color--light: #94a3b8;
+
+  /* Accent (links, highlights) */
+  --md-accent-fg-color:         #22d3ee;
+  --md-accent-fg-color--transparent: rgba(34, 211, 238, 0.12);
+  --md-accent-bg-color:         #0f1117;
+
+  /* Code blocks */
+  --md-code-bg-color:           #1a1f2e;
+  --md-code-fg-color:           #cdd9e5;
+  --md-code-hl-color:           rgba(34, 211, 238, 0.15);
+
+  /* Typeset */
+  --md-typeset-a-color:         #22d3ee;
+}
+
+/* ---------- Light scheme custom colors ---------- */
+[data-md-color-scheme="default"] {
+  --md-primary-fg-color:        #0f1117;
+  --md-primary-fg-color--light: #1e2436;
+  --md-primary-fg-color--dark:  #080a0f;
+  --md-primary-bg-color:        #ffffff;
+
+  --md-accent-fg-color:         #0891b2;
+  --md-accent-fg-color--transparent: rgba(8, 145, 178, 0.1);
+  --md-accent-bg-color:         #f0fdff;
+
+  --md-typeset-a-color:         #0891b2;
+
+  --md-code-bg-color:           #f1f5f9;
+  --md-code-fg-color:           #1e293b;
+}
+
+/* ---------- Header ---------- */
+.md-header {
+  background-color: var(--md-primary-fg-color);
+  border-bottom: 1px solid rgba(34, 211, 238, 0.15);
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.5);
+}
+
+[data-md-color-scheme="default"] .md-header {
+  border-bottom: 1px solid rgba(8, 145, 178, 0.2);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+.md-header__title {
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  font-size: 1rem;
+}
+
+.md-header__button.md-logo {
+  padding: 0;
+}
+
+.md-header__button.md-logo img,
+.md-header__button.md-logo svg {
+  height: 2rem;
+  width: 2rem;
+}
+
+/* ---------- Navigation tabs ---------- */
+.md-tabs {
+  background-color: var(--md-primary-fg-color);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.md-tabs__link {
+  color: #ffffff !important;
+  opacity: 1;
+}
+
+.md-tabs__item--active .md-tabs__link {
+  color: #ffffff !important;
+  border-bottom: 2px solid #22d3ee;
+}
+
+[data-md-color-scheme="default"] .md-tabs__item--active .md-tabs__link {
+  color: #ffffff !important;
+  border-bottom: 2px solid #0891b2;
+}
+
+/* ---------- Sidebar ---------- */
+[data-md-color-scheme="slate"] .md-sidebar {
+  background-color: var(--md-sidebar-bg);
+}
+
+[data-md-color-scheme="slate"] .md-sidebar__scrollwrap {
+  background-color: var(--md-sidebar-bg);
+}
+
+/* Sidebar nav items — top-level */
+[data-md-color-scheme="slate"] .md-nav--primary > .md-nav__list > .md-nav__item > .md-nav__link {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #dededf;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* Sidebar nav items — all levels */
+[data-md-color-scheme="slate"] .md-nav__item .md-nav__link {
+  color: #dededf;
+  transition: color 0.15s ease;
+}
+
+/* Sidebar nav items — nested (sub-items) */
+[data-md-color-scheme="slate"] .md-nav__item .md-nav__item .md-nav__link {
+  font-size: 0.72rem;
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
+  color: #dededf;
+}
+
+/* Sub-item hover */
+[data-md-color-scheme="slate"] .md-nav__item .md-nav__item .md-nav__link:hover {
+  color: #22d3ee;
+}
+
+/* Sub-item active */
+[data-md-color-scheme="slate"] .md-nav__item .md-nav__item .md-nav__link--active {
+  color: #22d3ee;
+  font-weight: 500;
+}
+
+[data-md-color-scheme="slate"] .md-nav__item .md-nav__link:hover {
+  color: #22d3ee;
+}
+
+[data-md-color-scheme="slate"] .md-nav__link--active,
+[data-md-color-scheme="slate"] .md-nav__link--active:focus,
+[data-md-color-scheme="slate"] .md-nav__link--active:hover {
+  color: #22d3ee;
+  font-weight: 600;
+}
+
+/* Expand/collapse toggle arrows */
+[data-md-color-scheme="slate"] .md-nav__toggle ~ .md-nav__link .md-nav__icon {
+  color: #64748b;
+  transition: color 0.15s ease, transform 0.2s ease;
+}
+
+[data-md-color-scheme="slate"] .md-nav__toggle:checked ~ .md-nav__link .md-nav__icon {
+  color: #22d3ee;
+}
+
+[data-md-color-scheme="slate"] .md-nav__link:hover .md-nav__icon {
+  color: #22d3ee;
+}
+
+/* Section titles */
+[data-md-color-scheme="slate"] .md-nav__title {
+  color: #e2e8f0;
+  font-weight: 600;
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* Active indicator */
+[data-md-color-scheme="slate"] .md-nav__link--active::before {
+  background-color: #22d3ee;
+}
+
+/* ---------- Content area ---------- */
+[data-md-color-scheme="slate"] .md-content {
+  background-color: var(--md-default-bg-color);
+}
+
+.md-typeset h1 {
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  margin-bottom: 0.75em;
+}
+
+[data-md-color-scheme="slate"] .md-typeset h1 {
+  color: #f1f5f9;
+}
+
+.md-typeset h2 {
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+[data-md-color-scheme="slate"] .md-typeset h2 {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  padding-bottom: 0.3em;
+}
+
+.md-typeset h3 {
+  font-weight: 600;
+}
+
+/* Links */
+[data-md-color-scheme="slate"] .md-typeset a {
+  color: #22d3ee;
+  text-decoration: none;
+}
+
+[data-md-color-scheme="slate"] .md-typeset a:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* ---------- Table of Contents (right sidebar) ---------- */
+[data-md-color-scheme="slate"] .md-nav--secondary .md-nav__link {
+  color: #64748b;
+  font-size: 0.78rem;
+}
+
+[data-md-color-scheme="slate"] .md-nav--secondary .md-nav__link:hover {
+  color: #22d3ee;
+}
+
+[data-md-color-scheme="slate"] .md-nav--secondary .md-nav__link--active {
+  color: #22d3ee;
+  border-left: 2px solid #22d3ee;
+  padding-left: 0.5rem;
+}
+
+/* ---------- Code blocks ---------- */
+[data-md-color-scheme="slate"] .md-typeset pre {
+  background-color: var(--md-code-bg-color);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 0.5rem;
+}
+
+[data-md-color-scheme="slate"] .md-typeset code {
+  background-color: rgba(34, 211, 238, 0.08);
+  color: #22d3ee;
+  border-radius: 0.25rem;
+  padding: 0.1em 0.3em;
+  font-size: 0.85em;
+}
+
+[data-md-color-scheme="slate"] .md-typeset pre > code {
+  background-color: transparent;
+  color: var(--md-code-fg-color);
+  padding: 0;
+  font-size: inherit;
+}
+
+/* Copy button */
+[data-md-color-scheme="slate"] .md-clipboard {
+  color: #64748b;
+}
+
+[data-md-color-scheme="slate"] .md-clipboard:hover {
+  color: #22d3ee;
+}
+
+/* ---------- Admonitions ---------- */
+[data-md-color-scheme="slate"] .md-typeset .admonition {
+  border-radius: 0.5rem;
+  border-left-width: 3px;
+}
+
+/* ---------- Tables ---------- */
+[data-md-color-scheme="slate"] .md-typeset table:not([class]) {
+  border-radius: 0.5rem;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+[data-md-color-scheme="slate"] .md-typeset table:not([class]) th {
+  background-color: rgba(34, 211, 238, 0.08);
+  color: #e2e8f0;
+  font-weight: 600;
+}
+
+[data-md-color-scheme="slate"] .md-typeset table:not([class]) tr:hover {
+  background-color: rgba(255, 255, 255, 0.03);
+}
+
+/* ---------- Search ---------- */
+[data-md-color-scheme="slate"] .md-search__input {
+  background-color: #1a1f2e;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.5rem;
+}
+
+[data-md-color-scheme="slate"] .md-search__input::placeholder {
+  color: #64748b;
+}
+
+/* ---------- Footer ---------- */
+.md-footer {
+  background-color: var(--md-primary-fg-color);
+}
+
+[data-md-color-scheme="slate"] .md-footer-meta {
+  background-color: #080a0f;
+}
+
+/* ---------- Blockquotes ---------- */
+[data-md-color-scheme="slate"] .md-typeset blockquote {
+  border-left: 3px solid #22d3ee;
+  background-color: rgba(34, 211, 238, 0.05);
+  border-radius: 0 0.4rem 0.4rem 0;
+  padding: 0.6em 1em;
+  color: #94a3b8;
+}
+
+/* ==========================================
+   Navigation: Triangle & Dot Indicators
+   ========================================== */
+
+/* --- Section expand/collapse icons (levels 1 & 2): replace Material's
+       rotating chevron mask with static ▶ / ▼ text glyphs --- */
+.md-sidebar--primary .md-nav__icon::after {
+  -webkit-mask-image: none !important;
+  mask-image: none !important;
+  background-color: transparent !important;
+  content: "▶";
+  font-size: 0.5rem;
+  width: auto;
+  height: auto;
+  display: inline;
+  transform: none !important;
+  transition: color 0.15s ease;
+}
+
+/* Expanded section → ▼ */
+.md-sidebar--primary .md-nav__toggle:checked ~ .md-nav__link .md-nav__icon::after {
+  content: "▼";
+  transform: none !important;
+}
+
+/* --- Level 1 leaf items (file links, no children): ▶ prefix --- */
+/* Use > direct-child combinator on .md-nav__link so this never bleeds
+   into the TOC secondary nav nested inside the active item. */
+.md-nav[data-md-level="1"] > .md-nav__list > .md-nav__item:not(.md-nav__item--nested) > .md-nav__link > .md-ellipsis::before {
+  content: "▶";
+  font-size: 0.5rem;
+  margin-right: 4px;
+  vertical-align: middle;
+  line-height: 1;
+}
+
+/* --- Level 2 leaf items (items inside nested groups): • dot prefix --- */
+.md-nav[data-md-level="2"] > .md-nav__list > .md-nav__item:not(.md-nav__item--nested) .md-nav__link .md-ellipsis::before {
+  content: "•";
+  font-size: 0.8rem;
+  margin-right: 4px;
+  vertical-align: middle;
+  line-height: 1;
+}
+
+/* Active (current) leaf items: hide prefix — blue bar is sufficient */
+.md-nav[data-md-level="1"] > .md-nav__list > .md-nav__item:not(.md-nav__item--nested) > .md-nav__link--active > .md-ellipsis::before,
+.md-nav[data-md-level="2"] > .md-nav__list > .md-nav__item:not(.md-nav__item--nested) > .md-nav__link--active > .md-ellipsis::before {
+  content: "";
+}
+
+/* --- TOC items (integrated via toc.integrate): • dot --- */
+.md-nav--secondary .md-nav__list .md-nav__item .md-nav__link .md-ellipsis::before {
+  content: "•";
+  font-size: 0.8rem;
+  margin-right: 4px;
+  vertical-align: middle;
+  line-height: 1;
+}
+
+/* Active TOC item: no indicator — blue bar is sufficient */
+.md-nav--secondary .md-nav__list .md-nav__item .md-nav__link--active .md-ellipsis::before {
+  content: "";
+  margin-right: 0;
+}
+
+/* ---------- Scrollbar (webkit) ---------- */
+[data-md-color-scheme="slate"] ::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+[data-md-color-scheme="slate"] ::-webkit-scrollbar-track {
+  background: #0f1117;
+}
+
+[data-md-color-scheme="slate"] ::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 3px;
+}
+
+[data-md-color-scheme="slate"] ::-webkit-scrollbar-thumb:hover {
+  background: #475569;
+}
