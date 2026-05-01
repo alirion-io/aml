@@ -1,33 +1,38 @@
 ---
 spec_version: "1.2"
 guardrail_id: "bedrock-pii-scan"
-display_name: "PII Scan (Bedrock Guardrails)"
-provider: "aws-bedrock-guardrail"
+version: "2.0.0"
 status: "active"
-owner: "ai-safety-team"
-last_updated: "2026-04-12"
+
+behaviour:
+  result_type: "transform"
+  content_types: ["text"]
 
 meta:
+  name: "PII Scan (Bedrock Guardrails)"
+  owner: "ai-safety-team"
+  last_updated: "2026-04-27"
   description: >
     Detects and redacts personally identifiable information — names, email addresses,
     phone numbers, national identifiers, and similar — using AWS Bedrock Guardrails.
     Suitable for agents operating under GDPR, HIPAA, or any data policy that restricts
     exposure of personal data.
   tags: ["pii", "privacy", "gdpr", "hipaa"]
-  applies_to: ["input", "output"]
 
-provider_config:
-  aws-bedrock-guardrail:
-    guardrail_id: "abc123xyz"     # Replace with the Bedrock guardrail ID from the AWS console
-    guardrail_version: "3"        # Pin to a specific numeric version; avoid "DRAFT" in production
-    region: "eu-west-1"           # Must match the agent's policies.data_residency setting
-    credentials:
-      source: "iam_role"          # Recommended for production — uses the agent's declared IAM role
+transport:
+  type: "lambda"
+  function_arn: "arn:aws:lambda:eu-west-1:123456789:function:pii-scan-bedrock-v3"
+  invocation_type: "RequestResponse"
+  payload_format: "json"
+  credentials:
+    scheme: "iam-role"          # Runtime uses the agent's declared IAM role
 
 invocation:
   timeout_ms: 300
-  on_timeout: "fail_closed"       # If Bedrock does not respond in time, block the request
-  on_provider_error: "fail_closed"
+  on_timeout:
+    severity: 10                # If Bedrock does not respond in time, return maximum severity
+  on_provider_error:
+    severity: 10
   retry_policy:
     max_attempts: 2
     backoff_ms: 100
@@ -35,12 +40,7 @@ invocation:
 fallback:
   enabled: true
   fallback_guardrail_id: "pii-scan-lite"   # Platform-native fallback if Bedrock is unavailable
-  fallback_mode: "platform-native"
   emit_warning: true
-
-scope:
-  positions: ["input", "output"]
-  content_types: ["text"]
 ---
 
 # PII Scan (Bedrock Guardrails)
@@ -62,12 +62,10 @@ Use both positions for agents that handle customer data in regulated contexts (G
 guardrails:
   input:
     - ref: "bedrock-pii-scan"
-      mode: "detect"
-      on_fail: "redact"
+      on_fail: "apply"          # Apply the redacted version before the model sees the data
   output:
     - ref: "bedrock-pii-scan"
-      mode: "block"
-      on_fail: "redact"
+      on_fail: "reject"         # If output redaction fails, halt rather than leak PII
 ```
 
 ## Updating the guardrail version

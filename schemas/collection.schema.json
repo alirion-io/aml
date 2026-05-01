@@ -1,0 +1,545 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://alirion-io.github.io/aml/schemas/collection.schema.json",
+  "version": "1.2",
+  "title": "AML Memory Collection Definition",
+  "description": "Compiled JSON payload for an AML memory collection definition (.collection.md). Validates that the compiled output conforms to the AML v1.2 specification.",
+  "type": "object",
+  "required": [
+    "spec_version",
+    "collection_id",
+    "version",
+    "status",
+    "meta",
+    "scope",
+    "backend",
+    "writeback"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "spec_version": {
+      "title": "Spec Version",
+      "type": "string",
+      "description": "AML format version. Must equal a platform-approved version string.",
+      "pattern": "^[0-9]+\\.[0-9]+(\\.[0-9]+)?$"
+    },
+    "collection_id": {
+      "title": "Collection ID",
+      "$ref": "#/$defs/aml_id",
+      "description": "Stable, immutable identifier for this collection. Lowercase kebab-case. Immutable once referenced by any published agent definition."
+    },
+    "version": {
+      "title": "Version",
+      "$ref": "#/$defs/semver",
+      "description": "Semantic version of this collection definition."
+    },
+    "status": {
+      "title": "Status",
+      "type": "string",
+      "description": "Lifecycle state. draft=not usable in production; active=usable; deprecated=usable but lint warning; disabled=hard compile error on reference.",
+      "enum": [
+        "draft",
+        "active",
+        "deprecated",
+        "disabled"
+      ]
+    },
+    "meta": {
+      "title": "Metadata",
+      "type": "object",
+      "description": "Descriptive metadata for this memory collection.",
+      "required": [
+        "name",
+        "description",
+        "owner"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "title": "Name",
+          "type": "string",
+          "minLength": 1,
+          "description": "Human-readable display name for this collection."
+        },
+        "description": {
+          "title": "Description",
+          "type": "string",
+          "minLength": 1,
+          "description": "Short description of what this collection stores and how agents should use it."
+        },
+        "owner": {
+          "title": "Owner",
+          "type": "string",
+          "minLength": 1,
+          "description": "Team or individual responsible for maintaining this collection."
+        },
+        "tags": {
+          "title": "Tags",
+          "type": "array",
+          "description": "Searchable labels for discovery and filtering.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "last_updated": {
+          "title": "Last Updated",
+          "type": "string",
+          "format": "date",
+          "description": "ISO 8601 date of the last update to this collection definition."
+        }
+      }
+    },
+    "scope": {
+      "title": "Scope",
+      "type": "object",
+      "description": "Memory scope configuration. Determines who shares this collection and for how long.",
+      "required": [
+        "lifetime"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "lifetime": {
+          "title": "Lifetime",
+          "type": "string",
+          "description": "session=current conversation only; project=all sessions under the same project; user=all sessions across all projects for the same user.",
+          "enum": [
+            "session",
+            "project",
+            "user"
+          ]
+        }
+      }
+    },
+    "backend": {
+      "title": "Backend",
+      "description": "Storage configuration. Exactly one 'type' sub-key must match the backend type. backend.type is constrained by scope.lifetime: session scopes must use valkey or s3; project and user scopes must use agentcore_memory or custom.",
+      "oneOf": [
+        {
+          "$ref": "#/$defs/backend_agentcore_memory"
+        },
+        {
+          "$ref": "#/$defs/backend_valkey"
+        },
+        {
+          "$ref": "#/$defs/backend_s3"
+        },
+        {
+          "$ref": "#/$defs/backend_custom"
+        }
+      ]
+    },
+    "writeback": {
+      "title": "Writeback",
+      "type": "object",
+      "description": "Controls whether the agent is permitted to write back to this collection after a run. For agentcore_memory backends, writeback behavior (extraction strategy, summarization) is governed by the AgentCore Memory resource configuration, not by AML. For custom backends, the endpoint owns its own extraction and persistence logic.",
+      "required": [
+        "enabled"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "enabled": {
+          "title": "Enabled",
+          "type": "boolean",
+          "description": "If true, agents may declare this collection under write_collections. If false, any agent declaring this collection as writable is a hard validation error."
+        }
+      }
+    },
+    "documentation": {
+      "title": "Documentation",
+      "type": "object",
+      "description": "Compiled from the Markdown body of the .collection.md file. Sections are optional but validated when present.",
+      "additionalProperties": false,
+      "properties": {
+        "purpose": {
+          "title": "Purpose",
+          "type": "string",
+          "minLength": 1,
+          "contentMediaType": "text/markdown",
+          "description": "Compiled from the optional '# Purpose' section. Why this collection exists and how agents are expected to use it."
+        },
+        "content_coverage": {
+          "title": "Content Coverage",
+          "type": "string",
+          "minLength": 1,
+          "contentMediaType": "text/markdown",
+          "description": "Compiled from the optional '# Content coverage' section. What kinds of facts or data this collection stores."
+        },
+        "notes": {
+          "title": "Notes",
+          "type": "string",
+          "minLength": 1,
+          "contentMediaType": "text/markdown",
+          "description": "Compiled from the optional '# Notes' section. Miscellaneous guidance for authors and reviewers."
+        }
+      }
+    }
+  },
+  "$defs": {
+    "aml_id": {
+      "title": "AML ID",
+      "type": "string",
+      "description": "Stable, immutable AML identifier. Lowercase kebab-case or snake_case. Must match ^[a-z0-9_-]{3,64}$.",
+      "pattern": "^[a-z0-9_-]{3,64}$"
+    },
+    "semver": {
+      "title": "Semver",
+      "type": "string",
+      "description": "Semantic version string (MAJOR.MINOR.PATCH).",
+      "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)$"
+    },
+    "retrieval_config_entry": {
+      "title": "Retrieval Config Entry",
+      "type": "object",
+      "description": "Retrieval parameters for a single AgentCore memory namespace.",
+      "additionalProperties": false,
+      "properties": {
+        "top_k": {
+          "title": "Top K",
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1000,
+          "description": "Number of top-scoring records to return from semantic search. Default: 10."
+        },
+        "relevance_score": {
+          "title": "Relevance Score",
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Minimum relevance threshold for filtering results (0.0–1.0). Records below this score are excluded. Default: 0.2."
+        }
+      }
+    },
+    "backend_agentcore_memory": {
+      "title": "Backend Agentcore Memory",
+      "type": "object",
+      "description": "Amazon Bedrock AgentCore Memory backend. The AgentCore Memory resource (including its strategies and namespaces) is provisioned separately from agent deployment via the AWS Console, CLI, or a setup script. AML only references the resource by ID and configures retrieval parameters.",
+      "required": [
+        "type",
+        "memory_id_secret",
+        "region"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "title": "Type",
+          "type": "string",
+          "const": "agentcore_memory",
+          "description": "Backend type discriminator."
+        },
+        "memory_id_secret": {
+          "title": "Memory ID Secret",
+          "type": "string",
+          "minLength": 1,
+          "description": "Secrets manager path resolving to the AgentCore Memory resource ID. Never hardcode the resource ID directly."
+        },
+        "region": {
+          "title": "Region",
+          "type": "string",
+          "minLength": 1,
+          "description": "AWS region where the AgentCore Memory resource is deployed."
+        },
+        "retrieval_config": {
+          "title": "Retrieval Config",
+          "type": "object",
+          "description": "Maps namespace patterns to retrieval parameters. Keys are namespace strings (e.g. /preferences/{actorId}, /context/{projectId}) that must match the namespaces configured on the AgentCore Memory resource. {actorId}, {projectId}, and {sessionId} placeholders are substituted automatically by the runtime. Omit to use the AgentCore resource defaults.",
+          "additionalProperties": {
+            "$ref": "#/$defs/retrieval_config_entry"
+          }
+        },
+        "batch_size": {
+          "title": "Batch Size",
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100,
+          "default": 1,
+          "description": "Number of messages to buffer locally before flushing to AgentCore Memory. Default 1 sends each message immediately. Higher values reduce API call volume for high-throughput agents."
+        }
+      }
+    },
+    "backend_valkey": {
+      "title": "Backend Valkey",
+      "type": "object",
+      "description": "Valkey (Redis-compatible) backend configuration.",
+      "required": [
+        "type",
+        "endpoint_secret"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "title": "Type",
+          "type": "string",
+          "const": "valkey",
+          "description": "Backend type discriminator."
+        },
+        "endpoint_secret": {
+          "title": "Endpoint Secret",
+          "type": "string",
+          "minLength": 1,
+          "description": "Name of the environment variable containing the Valkey endpoint URL."
+        },
+        "port": {
+          "title": "Port",
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 65535,
+          "description": "Valkey port. Defaults to 6379 if omitted."
+        },
+        "key_prefix": {
+          "title": "Key Prefix",
+          "type": "string",
+          "description": "Optional key prefix to namespace records in Valkey."
+        },
+        "ttl_seconds": {
+          "title": "TTL Seconds",
+          "type": "integer",
+          "minimum": 1,
+          "description": "Time-to-live in seconds for stored records. Records expire after this duration."
+        }
+      }
+    },
+    "backend_s3": {
+      "title": "Backend S3",
+      "type": "object",
+      "description": "Amazon S3 session snapshot backend. Stores session state as JSON objects in an S3 bucket. Appropriate for session-scoped collections where durability and cost are the priority over sub-millisecond restore latency. Only valid for scope.lifetime: session.",
+      "required": [
+        "type",
+        "bucket_secret",
+        "region"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "title": "Type",
+          "type": "string",
+          "const": "s3",
+          "description": "Backend type discriminator."
+        },
+        "bucket_secret": {
+          "title": "Bucket Secret",
+          "type": "string",
+          "minLength": 1,
+          "description": "Secrets manager path resolving to the S3 bucket name. Never hardcode the bucket name directly."
+        },
+        "region": {
+          "title": "Region",
+          "type": "string",
+          "minLength": 1,
+          "description": "AWS region where the S3 bucket is located."
+        },
+        "prefix": {
+          "title": "Prefix",
+          "type": "string",
+          "description": "Optional S3 key prefix. Omit for no prefix. The runtime stores snapshots under <prefix>/<session_id>/agent/<agent_id>/snapshots/."
+        },
+        "ttl_days": {
+          "title": "TTL Days",
+          "type": "integer",
+          "minimum": 1,
+          "description": "Optional S3 object lifecycle TTL in days. The runtime applies this as an object expiry rule at write time."
+        }
+      }
+    },
+    "backend_custom": {
+      "title": "Backend Custom",
+      "type": "object",
+      "description": "Custom backend that delegates all memory management to an external endpoint. The endpoint must implement the Strands SnapshotStorage interface. Transport is either rest-api or lambda, using the same credentials model as tools and guardrails.",
+      "required": [
+        "type",
+        "transport"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "title": "Type",
+          "type": "string",
+          "const": "custom",
+          "description": "Backend type discriminator."
+        },
+        "transport": {
+          "title": "Transport",
+          "description": "Transport configuration. Either rest-api or lambda. Uses the same credentials model as tool and guardrail transports.",
+          "oneOf": [
+            {
+              "$ref": "#/$defs/transport_rest_api"
+            },
+            {
+              "$ref": "#/$defs/transport_lambda"
+            }
+          ]
+        }
+      }
+    },
+    "credentials": {
+      "title": "Credentials",
+      "type": "object",
+      "description": "Authentication configuration for an external transport. scheme selects the auth method; source specifies how the runtime resolves the secret value.",
+      "required": [
+        "scheme"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "scheme": {
+          "title": "Scheme",
+          "type": "string",
+          "description": "Authentication scheme.",
+          "enum": [
+            "none",
+            "api-key",
+            "bearer-token",
+            "oauth2",
+            "service-account",
+            "iam-role"
+          ]
+        },
+        "source": {
+          "title": "Source",
+          "type": "string",
+          "description": "How the runtime resolves the credential value. Not required when scheme is iam-role.",
+          "enum": [
+            "env",
+            "env_aws",
+            "aws_secrets_manager",
+            "gcp_secret_manager",
+            "azure_key_vault"
+          ]
+        },
+        "secret_id": {
+          "title": "Secret ID",
+          "type": "string",
+          "description": "AWS Secrets Manager secret ID. Required when source is aws_secrets_manager."
+        },
+        "name": {
+          "title": "Name",
+          "type": "string",
+          "description": "Environment variable name. Required when source is env."
+        },
+        "header": {
+          "title": "Header",
+          "type": "string",
+          "description": "HTTP header name to send the credential in. Required when scheme is api-key."
+        },
+        "token_url": {
+          "title": "Token URL",
+          "type": "string",
+          "description": "OAuth2 token endpoint URL. Required when scheme is oauth2."
+        },
+        "client_id": {
+          "title": "Client ID",
+          "type": "string",
+          "description": "OAuth2 client ID. Required when scheme is oauth2."
+        },
+        "client_secret": {
+          "title": "Client Secret",
+          "type": "string",
+          "description": "Secrets manager path resolving to the OAuth2 client secret. Required when scheme is oauth2."
+        }
+      }
+    },
+    "retry_policy": {
+      "title": "Retry Policy",
+      "type": "object",
+      "description": "Retry policy for transport calls.",
+      "additionalProperties": false,
+      "properties": {
+        "max_attempts": {
+          "title": "Max Attempts",
+          "type": "integer",
+          "minimum": 1,
+          "description": "Maximum number of attempts including the first. Set to 1 to disable retries."
+        },
+        "on_status": {
+          "title": "On Status",
+          "type": "array",
+          "description": "HTTP status codes that trigger a retry.",
+          "items": {
+            "type": "integer"
+          }
+        },
+        "backoff_ms": {
+          "title": "Backoff Ms",
+          "type": "integer",
+          "minimum": 0,
+          "description": "Initial backoff in milliseconds between retry attempts."
+        }
+      }
+    },
+    "transport_rest_api": {
+      "title": "Transport Rest Api",
+      "type": "object",
+      "description": "HTTP/REST transport. The runtime calls different paths per SnapshotStorage operation.",
+      "required": [
+        "type",
+        "base_url",
+        "credentials"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "title": "Type",
+          "type": "string",
+          "const": "rest-api",
+          "description": "Transport type discriminator."
+        },
+        "base_url": {
+          "title": "Base URL",
+          "type": "string",
+          "minLength": 1,
+          "description": "Base URL of the memory service. No trailing slash."
+        },
+        "timeout_ms": {
+          "title": "Timeout Ms",
+          "type": "integer",
+          "minimum": 1,
+          "description": "Request timeout in milliseconds. Default: 3000."
+        },
+        "retry_policy": {
+          "title": "Retry Policy",
+          "$ref": "#/$defs/retry_policy"
+        },
+        "credentials": {
+          "title": "Credentials",
+          "$ref": "#/$defs/credentials"
+        }
+      }
+    },
+    "transport_lambda": {
+      "title": "Transport Lambda",
+      "type": "object",
+      "description": "AWS Lambda transport. The runtime passes an operation field in the payload to distinguish SnapshotStorage calls.",
+      "required": [
+        "type",
+        "function_arn",
+        "credentials"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "title": "Type",
+          "type": "string",
+          "const": "lambda",
+          "description": "Transport type discriminator."
+        },
+        "function_arn": {
+          "title": "Function ARN",
+          "type": "string",
+          "minLength": 1,
+          "description": "Fully qualified ARN of the Lambda function implementing the SnapshotStorage interface."
+        },
+        "invocation_type": {
+          "title": "Invocation Type",
+          "type": "string",
+          "description": "Lambda invocation type. Must be RequestResponse for memory operations.",
+          "enum": [
+            "RequestResponse"
+          ],
+          "default": "RequestResponse"
+        },
+        "credentials": {
+          "title": "Credentials",
+          "$ref": "#/$defs/credentials"
+        }
+      }
+    }
+  }
+}

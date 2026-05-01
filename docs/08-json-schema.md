@@ -7,7 +7,7 @@
 
 ## Overview
 
-Several fields across AML definition files — `input.schema`, `output.schema`, `parameters`, and `response_schema` — accept a **JSON Schema** value written directly in YAML. This page is the single reference for how to write those schemas.
+Several fields across AML definition files — `interface.input`, `interface.output` (for both tools and agents) — accept a **JSON Schema** value written directly in YAML. This page is the single reference for how to write those schemas.
 
 AML supports a **practical subset of JSON Schema draft-07**. Features reserved for `$ref`, `$id`, `definitions`, and recursive schemas are not supported in AML schemas. All other keywords described here are valid.
 
@@ -41,7 +41,7 @@ is_verified:
 
 ## Objects
 
-The top-level schema of any `input`, `output`, or `parameters` block must have `type: object`.
+The top-level schema of any `interface.input` or `interface.output` block must have `type: object`.
 
 ```yaml
 type: object

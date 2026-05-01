@@ -81,19 +81,22 @@ nav:
     - JSON Schema in YAML: 08-json-schema.md
   - Examples:
     - Agents:
-      - Support Agent: support-agent.agent.md
-      - Translator Agent: translator.agent.md
+      - Support Agent: examples/agents/support-agent.agent.md
+      - Translator Agent: examples/agents/translator.agent.md
     - Tools:
-      - Send Email: send-email.tool.md
-      - Glossary Lookup: glossary-lookup.tool.md
+      - Send Email: examples/tools/send-email.tool.md
+      - Glossary Lookup: examples/tools/glossary-lookup.tool.md
     - Knowledge Bases:
-      - Brand Guidelines: brand-guidelines.kb.md
-      - Legal Policies: legal-policies.kb.md
+      - Brand Guidelines: examples/knowledge/brand-guidelines.kb.md
+      - Legal Policies: examples/knowledge/legal-policies.kb.md
     - Memory Collections:
-      - Customer Preferences: customer-preferences.collection.md
+      - Customer Preferences: examples/collections/customer-preferences.collection.md
     - Models:
-      - Claude 4 Sonnet (Bedrock): claude-4-sonnet.model.md
-      - GPT-4o (OpenAI): gpt-4o.model.md
+      - Claude 4 Sonnet (Bedrock): examples/models/claude-4-sonnet.model.md
+      - GPT-4o (OpenAI): examples/models/gpt-4o.model.md
+    - IAM Policies:
+      - Support Agent Role: examples/iam/support-agent-role.iam.md
     - Guardrails:
-      - Bedrock PII Scan: bedrock-pii-scan.guardrail.md
+      - Bedrock PII Scan: examples/guardrails/bedrock-pii-scan.guardrail.md
+      - Azure Content Moderation: examples/guardrails/azure-content-moderation.guardrail.md
 

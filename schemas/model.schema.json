@@ -1,0 +1,766 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://alirion-io.github.io/aml/schemas/model.schema.json",
+  "version": "1.2",
+  "title": "AML Model Definition",
+  "description": "Compiled JSON payload for an AML model definition (.model.md). Validates that the compiled output conforms to the AML v1.2 specification.",
+  "type": "object",
+  "required": [
+    "spec_version",
+    "model_id",
+    "version",
+    "status",
+    "meta",
+    "provider"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "spec_version": {
+      "title": "Spec Version",
+      "type": "string",
+      "description": "AML format version. Must equal a platform-approved version string.",
+      "pattern": "^[0-9]+\\.[0-9]+(\\.[0-9]+)?$"
+    },
+    "model_id": {
+      "title": "Model ID",
+      "$ref": "#/$defs/aml_id",
+      "description": "Stable, immutable identifier for this model entry. Used as the value of runtime.model in agent definitions. Cannot change once published."
+    },
+    "version": {
+      "title": "Version",
+      "$ref": "#/$defs/semver",
+      "description": "Semantic version of this model definition. Increment whenever provider config, capabilities, or defaults change."
+    },
+    "status": {
+      "title": "Status",
+      "type": "string",
+      "description": "Lifecycle state. active=usable; deprecated=usable but triggers lint warning on referencing agents; disabled=hard compile error on reference.",
+      "enum": [
+        "active",
+        "deprecated",
+        "disabled"
+      ]
+    },
+    "meta": {
+      "title": "Metadata",
+      "type": "object",
+      "description": "Descriptive metadata for this model entry.",
+      "required": [
+        "name"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "title": "Name",
+          "type": "string",
+          "minLength": 1,
+          "description": "Human-readable display name shown in the model registry UI and compiler output."
+        },
+        "description": {
+          "title": "Description",
+          "type": "string",
+          "description": "One to two sentences describing the model, its strengths, and recommended use cases."
+        },
+        "owner": {
+          "title": "Owner",
+          "type": "string",
+          "minLength": 1,
+          "description": "Team or individual responsible for maintaining this model entry."
+        },
+        "tags": {
+          "title": "Tags",
+          "type": "array",
+          "description": "Searchable labels for discovery and filtering.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "last_updated": {
+          "title": "Last Updated",
+          "type": "string",
+          "format": "date",
+          "description": "ISO 8601 date of the last update to this model definition."
+        }
+      }
+    },
+    "provider": {
+      "title": "Provider",
+      "type": "object",
+      "description": "Provider declaration. 'type' selects the provider; 'config' holds the provider-specific settings validated against the declared type.",
+      "required": [
+        "type",
+        "config"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "title": "Type",
+          "type": "string",
+          "description": "Provider type. bedrock=Amazon Bedrock; anthropic=Anthropic direct API; openai=OpenAI or compatible; litellm=LiteLLM unified interface; ollama=Ollama local models; llamaapi=Llama API (Meta); mistral=Mistral AI; writer=Writer (Palmyra); custom=custom provider.",
+          "enum": [
+            "bedrock",
+            "anthropic",
+            "openai",
+            "litellm",
+            "ollama",
+            "llamaapi",
+            "mistral",
+            "writer",
+            "custom"
+          ]
+        },
+        "config": {
+          "title": "Configuration",
+          "type": "object",
+          "description": "Provider-specific configuration. Shape is validated against the declared 'type' via oneOf."
+        }
+      },
+      "oneOf": [
+        {
+          "properties": {
+            "type": {
+              "title": "Type",
+              "const": "bedrock"
+            },
+            "config": {
+              "title": "Configuration",
+              "$ref": "#/$defs/provider_bedrock"
+            }
+          }
+        },
+        {
+          "properties": {
+            "type": {
+              "title": "Type",
+              "const": "anthropic"
+            },
+            "config": {
+              "title": "Configuration",
+              "$ref": "#/$defs/provider_anthropic"
+            }
+          }
+        },
+        {
+          "properties": {
+            "type": {
+              "title": "Type",
+              "const": "openai"
+            },
+            "config": {
+              "title": "Configuration",
+              "$ref": "#/$defs/provider_openai"
+            }
+          }
+        },
+        {
+          "properties": {
+            "type": {
+              "title": "Type",
+              "const": "litellm"
+            },
+            "config": {
+              "title": "Configuration",
+              "$ref": "#/$defs/provider_litellm"
+            }
+          }
+        },
+        {
+          "properties": {
+            "type": {
+              "title": "Type",
+              "const": "ollama"
+            },
+            "config": {
+              "title": "Configuration",
+              "$ref": "#/$defs/provider_ollama"
+            }
+          }
+        },
+        {
+          "properties": {
+            "type": {
+              "title": "Type",
+              "const": "llamaapi"
+            },
+            "config": {
+              "title": "Configuration",
+              "$ref": "#/$defs/provider_llamaapi"
+            }
+          }
+        },
+        {
+          "properties": {
+            "type": {
+              "title": "Type",
+              "const": "mistral"
+            },
+            "config": {
+              "title": "Configuration",
+              "$ref": "#/$defs/provider_mistral"
+            }
+          }
+        },
+        {
+          "properties": {
+            "type": {
+              "title": "Type",
+              "const": "writer"
+            },
+            "config": {
+              "title": "Configuration",
+              "$ref": "#/$defs/provider_writer"
+            }
+          }
+        },
+        {
+          "properties": {
+            "type": {
+              "title": "Type",
+              "const": "custom"
+            },
+            "config": {
+              "title": "Configuration",
+              "$ref": "#/$defs/provider_custom"
+            }
+          }
+        }
+      ]
+    },
+    "capabilities": {
+      "title": "Capabilities",
+      "type": "object",
+      "description": "Declared capabilities of this model. Used by the compiler to validate agent configurations.",
+      "additionalProperties": false,
+      "properties": {
+        "context_window": {
+          "title": "Context Window",
+          "type": "integer",
+          "minimum": 1,
+          "description": "Maximum context window size in tokens."
+        },
+        "max_output_tokens": {
+          "title": "Max Output Tokens",
+          "type": "integer",
+          "minimum": 1,
+          "description": "Maximum number of output tokens this model can generate in a single call."
+        },
+        "supports_tools": {
+          "title": "Supports Tools",
+          "type": "boolean",
+          "description": "If true, the model's API natively supports the tool/function-calling protocol — the runtime can pass structured tool definitions in the request and receive a structured tool_use response block. This is a model-level API capability, not an agent behaviour. Agents with a non-empty tools section require this to be true."
+        },
+        "supports_system_prompt": {
+          "title": "Supports System Prompt",
+          "type": "boolean",
+          "description": "If true, this model accepts a system prompt as a separate input."
+        },
+        "supports_streaming": {
+          "title": "Supports Streaming",
+          "type": "boolean",
+          "description": "If true, this model supports streaming token-by-token output."
+        },
+        "modalities": {
+          "title": "Modalities",
+          "type": "array",
+          "description": "Input modalities supported by this model.",
+          "items": {
+            "type": "string",
+            "enum": [
+              "text",
+              "image",
+              "audio",
+              "document"
+            ]
+          }
+        }
+      }
+    },
+    "defaults": {
+      "title": "Defaults",
+      "type": "object",
+      "description": "Default inference parameters for this model. Agents may override these in their runtime section.",
+      "additionalProperties": false,
+      "properties": {
+        "temperature": {
+          "title": "Temperature",
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Default sampling temperature (0.0–1.0)."
+        },
+        "max_tokens": {
+          "title": "Max Tokens",
+          "type": "integer",
+          "minimum": 1,
+          "description": "Default maximum output tokens."
+        },
+        "top_p": {
+          "title": "Top P",
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Default nucleus sampling probability (0.0–1.0)."
+        },
+        "stop_sequences": {
+          "title": "Stop Sequences",
+          "type": "array",
+          "description": "Default stop sequences. Generation halts when any of these strings is produced.",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "documentation": {
+      "title": "Documentation",
+      "type": "object",
+      "description": "Compiled from the Markdown body of the .model.md file. Intended for the model registry documentation UI. Sections are optional but validated when present.",
+      "additionalProperties": false,
+      "properties": {
+        "description": {
+          "title": "Description",
+          "type": "string",
+          "minLength": 1,
+          "contentMediaType": "text/markdown",
+          "description": "Compiled from the optional '# Description' section. Prose description of the model: what it is, when to use it, and usage guidance."
+        }
+      }
+    }
+  },
+  "$defs": {
+    "aml_id": {
+      "title": "AML ID",
+      "type": "string",
+      "description": "Stable, immutable AML identifier. Lowercase kebab-case or snake_case. Must match ^[a-z0-9_-]{3,64}$.",
+      "pattern": "^[a-z0-9_-]{3,64}$"
+    },
+    "semver": {
+      "title": "Semver",
+      "type": "string",
+      "description": "Semantic version string (MAJOR.MINOR.PATCH).",
+      "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)$"
+    },
+    "secret_ref": {
+      "title": "Secret Reference",
+      "type": "object",
+      "description": "Reference to a secret stored in an external secrets manager or environment variable.",
+      "required": [
+        "source"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "source": {
+          "title": "Source",
+          "type": "string",
+          "description": "iam_role=AWS IAM role, no extra fields required; env=single environment variable; env_aws=two AWS credential env vars (key ID + secret access key); aws_secrets_manager=AWS Secrets Manager; gcp_secret_manager=GCP Secret Manager; azure_key_vault=Azure Key Vault.",
+          "enum": [
+            "iam_role",
+            "env",
+            "env_aws",
+            "aws_secrets_manager",
+            "gcp_secret_manager",
+            "azure_key_vault"
+          ]
+        },
+        "name": {
+          "title": "Name",
+          "type": "string",
+          "description": "Environment variable name. Required when source=env."
+        },
+        "access_key_id": {
+          "title": "Access Key ID",
+          "type": "string",
+          "minLength": 1,
+          "description": "Name of the env var holding the AWS access key ID. Required when source=env_aws."
+        },
+        "secret_access_key": {
+          "title": "Secret Access Key",
+          "type": "string",
+          "minLength": 1,
+          "description": "Name of the env var holding the AWS secret access key. Required when source=env_aws."
+        },
+        "secret_id": {
+          "title": "Secret ID",
+          "type": "string",
+          "description": "AWS Secrets Manager secret ID. Required when source=aws_secrets_manager."
+        },
+        "region": {
+          "title": "Region",
+          "type": "string",
+          "description": "AWS region for this secret."
+        },
+        "key": {
+          "title": "Key",
+          "type": "string",
+          "description": "Key within the secret JSON object, if the secret is a JSON map."
+        },
+        "project": {
+          "title": "Project",
+          "type": "string",
+          "description": "GCP project ID. Required when source=gcp_secret_manager."
+        },
+        "secret": {
+          "title": "Secret",
+          "type": "string",
+          "description": "GCP secret name. Required when source=gcp_secret_manager."
+        },
+        "version": {
+          "title": "Version",
+          "type": "string",
+          "description": "GCP secret version (default: latest)."
+        },
+        "vault_url": {
+          "title": "Vault URL",
+          "type": "string",
+          "format": "uri",
+          "description": "Azure Key Vault URL. Required when source=azure_key_vault."
+        },
+        "secret_name": {
+          "title": "Secret Name",
+          "type": "string",
+          "description": "Azure Key Vault secret name. Required when source=azure_key_vault."
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "source": {
+                "title": "Source",
+                "const": "env"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "name"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "source": {
+                "title": "Source",
+                "const": "env_aws"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "access_key_id",
+              "secret_access_key"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "source": {
+                "title": "Source",
+                "const": "aws_secrets_manager"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "secret_id"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "source": {
+                "title": "Source",
+                "const": "gcp_secret_manager"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "project",
+              "secret"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "source": {
+                "title": "Source",
+                "const": "azure_key_vault"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "vault_url",
+              "secret_name"
+            ]
+          }
+        }
+      ]
+    },
+    "gcp_credentials": {
+      "title": "GCP Credentials",
+      "type": "object",
+      "description": "GCP credentials strategy.",
+      "required": [
+        "source"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "source": {
+          "title": "Source",
+          "type": "string",
+          "description": "workload_identity=use GCP Workload Identity Federation; service_account_key=use a service account key file; env=use GOOGLE_APPLICATION_CREDENTIALS env var.",
+          "enum": [
+            "workload_identity",
+            "service_account_key",
+            "env"
+          ]
+        },
+        "service_account_key": {
+          "title": "Service Account Key",
+          "$ref": "#/$defs/secret_ref",
+          "description": "Reference to the service account key. Required when source=service_account_key."
+        }
+      }
+    },
+    "provider_bedrock": {
+      "title": "Provider Bedrock",
+      "type": "object",
+      "description": "Amazon Bedrock provider configuration.",
+      "required": [
+        "model_id",
+        "region"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "model_id": {
+          "title": "Model ID",
+          "type": "string",
+          "minLength": 1,
+          "description": "Bedrock model ID (e.g., anthropic.claude-3-5-sonnet-20241022-v2:0)."
+        },
+        "region": {
+          "title": "Region",
+          "type": "string",
+          "minLength": 1,
+          "description": "AWS region where Bedrock is invoked."
+        },
+        "credentials": {
+          "title": "Credentials",
+          "$ref": "#/$defs/secret_ref",
+          "description": "AWS credentials strategy. Use source=iam_role (default) or source=env_aws with named env vars."
+        }
+      }
+    },
+    "provider_anthropic": {
+      "title": "Provider Anthropic",
+      "type": "object",
+      "description": "Anthropic direct API provider configuration.",
+      "required": [
+        "model",
+        "credentials"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "model": {
+          "title": "Model",
+          "type": "string",
+          "minLength": 1,
+          "description": "Anthropic model slug (e.g., claude-3-5-sonnet-20241022)."
+        },
+        "credentials": {
+          "title": "Credentials",
+          "$ref": "#/$defs/secret_ref",
+          "description": "Reference to the Anthropic API key secret."
+        }
+      }
+    },
+    "provider_openai": {
+      "title": "Provider Openai",
+      "type": "object",
+      "description": "OpenAI or OpenAI-compatible API provider configuration.",
+      "required": [
+        "model",
+        "credentials"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "model": {
+          "title": "Model",
+          "type": "string",
+          "minLength": 1,
+          "description": "OpenAI model name (e.g., gpt-4o)."
+        },
+        "credentials": {
+          "title": "Credentials",
+          "$ref": "#/$defs/secret_ref",
+          "description": "Reference to the OpenAI API key secret."
+        },
+        "base_url": {
+          "title": "Base URL",
+          "type": "string",
+          "format": "uri",
+          "description": "Optional base URL override for OpenAI-compatible endpoints."
+        },
+        "organization": {
+          "title": "Organization",
+          "type": "string",
+          "description": "Optional OpenAI organization ID."
+        }
+      }
+    },
+    "provider_litellm": {
+      "title": "Provider Litellm",
+      "type": "object",
+      "description": "LiteLLM unified interface provider configuration.",
+      "required": [
+        "model",
+        "credentials"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "model": {
+          "title": "Model",
+          "type": "string",
+          "minLength": 1,
+          "description": "LiteLLM model string in provider/model format."
+        },
+        "credentials": {
+          "title": "Credentials",
+          "$ref": "#/$defs/secret_ref",
+          "description": "Reference to the API key secret for the underlying provider."
+        },
+        "api_base": {
+          "title": "API Base",
+          "type": "string",
+          "format": "uri",
+          "description": "Optional base URL override."
+        },
+        "extra_params": {
+          "title": "Extra Params",
+          "type": "object",
+          "description": "Additional LiteLLM parameters passed verbatim to the provider."
+        }
+      }
+    },
+    "provider_ollama": {
+      "title": "Provider Ollama",
+      "type": "object",
+      "description": "Ollama local model provider configuration.",
+      "required": [
+        "model"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "model": {
+          "title": "Model",
+          "type": "string",
+          "minLength": 1,
+          "description": "Ollama model name as listed in 'ollama list'."
+        },
+        "host": {
+          "title": "Host",
+          "type": "string",
+          "format": "uri",
+          "description": "Ollama server host URL. Defaults to http://localhost:11434 if omitted."
+        }
+      }
+    },
+    "provider_llamaapi": {
+      "title": "Provider Llamaapi",
+      "type": "object",
+      "description": "Llama API (Meta) provider configuration.",
+      "required": [
+        "model",
+        "credentials"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "model": {
+          "title": "Model",
+          "type": "string",
+          "minLength": 1,
+          "description": "Llama API model name."
+        },
+        "credentials": {
+          "title": "Credentials",
+          "$ref": "#/$defs/secret_ref",
+          "description": "Reference to the Llama API key secret."
+        }
+      }
+    },
+    "provider_mistral": {
+      "title": "Provider Mistral",
+      "type": "object",
+      "description": "Mistral AI provider configuration.",
+      "required": [
+        "model",
+        "credentials"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "model": {
+          "title": "Model",
+          "type": "string",
+          "minLength": 1,
+          "description": "Mistral model name (e.g., mistral-large-latest)."
+        },
+        "credentials": {
+          "title": "Credentials",
+          "$ref": "#/$defs/secret_ref",
+          "description": "Reference to the Mistral API key secret."
+        }
+      }
+    },
+    "provider_writer": {
+      "title": "Provider Writer",
+      "type": "object",
+      "description": "Writer (Palmyra) provider configuration.",
+      "required": [
+        "model",
+        "credentials"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "model": {
+          "title": "Model",
+          "type": "string",
+          "minLength": 1,
+          "description": "Writer model name (e.g., palmyra-x5)."
+        },
+        "credentials": {
+          "title": "Credentials",
+          "$ref": "#/$defs/secret_ref",
+          "description": "Reference to the Writer API key secret."
+        }
+      }
+    },
+    "provider_custom": {
+      "title": "Provider Custom",
+      "type": "object",
+      "description": "Custom provider configuration for models not covered by built-in providers.",
+      "required": [
+        "class_path"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "class_path": {
+          "title": "Class Path",
+          "type": "string",
+          "minLength": 1,
+          "description": "Fully qualified Python class implementing the Strands Model interface."
+        },
+        "config": {
+          "title": "Configuration",
+          "type": "object",
+          "description": "Arbitrary configuration object passed to the custom provider constructor."
+        }
+      }
+    }
+  }
+}

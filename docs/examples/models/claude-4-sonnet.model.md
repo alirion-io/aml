@@ -7,14 +7,17 @@
 ---
 spec_version: "1.2"
 model_id: "claude-4-sonnet"
-display_name: "Claude 4 Sonnet (Bedrock, us-east-1)"
-provider: "bedrock"
+version: "1.0.0"
 status: "active"
-owner: "platform-ml-team"
-last_updated: "2026-01-15"
 
-provider_config:
-  bedrock:
+meta:
+  name: "Claude 4 Sonnet (Bedrock, us-east-1)"
+  owner: "platform-ml-team"
+  last_updated: "2026-01-15"
+
+provider:
+  type: "bedrock"
+  config:
     model_id: "us.anthropic.claude-sonnet-4-20250514-v1:0"
     region: "us-east-1"
     credentials:
@@ -24,7 +27,6 @@ capabilities:
   context_window: 200000
   max_output_tokens: 16000
   supports_tools: true
-  supports_vision: true
   supports_system_prompt: true
   supports_streaming: true
   modalities: ["text", "image"]
@@ -34,7 +36,7 @@ defaults:
   max_tokens: 4096
 ---
 
-# Claude 4 Sonnet (Amazon Bedrock)
+# Description
 
 Claude 4 Sonnet is Anthropic's balanced model for intelligence and speed, accessed here through Amazon Bedrock in `us-east-1`. It is the default model for most production agents on this platform.
 

@@ -1,0 +1,453 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://alirion-io.github.io/aml/schemas/guardrail.schema.json",
+  "version": "1.3",
+  "title": "AML Guardrail Definition",
+  "description": "Compiled JSON payload for an AML guardrail definition (.guardrail.md). Validates that the compiled output conforms to the AML v1.3 specification.",
+  "type": "object",
+  "required": [
+    "spec_version",
+    "guardrail_id",
+    "version",
+    "status",
+    "behaviour",
+    "meta"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "spec_version": {
+      "title": "Spec Version",
+      "type": "string",
+      "description": "AML format version. Must equal a platform-approved version string.",
+      "pattern": "^[0-9]+\\.[0-9]+(\\.[0-9]+)?$"
+    },
+    "guardrail_id": {
+      "title": "Guardrail ID",
+      "$ref": "#/$defs/aml_id",
+      "description": "Stable, immutable identifier for this guardrail. Lowercase kebab-case. Immutable once referenced by any published agent definition."
+    },
+    "version": {
+      "title": "Version",
+      "$ref": "#/$defs/semver",
+      "description": "Semantic version of this guardrail definition. Increment whenever transport config or behavior changes."
+    },
+    "status": {
+      "title": "Status",
+      "type": "string",
+      "description": "Lifecycle state. active=usable; deprecated=usable but triggers lint warning on referencing agents; disabled=hard compile error on reference.",
+      "enum": [
+        "active",
+        "deprecated",
+        "disabled"
+      ]
+    },
+    "behaviour": {
+      "title": "Behaviour",
+      "type": "object",
+      "description": "Declares what this guardrail does and what content it can process.",
+      "required": ["result_type", "content_types"],
+      "additionalProperties": false,
+      "properties": {
+        "result_type": {
+          "title": "Result Type",
+          "type": "string",
+          "description": "Declares what kind of output this guardrail produces. score=returns a 0-10 severity integer; transform=returns modified content to replace the original; annotate=returns metadata tags added to the payload; enrich=returns content appended alongside the payload.",
+          "enum": [
+            "score",
+            "transform",
+            "annotate",
+            "enrich"
+          ]
+        },
+        "content_types": {
+          "title": "Content Types",
+          "type": "array",
+          "minItems": 1,
+          "description": "Content modalities this guardrail is able to process. The runtime passes only parameters whose type matches an entry here. Attaching a guardrail to a position with no matching parameters is a hard compile error.",
+          "items": {
+            "type": "string",
+            "enum": [
+              "text",
+              "image",
+              "video",
+              "document"
+            ]
+          }
+        }
+      }
+    },
+    "meta": {
+      "title": "Metadata",
+      "type": "object",
+      "description": "Descriptive metadata for this guardrail. The description field is informational only and is never injected into the model's context.",
+      "required": [
+        "name"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "title": "Name",
+          "type": "string",
+          "minLength": 1,
+          "description": "Human-readable display name shown in the guardrail registry UI."
+        },
+        "description": {
+          "title": "Description",
+          "type": "string",
+          "description": "Short description of what this guardrail checks. Informational only — never sent to the model."
+        },
+        "owner": {
+          "title": "Owner",
+          "type": "string",
+          "minLength": 1,
+          "description": "Team or individual responsible for maintaining this guardrail."
+        },
+        "tags": {
+          "title": "Tags",
+          "type": "array",
+          "description": "Searchable labels for discovery and filtering.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "last_updated": {
+          "title": "Last Updated",
+          "type": "string",
+          "format": "date",
+          "description": "ISO 8601 date of the last update to this guardrail definition."
+        }
+      }
+    },
+    "transport": {
+      "title": "Transport",
+      "description": "Invocation details for external guardrails. Omit for built-in (in-process) guardrails. Allowed types: rest-api, lambda.",
+      "oneOf": [
+        { "$ref": "#/$defs/transport_rest_api" },
+        { "$ref": "#/$defs/transport_lambda" }
+      ]
+    },
+    "invocation": {
+      "title": "Invocation",
+      "type": "object",
+      "description": "Runtime invocation policy. Required when transport is present.",
+      "additionalProperties": false,
+      "properties": {
+        "timeout_ms": {
+          "title": "Timeout ms",
+          "type": "integer",
+          "minimum": 1,
+          "description": "Maximum time in milliseconds to wait for the transport response."
+        },
+        "on_timeout": {
+          "title": "On Timeout",
+          "$ref": "#/$defs/error_severity_policy",
+          "description": "Synthetic severity returned to the agent if the call times out after retries. severity=10 is equivalent to fail_closed; severity=0 is equivalent to fail_open."
+        },
+        "on_provider_error": {
+          "title": "On Provider Error",
+          "$ref": "#/$defs/error_severity_policy",
+          "description": "Synthetic severity returned to the agent on a provider error (5xx, network failure) after retries."
+        },
+        "retry_policy": {
+          "title": "Retry Policy",
+          "type": "object",
+          "description": "Retry policy on transient errors.",
+          "additionalProperties": false,
+          "properties": {
+            "max_attempts": {
+              "title": "Max Attempts",
+              "type": "integer",
+              "minimum": 1,
+              "description": "Total call attempts including the initial one."
+            },
+            "backoff_ms": {
+              "title": "Backoff ms",
+              "type": "integer",
+              "minimum": 0,
+              "description": "Initial backoff delay in milliseconds between retries (exponential)."
+            }
+          }
+        }
+      }
+    },
+    "fallback": {
+      "title": "Fallback",
+      "type": "object",
+      "description": "Fallback policy when the primary transport is unavailable.",
+      "additionalProperties": false,
+      "properties": {
+        "enabled": {
+          "title": "Enabled",
+          "type": "boolean",
+          "description": "If true, invoke the fallback guardrail when the primary transport fails."
+        },
+        "fallback_guardrail_id": {
+          "title": "Fallback Guardrail ID",
+          "$ref": "#/$defs/aml_id",
+          "description": "guardrail_id of the guardrail to invoke as fallback. Its own definition governs how it is called. Should share the same behaviour.result_type as the primary guardrail."
+        },
+        "emit_warning": {
+          "title": "Emit Warning",
+          "type": "boolean",
+          "description": "If true, emit a structured warning event to the audit log when the fallback activates."
+        }
+      }
+    },
+    "documentation": {
+      "title": "Documentation",
+      "type": "object",
+      "description": "Compiled from the Markdown body of the .guardrail.md file. Intended for the guardrail registry documentation UI.",
+      "additionalProperties": false,
+      "properties": {
+        "description": {
+          "title": "Description",
+          "type": "string",
+          "minLength": 1,
+          "contentMediaType": "text/markdown",
+          "description": "Compiled from the Markdown body. What this guardrail checks, when to use it, and known limitations."
+        }
+      }
+    }
+  },
+  "if": {
+    "required": ["transport"]
+  },
+  "then": {
+    "required": ["invocation"]
+  },
+  "$defs": {
+    "aml_id": {
+      "title": "AML ID",
+      "type": "string",
+      "description": "Stable, immutable AML identifier. Lowercase kebab-case. Must match ^[a-z0-9_-]{3,64}$.",
+      "pattern": "^[a-z0-9_-]{3,64}$"
+    },
+    "semver": {
+      "title": "Semver",
+      "type": "string",
+      "description": "Semantic version string (MAJOR.MINOR.PATCH).",
+      "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)$"
+    },
+    "error_severity_policy": {
+      "title": "Error Severity Policy",
+      "type": "object",
+      "description": "Synthetic severity returned to the agent on error. 10=equivalent to fail_closed; 0=equivalent to fail_open.",
+      "required": ["severity"],
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "title": "Severity",
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10,
+          "description": "Normalized 0-10 severity value returned to the agent when this error condition occurs."
+        }
+      }
+    },
+    "transport_credentials": {
+      "title": "Transport Credentials",
+      "type": "object",
+      "description": "Credentials configuration for this transport. The scheme field selects the authentication method; the remaining fields follow the same secret_ref resolution pattern used by model provider credentials.",
+      "required": [
+        "scheme"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "scheme": {
+          "title": "Scheme",
+          "type": "string",
+          "description": "Authentication scheme: none=no auth; api-key=static API key; bearer-token=Bearer token; oauth2=OAuth 2.0 client credentials; service-account=named service identity; iam-role=cloud platform identity.",
+          "enum": [
+            "none",
+            "api-key",
+            "bearer-token",
+            "oauth2",
+            "service-account",
+            "iam-role"
+          ]
+        },
+        "source": {
+          "title": "Source",
+          "type": "string",
+          "description": "Secret backend. env=environment variable (requires name); aws_secrets_manager=AWS Secrets Manager (requires secret_id); gcp_secret_manager=GCP Secret Manager (requires project+secret); azure_key_vault=Azure Key Vault (requires vault_url+secret_name).",
+          "enum": [
+            "env",
+            "env_aws",
+            "aws_secrets_manager",
+            "gcp_secret_manager",
+            "azure_key_vault"
+          ]
+        },
+        "name": {
+          "title": "Name",
+          "type": "string",
+          "description": "Environment variable name. Required when source=env."
+        },
+        "access_key_id": {
+          "title": "Access Key ID",
+          "type": "string",
+          "description": "Name of the env var holding the AWS access key ID. Required when source=env_aws."
+        },
+        "secret_access_key": {
+          "title": "Secret Access Key",
+          "type": "string",
+          "description": "Name of the env var holding the AWS secret access key. Required when source=env_aws."
+        },
+        "secret_id": {
+          "title": "Secret ID",
+          "type": "string",
+          "description": "AWS Secrets Manager secret ID. Required when source=aws_secrets_manager."
+        },
+        "region": {
+          "title": "Region",
+          "type": "string",
+          "description": "AWS region for the secret."
+        },
+        "key": {
+          "title": "Key",
+          "type": "string",
+          "description": "Key within the secret JSON object, if the secret value is a JSON map."
+        },
+        "project": {
+          "title": "Project",
+          "type": "string",
+          "description": "GCP project ID. Required when source=gcp_secret_manager."
+        },
+        "secret": {
+          "title": "Secret",
+          "type": "string",
+          "description": "GCP secret name. Required when source=gcp_secret_manager."
+        },
+        "version": {
+          "title": "Version",
+          "type": "string",
+          "description": "GCP secret version (default: latest)."
+        },
+        "vault_url": {
+          "title": "Vault URL",
+          "type": "string",
+          "format": "uri",
+          "description": "Azure Key Vault URL. Required when source=azure_key_vault."
+        },
+        "secret_name": {
+          "title": "Secret Name",
+          "type": "string",
+          "description": "Azure Key Vault secret name. Required when source=azure_key_vault."
+        },
+        "header": {
+          "title": "Header",
+          "type": "string",
+          "description": "HTTP header name to send the token in (e.g., 'X-Api-Key'). Defaults to 'Authorization'. Used with scheme=api-key."
+        },
+        "token_url": {
+          "title": "Token URL",
+          "type": "string",
+          "format": "uri",
+          "description": "OAuth 2.0 token endpoint URL. Required when scheme=oauth2."
+        },
+        "client_id": {
+          "title": "Client ID",
+          "$ref": "#/$defs/secret_ref",
+          "description": "Where to resolve the OAuth 2.0 client ID. Required when scheme=oauth2."
+        },
+        "client_secret": {
+          "title": "Client Secret",
+          "$ref": "#/$defs/secret_ref",
+          "description": "Where to resolve the OAuth 2.0 client secret. Required when scheme=oauth2."
+        },
+        "scopes": {
+          "title": "Scopes",
+          "type": "array",
+          "description": "OAuth 2.0 scopes to request.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "grant_type": {
+          "title": "Grant Type",
+          "type": "string",
+          "description": "OAuth 2.0 grant type (e.g., 'client_credentials')."
+        },
+        "username_key": {
+          "title": "Username Key",
+          "type": "string",
+          "description": "Key name for the username within the resolved JSON credentials object. Only relevant when scheme=service-account and transport.type=database. Defaults to 'username'.",
+          "default": "username"
+        },
+        "password_key": {
+          "title": "Password Key",
+          "type": "string",
+          "description": "Key name for the password within the resolved JSON credentials object. Only relevant when scheme=service-account and transport.type=database. Defaults to 'password'.",
+          "default": "password"
+        }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "source": { "const": "env" } }, "required": ["source"] },
+          "then": { "required": ["name"] }
+        },
+        {
+          "if": { "properties": { "source": { "const": "env_aws" } }, "required": ["source"] },
+          "then": { "required": ["access_key_id", "secret_access_key"] }
+        },
+        {
+          "if": { "properties": { "source": { "const": "aws_secrets_manager" } }, "required": ["source"] },
+          "then": { "required": ["secret_id"] }
+        },
+        {
+          "if": { "properties": { "source": { "const": "gcp_secret_manager" } }, "required": ["source"] },
+          "then": { "required": ["project", "secret"] }
+        },
+        {
+          "if": { "properties": { "source": { "const": "azure_key_vault" } }, "required": ["source"] },
+          "then": { "required": ["vault_url", "secret_name"] }
+        },
+        {
+          "if": { "properties": { "scheme": { "const": "oauth2" } } },
+          "then": { "required": ["token_url", "client_id", "client_secret"] }
+        },
+        {
+          "if": { "properties": { "scheme": { "enum": ["api-key", "bearer-token", "service-account"] } } },
+          "then": { "required": ["source"] }
+        }
+      ]
+    },
+    "transport_rest_api": {
+      "title": "REST API Transport",
+      "type": "object",
+      "description": "HTTP/REST endpoint transport. Same definition as tool transport rest-api.",
+      "required": ["type", "base_url", "endpoint", "credentials"],
+      "additionalProperties": false,
+      "properties": {
+        "type": { "title": "Type", "type": "string", "const": "rest-api" },
+        "base_url": { "title": "Base URL", "type": "string", "format": "uri", "description": "Base URL of the service. No trailing slash." },
+        "endpoint": { "title": "Endpoint", "type": "string", "description": "HTTP method and path, e.g. POST /check.", "pattern": "^(GET|POST|PUT|PATCH|DELETE) /" },
+        "timeout_ms": { "title": "Timeout ms", "type": "integer", "minimum": 1 },
+        "retry_policy": {
+          "title": "Retry Policy",
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "max_attempts": { "type": "integer", "minimum": 1 },
+            "on_status": { "type": "array", "items": { "type": "integer" } }
+          }
+        },
+        "credentials": { "$ref": "#/$defs/transport_credentials" }
+      }
+    },
+    "transport_lambda": {
+      "title": "Lambda Transport",
+      "type": "object",
+      "description": "AWS Lambda function transport. Same definition as tool transport lambda.",
+      "required": ["type", "function_arn", "invocation_type", "credentials"],
+      "additionalProperties": false,
+      "properties": {
+        "type": { "title": "Type", "type": "string", "const": "lambda" },
+        "function_arn": { "title": "Function ARN", "type": "string", "pattern": "^arn:aws:lambda:", "description": "Fully qualified ARN of the Lambda function." },
+        "invocation_type": { "title": "Invocation Type", "type": "string", "enum": ["RequestResponse", "Event"], "description": "RequestResponse=synchronous; Event=fire-and-forget." },
+        "payload_format": { "title": "Payload Format", "type": "string", "enum": ["json", "raw"] },
+        "credentials": { "$ref": "#/$defs/transport_credentials" }
+      }
+    }
+  }
+}

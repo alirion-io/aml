@@ -1,0 +1,412 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://alirion-io.github.io/aml/schemas/kb.schema.json",
+  "version": "1.2",
+  "title": "AML Knowledge Base Definition",
+  "description": "Compiled JSON payload for an AML knowledge base definition (.kb.md). Validates that the compiled output conforms to the AML v1.2 specification.",
+  "type": "object",
+  "required": [
+    "spec_version",
+    "kb_id",
+    "version",
+    "status",
+    "meta",
+    "source",
+    "scope",
+    "classification",
+    "retrieval_defaults",
+    "retrieval"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "spec_version": {
+      "title": "Spec Version",
+      "type": "string",
+      "description": "AML format version. Must equal a platform-approved version string.",
+      "pattern": "^[0-9]+\\.[0-9]+(\\.[0-9]+)?$"
+    },
+    "kb_id": {
+      "title": "KB ID",
+      "$ref": "#/$defs/aml_id",
+      "description": "Stable, immutable identifier for this knowledge base. Lowercase kebab-case. Immutable once any agent references it in a published definition."
+    },
+    "version": {
+      "title": "Version",
+      "$ref": "#/$defs/semver",
+      "description": "Semantic version of this KB definition. Major bump required for complete content restructuring or URI changes."
+    },
+    "status": {
+      "title": "Status",
+      "type": "string",
+      "description": "Lifecycle state. draft=not usable in production; active=usable; deprecated=usable but lint warning; disabled=hard compile error on reference.",
+      "enum": [
+        "draft",
+        "active",
+        "deprecated",
+        "disabled"
+      ]
+    },
+    "meta": {
+      "title": "Metadata",
+      "type": "object",
+      "description": "Descriptive metadata for this knowledge base.",
+      "required": [
+        "name",
+        "description",
+        "owner"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "title": "Name",
+          "type": "string",
+          "minLength": 1,
+          "description": "Human-readable display name for this knowledge base."
+        },
+        "description": {
+          "title": "Description",
+          "type": "string",
+          "minLength": 1,
+          "description": "Two to four sentences describing the content, scope, and intended use of this KB."
+        },
+        "owner": {
+          "title": "Owner",
+          "type": "string",
+          "minLength": 1,
+          "description": "Team responsible for the content and maintenance of this knowledge base."
+        },
+        "tags": {
+          "title": "Tags",
+          "type": "array",
+          "description": "Searchable labels for discovery and filtering.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "last_updated": {
+          "title": "Last Updated",
+          "type": "string",
+          "format": "date",
+          "description": "ISO 8601 date of the last update to this KB definition."
+        }
+      }
+    },
+    "source": {
+      "title": "Source",
+      "type": "object",
+      "description": "Storage and location configuration for this knowledge base.",
+      "required": [
+        "type"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "title": "Type",
+          "type": "string",
+          "description": "Storage type: vector_index=dense vector index; vector_store=managed vector store with metadata filtering; document_set=flat document collection; sql_table=relational table; api=external API; graph_db=graph database; hybrid_store=combined dense vector and keyword index.",
+          "enum": [
+            "vector_index",
+            "vector_store",
+            "document_set",
+            "sql_table",
+            "api",
+            "graph_db",
+            "hybrid_store"
+          ]
+        },
+        "uri": {
+          "title": "URI",
+          "type": "string",
+          "minLength": 1,
+          "description": "Stable, platform-resolved address the runtime uses to query this KB. Use the kb:// scheme for platform-managed stores. Immutable once registered."
+        },
+        "freshness_window_days": {
+          "title": "Freshness Window Days",
+          "type": "integer",
+          "minimum": 1,
+          "description": "Content older than this number of days may be considered stale. Required (lint warning if absent) for time-sensitive domains."
+        },
+        "index_refresh": {
+          "title": "Index Refresh",
+          "type": "string",
+          "description": "How often the index is rebuilt (e.g., 'every-6h', 'daily'). Infrastructure concern — does not affect runtime behavior."
+        }
+      }
+    },
+    "scope": {
+      "title": "Scope",
+      "type": "object",
+      "description": "Content boundary declaration for this knowledge base. Defines what topics are in and out of scope.",
+      "required": [
+        "domains"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "domains": {
+          "title": "Domains",
+          "type": "array",
+          "minItems": 1,
+          "description": "Primary content domains covered by this KB (e.g., 'product_features', 'api_usage').",
+          "items": {
+            "type": "string"
+          }
+        },
+        "include": {
+          "title": "Include",
+          "type": "array",
+          "description": "Explicit list of content types or topics included in this KB.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "exclude": {
+          "title": "Exclude",
+          "type": "array",
+          "description": "Explicit list of content types or topics excluded from this KB.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "languages": {
+          "title": "Languages",
+          "type": "array",
+          "description": "BCP 47 language codes of content available in this KB.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "version_coverage": {
+          "title": "Version Coverage",
+          "type": "string",
+          "description": "Which product versions are covered: 'current'=latest only; 'all'=all versions; 'range:<from>-<to>'=specific range."
+        }
+      }
+    },
+    "classification": {
+      "title": "Classification",
+      "type": "object",
+      "description": "Trust and data sensitivity classification for this knowledge base.",
+      "required": [
+        "trust_level",
+        "data_classification"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "trust_level": {
+          "title": "Trust Level",
+          "type": "string",
+          "description": "authoritative=primary source of truth; supplemental=supporting reference; unverified=content not yet validated.",
+          "enum": [
+            "authoritative",
+            "supplemental",
+            "unverified"
+          ]
+        },
+        "data_classification": {
+          "title": "Data Classification",
+          "type": "object",
+          "description": "Data sensitivity and compliance properties of the content in this KB.",
+          "required": [
+            "contains_pii"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "contains_pii": {
+              "title": "Contains PII",
+              "type": "boolean",
+              "description": "If true, this KB contains personally identifiable information. Affects access control and audit requirements."
+            },
+            "compliance": {
+              "title": "Compliance",
+              "type": "array",
+              "description": "Compliance frameworks applicable to the content in this KB (e.g., 'GDPR', 'HIPAA', 'SOC2').",
+              "items": {
+                "type": "string"
+              }
+            },
+            "confidentiality": {
+              "title": "Confidentiality",
+              "type": "string",
+              "description": "Confidentiality level: public=no restrictions; internal=company employees only; confidential=need-to-know basis; restricted=highest sensitivity.",
+              "enum": [
+                "public",
+                "internal",
+                "confidential",
+                "restricted"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "retrieval_defaults": {
+      "title": "Retrieval Defaults",
+      "type": "object",
+      "description": "Default retrieval parameters for this KB. Agent-level overrides may tighten but not loosen these defaults.",
+      "additionalProperties": false,
+      "properties": {
+        "search_mode": {
+          "title": "Search Mode",
+          "type": "string",
+          "description": "Default retrieval strategy: keyword=BM25-style; semantic=vector similarity; hybrid=combined.",
+          "enum": [
+            "keyword",
+            "semantic",
+            "hybrid"
+          ]
+        },
+        "max_chunks": {
+          "title": "Max Chunks",
+          "type": "integer",
+          "minimum": 1,
+          "description": "Default maximum number of chunks returned per retrieval call."
+        },
+        "max_tokens": {
+          "title": "Max Tokens",
+          "type": "integer",
+          "minimum": 1,
+          "description": "Default maximum token budget for retrieved content."
+        },
+        "result_granularity": {
+          "title": "Result Granularity",
+          "type": "string",
+          "description": "Granularity of returned results: chunk=passage-level; section=section-level; document=full document.",
+          "enum": [
+            "chunk",
+            "section",
+            "document"
+          ]
+        },
+        "reranking": {
+          "title": "Reranking",
+          "type": "boolean",
+          "description": "If true, retrieved results are reranked by a cross-encoder before being returned."
+        },
+        "citation_preference": {
+          "title": "Citation Preference",
+          "type": "string",
+          "description": "required=agents must cite; optional=citations encouraged; none=citations not needed.",
+          "enum": [
+            "required",
+            "optional",
+            "none"
+          ]
+        },
+        "deduplicate": {
+          "title": "Deduplicate",
+          "type": "boolean",
+          "description": "If true, near-duplicate chunks are deduplicated before being returned."
+        },
+        "min_score": {
+          "title": "Min Score",
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Minimum relevance score threshold (0.0–1.0). Chunks below this score are excluded."
+        }
+      }
+    },
+    "retrieval": {
+      "title": "Retrieval",
+      "type": "object",
+      "description": "Usage guidance for the model. Tells the model when to query and when to avoid this KB.",
+      "additionalProperties": false,
+      "properties": {
+        "use_when": {
+          "title": "Use When",
+          "type": "array",
+          "description": "Conditions under which the model should retrieve from this KB.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "avoid_when": {
+          "title": "Avoid When",
+          "type": "array",
+          "description": "Conditions under which the model should not retrieve from this KB.",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "freshness": {
+      "title": "Freshness",
+      "type": "object",
+      "description": "Freshness policy for this KB. Controls how the runtime handles stale content.",
+      "additionalProperties": false,
+      "properties": {
+        "window_days": {
+          "title": "Window Days",
+          "type": "integer",
+          "minimum": 1,
+          "description": "Content older than this number of days is considered stale."
+        },
+        "on_stale": {
+          "title": "On Stale",
+          "type": "string",
+          "description": "Action when content exceeds the freshness window: warn=log a warning but continue; refuse=refuse to retrieve; fallback=use fallback_kb instead.",
+          "enum": [
+            "warn",
+            "refuse",
+            "fallback"
+          ]
+        },
+        "fallback_kb": {
+          "title": "Fallback KB",
+          "$ref": "#/$defs/aml_id",
+          "description": "KB ID to use instead when this KB is stale. Only relevant when on_stale=fallback."
+        },
+        "last_verified": {
+          "title": "Last Verified",
+          "type": "string",
+          "format": "date",
+          "description": "ISO 8601 date when the content was last verified as current."
+        }
+      }
+    },
+    "documentation": {
+      "title": "Documentation",
+      "type": "object",
+      "description": "Compiled from the Markdown body of the .kb.md file. Sections are optional but validated when present.",
+      "additionalProperties": false,
+      "properties": {
+        "purpose": {
+          "title": "Purpose",
+          "type": "string",
+          "minLength": 1,
+          "contentMediaType": "text/markdown",
+          "description": "Compiled from the optional '# Purpose' section. Why this KB exists and what agents should use it for."
+        },
+        "content_coverage": {
+          "title": "Content Coverage",
+          "type": "string",
+          "minLength": 1,
+          "contentMediaType": "text/markdown",
+          "description": "Compiled from the optional '# Content coverage' section. Detailed description of what content is and is not included."
+        },
+        "notes": {
+          "title": "Notes",
+          "type": "string",
+          "minLength": 1,
+          "contentMediaType": "text/markdown",
+          "description": "Compiled from the optional '# Notes' section. Miscellaneous guidance for authors and reviewers."
+        }
+      }
+    }
+  },
+  "$defs": {
+    "aml_id": {
+      "title": "AML ID",
+      "type": "string",
+      "description": "Stable, immutable AML identifier. Lowercase kebab-case or snake_case. Must match ^[a-z0-9_-]{3,64}$.",
+      "pattern": "^[a-z0-9_-]{3,64}$"
+    },
+    "semver": {
+      "title": "Semver",
+      "type": "string",
+      "description": "Semantic version string (MAJOR.MINOR.PATCH).",
+      "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)$"
+    }
+  }
+}

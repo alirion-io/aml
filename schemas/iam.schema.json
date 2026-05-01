@@ -1,0 +1,232 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://alirion-io.github.io/aml/schemas/iam.schema.json",
+  "version": "1.2",
+  "title": "AML IAM Role Definition",
+  "description": "Compiled JSON payload for an AML IAM role definition (.iam.md). Validates that the compiled output conforms to the AML v1.2 specification.",
+  "type": "object",
+  "required": [
+    "spec_version",
+    "iam_id",
+    "version",
+    "status",
+    "meta"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "spec_version": {
+      "title": "Spec Version",
+      "type": "string",
+      "description": "AML format version. Must equal a platform-approved version string.",
+      "pattern": "^[0-9]+\\.[0-9]+(\\.[0-9]+)?$"
+    },
+    "iam_id": {
+      "title": "IAM ID",
+      "$ref": "#/$defs/aml_id",
+      "description": "Stable, immutable identifier for this role. Lowercase kebab-case. Immutable once referenced by any published agent definition."
+    },
+    "version": {
+      "title": "Version",
+      "$ref": "#/$defs/semver",
+      "description": "Semantic version of this role definition. Major bump required when removing tool grants (breaking change for referencing agents)."
+    },
+    "status": {
+      "title": "Status",
+      "type": "string",
+      "description": "Lifecycle state. draft=not usable in production; active=usable; deprecated=usable but lint warning; disabled=hard compile error on reference.",
+      "enum": [
+        "draft",
+        "active",
+        "deprecated",
+        "disabled"
+      ]
+    },
+    "meta": {
+      "title": "Metadata",
+      "type": "object",
+      "description": "Descriptive metadata for this IAM role.",
+      "required": [
+        "name",
+        "description",
+        "owner"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "title": "Name",
+          "type": "string",
+          "minLength": 1,
+          "description": "Human-readable display name for this role."
+        },
+        "description": {
+          "title": "Description",
+          "type": "string",
+          "minLength": 1,
+          "description": "Two to four sentences describing what this role grants, to whom, and what it explicitly denies."
+        },
+        "owner": {
+          "title": "Owner",
+          "type": "string",
+          "minLength": 1,
+          "description": "Security team or individual responsible for maintaining this role."
+        },
+        "tags": {
+          "title": "Tags",
+          "type": "array",
+          "description": "Searchable labels for discovery and filtering.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "last_updated": {
+          "title": "Last Updated",
+          "type": "string",
+          "format": "date",
+          "description": "ISO 8601 date of the last update to this role definition."
+        }
+      }
+    },    "cloud": {
+      "title": "Cloud Role Binding",
+      "description": "Links this AML role to its actual execution identity in the cloud provider. Optional but recommended; absence produces a lint warning.",
+      "oneOf": [
+        {
+          "title": "AWS",
+          "type": "object",
+          "required": ["provider", "role_arn"],
+          "additionalProperties": false,
+          "properties": {
+            "provider": { "type": "string", "enum": ["aws"] },
+            "role_arn": {
+              "title": "Role ARN",
+              "type": "string",
+              "description": "ARN of the AWS IAM role this AML role maps to.",
+              "pattern": "^arn:aws:iam::[0-9]{12}:role/.+$"
+            }
+          }
+        },
+        {
+          "title": "Azure",
+          "type": "object",
+          "required": ["provider", "client_id"],
+          "additionalProperties": false,
+          "properties": {
+            "provider": { "type": "string", "enum": ["azure"] },
+            "client_id": {
+              "title": "Client ID",
+              "type": "string",
+              "description": "Client ID (GUID) of the Azure managed identity this AML role maps to.",
+              "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+            }
+          }
+        },
+        {
+          "title": "GCP",
+          "type": "object",
+          "required": ["provider", "service_account"],
+          "additionalProperties": false,
+          "properties": {
+            "provider": { "type": "string", "enum": ["gcp"] },
+            "service_account": {
+              "title": "Service Account",
+              "type": "string",
+              "description": "Email address of the GCP service account this AML role maps to.",
+              "pattern": "^[a-z0-9_-]+@[a-z0-9_-]+\\.iam\\.gserviceaccount\\.com$"
+            }
+          }
+        }
+      ]
+    },    "tools": {
+      "title": "Tools",
+      "type": "array",
+      "description": "Tool grants. Declares the set of tools this role permits an agent to use. Agents referencing this role may only call tools listed here.",
+      "items": {
+        "type": "object",
+        "required": [
+          "ref"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "ref": {
+            "title": "Reference",
+            "$ref": "#/$defs/aml_id",
+            "description": "Tool ID. Must resolve to a registered .tool.md file."
+          }
+        }
+      }
+    },
+    "knowledge_bases": {
+      "title": "Knowledge Bases",
+      "type": "array",
+      "description": "KB access grants. Declares the set of knowledge bases this role permits an agent to query. Agents referencing this role may only retrieve from KBs listed here.",
+      "items": {
+        "type": "object",
+        "required": [
+          "ref"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "ref": {
+            "title": "Reference",
+            "$ref": "#/$defs/aml_id",
+            "description": "KB ID. Must resolve to a registered .kb.md file."
+          }
+        }
+      }
+    },
+    "collections": {
+      "title": "Collections",
+      "type": "array",
+      "description": "Collection access grants. Declares which memory collections this role permits an agent to access.",
+      "items": {
+        "type": "object",
+        "required": [
+          "ref"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "ref": {
+            "title": "Reference",
+            "$ref": "#/$defs/aml_id",
+            "description": "Collection ID. Must resolve to a registered .collection.md file."
+          }
+        }
+      }
+    },
+    "documentation": {
+      "title": "Documentation",
+      "type": "object",
+      "description": "Compiled from the Markdown body of the .iam.md file. Sections are optional but validated when present.",
+      "additionalProperties": false,
+      "properties": {
+        "purpose": {
+          "title": "Purpose",
+          "type": "string",
+          "minLength": 1,
+          "contentMediaType": "text/markdown",
+          "description": "Compiled from the optional '# Purpose' section. Why this role exists, what persona it represents, and the threat model it enforces."
+        },
+        "notes": {
+          "title": "Notes",
+          "type": "string",
+          "minLength": 1,
+          "contentMediaType": "text/markdown",
+          "description": "Compiled from the optional '# Notes' section. Miscellaneous guidance for security reviewers and authors."
+        }
+      }
+    }
+  },
+  "$defs": {
+    "aml_id": {
+      "title": "AML ID",
+      "type": "string",
+      "description": "Stable, immutable AML identifier. Lowercase kebab-case or snake_case. Must match ^[a-z0-9_-]{3,64}$.",
+      "pattern": "^[a-z0-9_-]{3,64}$"
+    },
+    "semver": {
+      "title": "Semver",
+      "type": "string",
+      "description": "Semantic version string (MAJOR.MINOR.PATCH).",
+      "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)$"
+    }
+  }
+}

@@ -10,9 +10,30 @@
 
 A memory collection definition file describes one registered memory collection that agents are permitted to read from and write to. It is the single authoritative source of truth for that collection's backing store, scope, retrieval configuration, and writeback rules.
 
-Collection files are authored by platform engineers and approved by the platform team. Agent files reference collections by `collection_id` in their `memory.read_collections` field — they do not inline storage configuration. When a collection's backend changes (for example, migrating from AgentCore Memory to a different store), only the collection file changes; the compiler re-validates all referencing agents automatically.
+Collection files are authored by platform engineers and approved by the platform team. Agent files reference collections by `collection_id`. When a collection's backend changes (for example, migrating from AgentCore Memory to a different store), only the collection file changes; the compiler re-validates all referencing agents automatically.
 
 The collection file does not contain memory data. It describes the storage backend, the lifetime scope, and how the runtime should read from and write to it on the agent's behalf. Access control — which agents are permitted to use a collection — is enforced by the agent's IAM role, not by the collection file.
+
+### Memory tiers and when to use each
+
+Agent memory is not a single concept. It spans four distinct tiers, each with a different lifetime and purpose. Understanding the distinction helps you choose the right `scope.lifetime` value and the right backend type for a given collection.
+
+**In-turn context** is the conversation history accumulated during a single agent loop execution — the messages, tool calls, and results the model sees within one run. On a serverless platform like Lambda, it is gone when the function returns. This tier is configurable through AML via the `state` section of the agent definition (`session_history`, `working_state`, `max_state_tokens`, `scratchpad_visible_to_model`). Collections play no role here — there is no `scope.lifetime` value for this tier.
+
+**Session persistence** is state that must survive beyond a single execution but is scoped to one logical conversation. A user pausing and resuming a chat, a Step Functions workflow pausing for human-in-the-loop approval and then resuming — both require the agent to restore the conversation exactly where it left off. This maps to `scope.lifetime: "session"` and is typically backed by a low-latency store like Valkey or Redis with a TTL.
+
+**Project memory** is state that persists across all sessions belonging to the same project, but is not shared across projects or users. This is useful for shared context within a bounded product scope — for example, an ongoing analysis that multiple sessions contribute to, or shared configuration for all agents running under the same project. This maps to `scope.lifetime: "project"` and persists until the project itself is deleted. Namespace patterns for project-scoped collections should use `{projectId}` to scope data to the project (e.g., `/context/{projectId}`).
+
+**User lifetime memory** is state that persists across all sessions and all projects for a given user, indefinitely. This is where learned preferences, extracted facts, and interaction summaries live. The agent starts each session knowing something about the user without the user having to repeat themselves. This maps to `scope.lifetime: "user"` and is typically backed by a semantic store like AgentCore Memory or S3 Vectors, which supports relevance-based retrieval rather than simple key lookup.
+
+| Tier | Lifetime | Typical use case | AML configuration |
+|---|---|---|---|
+| In-turn context | One execution | Tool call history, reasoning trace | `state` section in agent definition |
+| Session persistence | One conversation | Resume after interrupt, distributed Lambda instances | `scope.lifetime: "session"` + `backend.type: "valkey"` or `"s3"` |
+| Project memory | Until project is deleted | Shared context across agents within a project | `scope.lifetime: "project"` + `backend.type: "agentcore_memory"` or `"custom"` |
+| User lifetime memory | Indefinitely, per user | Preferences, facts, interaction summaries | `scope.lifetime: "user"` + `backend.type: "agentcore_memory"` or `"custom"` |
+
+A single agent may reference collections from multiple tiers simultaneously — for example, a session cache for resumability and a user preference collection for personalisation.
 
 ---
 
@@ -30,19 +51,6 @@ The collection file does not contain memory data. It describes the storage backe
 
 The Markdown body is entirely editorial. The compiler ignores it. Runtime behavior is determined solely by the YAML front matter.
 
----
-
-## How the compiler resolves a collection reference
-
-When the compiler encounters `memory.read_collections: ["customer-preferences"]` in an agent definition, it:
-
-1. Looks up `collections/customer-preferences.collection.md` in the platform registry.
-2. Validates that the collection `status` is `active` or `deprecated` (a `disabled` collection is a hard error).
-3. Checks that the agent's `memory.mode` is at least as broad as the collection's `scope.lifetime` (e.g., an agent with `memory.mode: "session"` cannot reference a collection with `scope.lifetime: "project"`).
-4. Verifies that the agent's IAM role grants the required read or write permission on this collection.
-5. Injects the compiled backend configuration into the runtime payload, including credentials references, namespace patterns, and retrieval defaults.
-
-The runtime never re-resolves collection names at execution time. It uses only the compiled payload.
 
 ---
 
@@ -112,6 +120,16 @@ An agent referencing this collection must have `memory.mode` set to the same or 
 
 The `backend` section declares the physical storage system and the credentials or resource identifiers needed to access it. The `type` field selects which sub-fields apply.
 
+**Backend type is constrained by `scope.lifetime`.** Not all backends are appropriate for all scopes. Using the wrong backend for a scope (e.g., a low-latency key store for user lifetime memory that needs semantic retrieval) is a hard validation error:
+
+| `scope.lifetime` | Permitted `backend.type` values | Rationale |
+|---|---|---|
+| `session` | `valkey`, `s3` | Low-latency or durable snapshot store; TTL-bounded; no semantic retrieval needed |
+| `project` | `agentcore_memory`, `custom` | Shared cross-session context; requires durable, actor-scoped storage |
+| `user` | `agentcore_memory`, `custom` | Long-lived user preferences and facts; requires semantic retrieval across sessions |
+
+`agentcore_memory` is the recommended choice for `project` and `user` scopes. `custom` is available when you need to integrate an existing external memory service or a specialised store not covered by built-in types. `valkey` is the preferred session backend when sub-millisecond restore latency is required; `s3` when cost and durability are the priority.
+
 #### `type: "agentcore_memory"` — Amazon Bedrock AgentCore Memory
 
 ```yaml
@@ -119,38 +137,37 @@ backend:
   type: "agentcore_memory"
   memory_id_secret: "secrets/agentcore/customer-preferences-memory-id"
   region: "us-east-1"
-  strategies:
-    - type: "userPreferenceMemoryStrategy"
-      name: "PreferenceLearner"
-      namespace: "/preferences/{actorId}"
-      retrieval:
-        top_k: 5
-        relevance_score: 0.7
-    - type: "semanticMemoryStrategy"
-      name: "FactExtractor"
-      namespace: "/facts/{actorId}"
-      retrieval:
-        top_k: 10
-        relevance_score: 0.3
-    - type: "summaryMemoryStrategy"
-      name: "SessionSummarizer"
-      namespace: "/summaries/{actorId}/{sessionId}"
-      retrieval:
-        top_k: 5
-        relevance_score: 0.5
+  retrieval_config:
+    "/preferences/{actorId}":
+      top_k: 5
+      relevance_score: 0.7
+    "/facts/{actorId}":
+      top_k: 10
+      relevance_score: 0.3
+    "/summaries/{actorId}/{sessionId}":
+      top_k: 5
+      relevance_score: 0.5
+  batch_size: 1
 ```
 
-`memory_id_secret` is a reference to a secrets manager path that holds the AgentCore Memory resource ID (e.g., an AWS Secrets Manager ARN or a platform-internal secret key). The actual resource ID is never hardcoded in the collection file — it is resolved at compile time. The memory resource itself is provisioned once, separately from agent deployment.
+`memory_id_secret` is a reference to a secrets manager path that holds the AgentCore Memory resource ID. The actual resource ID is never hardcoded in the collection file — it is resolved at compile time. The AgentCore Memory resource itself (including its strategies and namespaces) is provisioned once, separately from agent deployment, via the AWS Console, CLI, or a setup script. AML does not manage or describe the resource configuration — it only references it.
 
-`strategies` declares the retrieval namespaces and how each one is queried. Supported built-in strategy types:
+`retrieval_config` maps namespace patterns to retrieval parameters. The namespaces must match those configured on the AgentCore Memory resource. The following placeholders are substituted automatically by the runtime from the active execution context:
 
-| Type | What it stores |
-|---|---|
-| `userPreferenceMemoryStrategy` | User preferences learned across sessions |
-| `semanticMemoryStrategy` | Factual information extracted from conversations |
-| `summaryMemoryStrategy` | Session summaries for efficient context retrieval |
+| Placeholder | Resolved from | Applicable scope |
+|---|---|---|
+| `{actorId}` | Identity of the current user or caller | `user` |
+| `{projectId}` | Identifier of the current project | `project` |
+| `{sessionId}` | Identifier of the current session | `session`, `project`, `user` |
 
-Namespace patterns support `{actorId}` (the user or caller identity) and `{sessionId}` (the current session identifier). These are automatically substituted by the runtime using the values from the active execution context — the agent author never constructs them manually.
+Omit `retrieval_config` entirely to use the AgentCore resource's defaults.
+
+| Field | Default | Description |
+|---|---|---|
+| `top_k` | 10 | Number of top-scoring records to return from semantic search (1–1000) |
+| `relevance_score` | 0.2 | Minimum relevance threshold for filtering results (0.0–1.0) |
+
+`batch_size` controls how many messages are buffered locally before being flushed to AgentCore Memory. Default `1` sends each message immediately. Set higher (e.g., `10`) to reduce API call volume for high-throughput agents. When `batch_size > 1`, the runtime flushes remaining messages at the end of the invocation — no messages are lost across Lambda invocations.
 
 #### `type: "valkey"` — Valkey or Redis
 
@@ -163,38 +180,186 @@ backend:
   ttl_seconds: 86400
 ```
 
-`endpoint_secret` is a reference to a secrets manager path that holds the Valkey/Redis connection string. The runtime constructs keys using the pattern `<key_prefix>:<session_id>:agent:<agent_id>` with `{sessionId}` and `{actorId}` substituted automatically.
+`endpoint_secret` is a reference to a secrets manager path that holds the Valkey/Redis connection string. The runtime constructs keys using the pattern `<key_prefix>:<session_id>:agent:<agent_id>` with `{sessionId}` substituted automatically.
 
-`ttl_seconds` sets the time-to-live for stored entries. Leave unset for project or user-scoped collections that should not expire automatically.
+`ttl_seconds` sets the time-to-live for stored entries. Only valid for `scope.lifetime: "session"`.
+
+#### `type: "s3"` — Amazon S3
+
+```yaml
+backend:
+  type: "s3"
+  bucket_secret: "secrets/s3/session-snapshots-bucket"
+  region: "us-east-1"
+  prefix: "sessions"
+  ttl_days: 7
+```
+
+`bucket_secret` is a reference to a secrets manager path that holds the S3 bucket name. The runtime stores session snapshots as JSON objects under the key pattern `<prefix>/<session_id>/agent/<agent_id>/snapshots/`. `{sessionId}` is substituted automatically.
+
+`prefix` is an optional key prefix. Omit for no prefix.
+
+`ttl_days` optionally configures an S3 object lifecycle rule applied by the runtime at write time. Only valid for `scope.lifetime: "session"`.
+
+`s3` is appropriate when low-latency sub-millisecond reads are not required and durability or cost are the primary concern. Prefer `valkey` when the session must be restored quickly (e.g., synchronous Lambda chains).
 
 #### `type: "custom"` — custom backend
+
+A `custom` backend delegates all memory management to an external endpoint you own and operate. The runtime calls it using the same `transport` model as tools and guardrails — either a REST API or a Lambda function. Your endpoint must implement the **Strands `SnapshotStorage` interface** to be compatible with AML runtime: the runtime will call it for every snapshot read, write, list, and delete operation, using a fixed JSON contract for each operation type.
+
+Two transport types are supported, identical in definition to their [tool transport](02-tool-definition.md#transport----invocation-details-required-unless-type-is-function) and [guardrail transport](07-guardrail-definition.md#transport----invocation-details-required-for-external-guardrails) counterparts:
+
+| Transport | Description |
+|---|---|
+| `rest-api` | HTTP/REST endpoint. The runtime calls different HTTP paths per operation (see interface below). |
+| `lambda` | AWS Lambda function. The runtime passes an `operation` field in the payload to distinguish calls. |
+
+**Example — REST API transport:**
 
 ```yaml
 backend:
   type: "custom"
-  read_endpoint_secret: "secrets/memory-service/read"
-  write_endpoint_secret: "secrets/memory-service/write"
-  headers:
-    Content-Type: "application/json"
-  read_payload_template: |
-    {
-      "collection": "{{collection_id}}",
-      "actor_id": "{{actorId}}",
-      "session_id": "{{sessionId}}",
-      "query": "{{query}}"
-    }
-  write_payload_template: |
-    {
-      "collection": "{{collection_id}}",
-      "actor_id": "{{actorId}}",
-      "session_id": "{{sessionId}}",
-      "content": "{{content}}"
-    }
+  transport:
+    type: "rest-api"
+    base_url: "https://memory.internal.example.com/v1"
+    timeout_ms: 3000
+    retry_policy:
+      max_attempts: 2
+      on_status: [429, 503]
+    credentials:
+      scheme: "bearer-token"
+      source: "aws_secrets_manager"
+      secret_id: "prod/memory-service/token"
 ```
 
-For `custom` backends, the runtime calls the provided endpoint with the rendered payload template. Template variables (`{{collection_id}}`, `{{actorId}}`, `{{sessionId}}`, `{{query}}`, `{{content}}`) are substituted by the runtime. The endpoints must return a JSON array of memory entries on read, and a success/failure status on write.
+**Example — Lambda transport:**
 
-Endpoint values are references to secrets manager paths, not literal URLs, to prevent credential exposure in definition files.
+```yaml
+backend:
+  type: "custom"
+  transport:
+    type: "lambda"
+    function_arn: "arn:aws:lambda:eu-west-1:123456789:function:memory-service"
+    invocation_type: "RequestResponse"
+    credentials:
+      scheme: "iam-role"
+```
+
+Refer to the [tool transport documentation](02-tool-definition.md#transport----invocation-details-required-unless-type-is-function) for the full `credentials` block field reference — the definition is identical.
+
+---
+
+##### SnapshotStorage interface contract
+
+Your endpoint must implement the following five operations. The runtime calls them automatically — your implementation decides where the data is stored (DynamoDB, PostgreSQL, Redis, a third-party service, etc.).
+
+**`save_snapshot`** — persist a snapshot of the agent's current state.
+
+Runtime calls `POST /snapshots` (REST) or passes `"operation": "save_snapshot"` (Lambda).
+
+Request payload:
+```json
+{
+  "operation": "save_snapshot",
+  "session_id": "sess-123",
+  "scope": { "type": "agent", "scope_id": "support-agent" },
+  "snapshot_id": "latest",
+  "is_latest": true,
+  "snapshot": {
+    "data": {
+      "messages": [...],
+      "state": {},
+      "system_prompt": "..."
+    },
+    "schema_version": "1",
+    "created_at": "2026-05-01T10:00:00Z"
+  }
+}
+```
+
+Expected response: `{ "ok": true }`.
+
+---
+
+**`load_snapshot`** — retrieve a stored snapshot.
+
+Runtime calls `GET /snapshots` (REST) or passes `"operation": "load_snapshot"` (Lambda).
+
+Request payload:
+```json
+{
+  "operation": "load_snapshot",
+  "session_id": "sess-123",
+  "scope": { "type": "agent", "scope_id": "support-agent" },
+  "snapshot_id": "latest"
+}
+```
+
+`snapshot_id` is `"latest"` when the runtime wants the most recent state, or a specific UUID v7 for time-travel restore. Expected response: the `snapshot` object (same shape as above), or `null` if nothing exists yet.
+
+---
+
+**`list_snapshot_ids`** — list all immutable checkpoint IDs for a location.
+
+Runtime calls `GET /snapshots/list` (REST) or passes `"operation": "list_snapshot_ids"` (Lambda). Only used when immutable snapshots are enabled.
+
+Request payload:
+```json
+{
+  "operation": "list_snapshot_ids",
+  "session_id": "sess-123",
+  "scope": { "type": "agent", "scope_id": "support-agent" },
+  "limit": 10,
+  "start_after": null
+}
+```
+
+Expected response: `{ "snapshot_ids": ["<uuid7>", ...] }` — sorted chronologically ascending.
+
+---
+
+**`delete_session`** — remove all data for a session.
+
+Runtime calls `DELETE /sessions/{session_id}` (REST) or passes `"operation": "delete_session"` (Lambda).
+
+Request payload:
+```json
+{
+  "operation": "delete_session",
+  "session_id": "sess-123"
+}
+```
+
+Expected response: `{ "ok": true }`.
+
+---
+
+**`save_manifest` / `load_manifest`** — persist and retrieve a small metadata record alongside snapshots (schema version, last updated timestamp). Used by the runtime for forward-compatibility checks.
+
+Request payload for save:
+```json
+{
+  "operation": "save_manifest",
+  "session_id": "sess-123",
+  "scope": { "type": "agent", "scope_id": "support-agent" },
+  "manifest": { "schema_version": "1", "updated_at": "2026-05-01T10:00:00Z" }
+}
+```
+
+Request payload for load:
+```json
+{
+  "operation": "load_manifest",
+  "session_id": "sess-123",
+  "scope": { "type": "agent", "scope_id": "support-agent" }
+}
+```
+
+Expected response for load: the `manifest` object, or `null` if none exists.
+
+---
+
+All `{actorId}`, `{projectId}`, and `{sessionId}` substitutions are performed by the runtime before calling your endpoint — your implementation receives already-resolved values. Endpoint URLs and function ARNs are never hardcoded in the collection file; credentials are always resolved through the secrets manager at compile time.
 
 ---
 
@@ -203,19 +368,13 @@ Endpoint values are references to secrets manager paths, not literal URLs, to pr
 ```yaml
 writeback:
   enabled: true
-  strategy: "user-preference"      # conversation-summary | user-preference | factual-extraction | raw-output
 ```
 
 `enabled` controls whether agents are permitted to write to this collection at all. If `false`, the collection is read-only and any agent declaring this collection under a `write_collections` key causes a hard validation error.
 
-`strategy` tells the runtime what to extract and persist from the model's output at the end of a run:
+For `agentcore_memory` backends, writeback behavior (what to extract, how to summarize, which strategy to apply) is governed entirely by the strategies configured on the AgentCore Memory resource itself — not by AML. The runtime flushes conversation turns to AgentCore at the end of each invocation and AgentCore applies its configured strategies automatically.
 
-| Strategy | What gets written |
-|---|---|
-| `conversation-summary` | A summarized digest of the current conversation turn |
-| `user-preference` | Preference signals explicitly or implicitly expressed by the user |
-| `factual-extraction` | Named facts stated by the user (name, location, account details) |
-| `raw-output` | The agent's full response, verbatim |
+For `custom` backends, the endpoint receives the full conversation payload and is responsible for its own extraction and persistence logic.
 
 ---
 
@@ -229,11 +388,18 @@ writeback:
 - Unknown `scope.lifetime` value.
 - An agent references a collection whose `scope.lifetime` exceeds its own `memory.mode`.
 - An agent's IAM role does not grant the required read or write permission on a referenced collection.
+- `backend.type` is `valkey` or `s3` but `scope.lifetime` is not `session`.
+- `backend.type` is `agentcore_memory` or `custom` but `scope.lifetime` is `session`.
 
 ### Recommended lint rules
 
-- `backend.memory_id_secret` (or equivalent credential field) absent for non-`custom` backend types.
+- `backend.memory_id_secret` absent for `agentcore_memory` backend.
+- `backend.endpoint_secret` absent for `valkey` backend.
+- `backend.bucket_secret` absent for `s3` backend.
+- `backend.transport` absent for `custom` backend.
 - `meta.last_updated` absent.
+- `backend.ttl_seconds` or `backend.ttl_days` absent for `session`-scoped collections (unbounded session data is likely a mistake).
+- `backend.retrieval_config` absent for `agentcore_memory` backend (defaults will be used — verify they match the resource's namespace configuration).
 
 ---
 
@@ -263,17 +429,13 @@ backend:
   type: "agentcore_memory"
   memory_id_secret: "secrets/agentcore/customer-preferences-memory-id"
   region: "us-east-1"
-  strategies:
-    - type: "userPreferenceMemoryStrategy"
-      name: "PreferenceLearner"
-      namespace: "/preferences/{actorId}"
-      retrieval:
-        top_k: 5
-        relevance_score: 0.7
+  retrieval_config:
+    "/preferences/{actorId}":
+      top_k: 5
+      relevance_score: 0.7
 
 writeback:
   enabled: true
-  strategy: "user-preference"
 ---
 
 # Purpose
@@ -318,7 +480,6 @@ backend:
 
 writeback:
   enabled: true
-  strategy: "conversation-summary"
 ---
 
 # Purpose

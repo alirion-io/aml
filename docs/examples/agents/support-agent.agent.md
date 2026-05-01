@@ -6,7 +6,7 @@
 ---
 spec_version: "1.2"
 agent_id: "support-agent"
-version: "2.0.0"
+version: "3.0.0"
 status: "active"
 
 meta:
@@ -30,67 +30,69 @@ runtime:
     max_attempts: 2
     backoff_seconds: 3
 
-input:
-  schema:
-    type: object
-    properties:
-      question:
-        type: string
-        description: "The customer's question or support request."
-      account_id:
-        type: string
-        description: "Customer account identifier, if known."
-      channel:
-        type: string
-        enum: ["web", "email", "app", "api"]
-        description: "Channel the customer is contacting from."
-    required: ["question"]
-  examples:
-    - question: "How do I reset my password?"
-    - question: "I was charged twice this month."
-      account_id: "acct-00123"
-    - question: "The export to CSV isn't working."
-      channel: "web"
-
-output:
-  schema:
-    type: object
-    properties:
-      answer:
-        type: string
-        description: "The agent's response to the customer."
-      escalated:
-        type: boolean
-        description: "True if the case was escalated to another agent or human queue."
-      escalation_target:
-        type: string
-        description: "ID of the agent or queue the case was escalated to, if applicable."
-      suggested_articles:
-        type: array
-        items: { type: string }
-        description: "IDs of relevant help center articles cited in the answer."
-      case_summary:
-        type: string
-        description: "One-sentence summary of the issue for the CRM audit log."
-    required: ["answer", "escalated", "case_summary"]
-  render:
-    format: "markdown"
-  provenance:
-    citations_required: true
+interface:
+  input:
+    schema:
+      type: object
+      properties:
+        question:
+          type: string
+          description: "The customer's question or support request."
+        account_id:
+          type: string
+          description: "Customer account identifier, if known."
+        channel:
+          type: string
+          enum: ["web", "email", "app", "api"]
+          description: "Channel the customer is contacting from."
+      required: ["question"]
+    examples:
+      - question: "How do I reset my password?"
+      - question: "I was charged twice this month."
+        account_id: "acct-00123"
+      - question: "The export to CSV isn't working."
+        channel: "web"
+  output:
+    schema:
+      type: object
+      properties:
+        answer:
+          type: string
+          description: "The agent's response to the customer."
+        escalated:
+          type: boolean
+          description: "True if the case was escalated to another agent or human queue."
+        escalation_target:
+          type: string
+          description: "ID of the agent or queue the case was escalated to, if applicable."
+        suggested_articles:
+          type: array
+          items: { type: string }
+          description: "IDs of relevant help center articles cited in the answer."
+        case_summary:
+          type: string
+          description: "One-sentence summary of the issue for the CRM audit log."
+      required: ["answer", "escalated", "case_summary"]
+    render:
+      format: "markdown"
+    provenance:
+      citations_required: true
 
 tools:
-  - ref: "search-product-kb"
-  - ref: "get-account-info"
-    approval_required: true         # Accessing account data requires user confirmation
-  - ref: "create-ticket"
-    approval_required: true
-    max_calls_per_run: 1
   tool_choice: "auto"
+  refs:
+    - ref: "search-product-kb"
+    - ref: "get-account-info"
+      approval_required: true         # Accessing account data requires user confirmation
+    - ref: "create-ticket"
+      approval_required: true
+      max_calls_per_run: 1
 
 knowledge:
-  - ref: "product-docs"
-  - ref: "support-runbook"
-    required: true                  # Always inject escalation runbook into context
+  refs:
+    - ref: "product-docs"
+    - ref: "support-runbook"
+      required: true                  # Always inject escalation runbook into context
   retrieval:
     search_mode: "hybrid"
     trigger: "auto"
@@ -133,21 +135,29 @@ policies:
 
 guardrails:
   input:
-    - ref: "pii_scan"
-      mode: "detect"
-      on_fail: "redact"
-    - ref: "prompt_injection_scan"
-      mode: "block"
-      on_fail: "refuse"
+    - ref: "pii-scan"
+      on_fail: "apply"
+    - ref: "prompt-injection-scan"
+      severity_threshold: 7
+      on_fail: "block"
+  tool_input:
+    - ref: "prompt-injection-scan"
+      severity_threshold: 7
+      on_fail: "block"
+  tool_output:
+    - ref: "indirect-injection-scan"
+      severity_threshold: 6
+      on_fail: "block"
   tool_calls:
     require_user_confirmation_for:
       - "get-account-info"
       - "create-ticket"
   output:
-    - ref: "schema_validation"
-      on_fail: "retry"
-    - ref: "unsafe_content_check"
-      on_fail: "refuse"
+    - ref: "unsafe-content-check"
+      severity_threshold: 5
+      on_fail: "block"
+    - ref: "pii-scan"
+      on_fail: "apply"
 
 ui:
   icon: "headset"

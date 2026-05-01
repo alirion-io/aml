@@ -23,22 +23,55 @@ meta:
 
 type: "retrieval"
 
-parameters:
-  type: object
-  properties:
-    query:
-      type: string
-      description: "Term, phrase, or short expression to look up."
-    source_language:
-      type: string
-      description: "Optional. ISO 639-1 language code of the source term (e.g. 'en', 'de')."
-    target_language:
-      type: string
-      description: "Optional. ISO 639-1 language code of the desired translation."
-    domain:
-      type: string
-      description: "Optional. Domain hint to narrow the lookup (e.g. 'finance', 'product', 'legal')."
-  required: ["query"]
+interface:
+  input:
+    type: object
+    properties:
+      query:
+        type: string
+        description: "Term, phrase, or short expression to look up."
+      source_language:
+        type: string
+        description: "Optional. ISO 639-1 language code of the source term (e.g. 'en', 'de')."
+      target_language:
+        type: string
+        description: "Optional. ISO 639-1 language code of the desired translation."
+      domain:
+        type: string
+        description: "Optional. Domain hint to narrow the lookup (e.g. 'finance', 'product', 'legal')."
+    required: ["query"]
+  output:
+    type: object
+    properties:
+      entries:
+        type: array
+        description: "Matching glossary entries."
+        items:
+          type: object
+          properties:
+            term:
+              type: string
+              description: "The source term as stored in the glossary."
+            translation:
+              type: string
+              description: "Approved translation of the term."
+            domain:
+              type: string
+              description: "Domain the term belongs to, e.g. 'finance', 'product'."
+            approved:
+              type: boolean
+              description: "True if this is an approved entry; false if under review."
+            notes:
+              type: string
+              description: "Optional usage notes from the linguistics team."
+            source:
+              type: string
+              description: "Origin of the entry, e.g. the glossary version or contributing team."
+          required: ["term", "translation", "approved"]
+      total:
+        type: integer
+        description: "Total number of matching entries."
+    required: ["entries", "total"]
 
 transport:
   type: "rest-api"
@@ -48,9 +81,10 @@ transport:
   retry_policy:
     max_attempts: 2
     on_status: [503, 504]
-  auth:
+  credentials:
     scheme: "service-account"
-    token_source: "secrets:prod/agent/glossary-token"
+    source: "aws_secrets_manager"
+    secret_id: "prod/agent/glossary-token"
 
 use_guidance:
   use_when:
@@ -62,39 +96,6 @@ use_guidance:
     - "the term is a common everyday word with an obvious translation"
     - "the query is a full sentence rather than a term or phrase"
   side_effects: "None. Read-only."
-
-response_schema:
-  type: object
-  properties:
-    entries:
-      type: array
-      description: "Matching glossary entries."
-      items:
-        type: object
-        properties:
-          term:
-            type: string
-            description: "The source term as stored in the glossary."
-          translation:
-            type: string
-            description: "Approved translation of the term."
-          domain:
-            type: string
-            description: "Domain the term belongs to, e.g. 'finance', 'product'."
-          approved:
-            type: boolean
-            description: "True if this is an approved entry; false if under review."
-          notes:
-            type: string
-            description: "Optional usage notes from the linguistics team."
-          source:
-            type: string
-            description: "Origin of the entry, e.g. the glossary version or contributing team."
-        required: ["term", "translation", "approved"]
-    total:
-      type: integer
-      description: "Total number of matching entries."
-  required: ["entries", "total"]
 
 error_codes:
   400:

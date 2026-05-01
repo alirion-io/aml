@@ -69,7 +69,7 @@ Lifecycle state. Enum: `draft` | `active` | `deprecated` | `disabled`. Draft def
 ```yaml
 meta:
   name: "Customer Support Agent"      # Human-readable display name (required)
-  category: "support"                 # From a platform-controlled list (required)
+  category: "support"                 # From a platform-controlled list (optional)
   description: >                      # One to two sentences (recommended)
     Handles first-line customer support for product and billing questions.
   owner: "cx-product-team"            # Team or individual responsible (recommended)
@@ -108,56 +108,50 @@ High temperature (above 0.7) for business-critical deterministic workflows is a 
 
 ---
 
-### `input` — input contract (required)
+### `interface` — input and output contract (required)
 
 ```yaml
-input:
-  schema:
-    type: object
-    properties:
-      question:
-        type: string
-        description: "The customer's question or request."
-      account_id:
-        type: string
-        description: "Customer account identifier, if known."
-    required: ["question"]
-  examples:
-    - question: "How do I reset my password?"
-    - question: "I was charged twice for my subscription."
-      account_id: "acct-00123"
-```
-
-The `schema` must be a valid JSON Schema subset. The top-level `type` should almost always be `object`. Per-field rendering hints are declared in the `ui.ui_hints` section rather than here, to keep all UI concerns in one place. See [JSON Schema in YAML](08-json-schema.md) for the full field reference, supported types, constraints, and worked examples.
-
----
-
-### `output` — output contract (required)
-
-```yaml
-output:
-  schema:
-    type: object
-    properties:
-      answer:
-        type: string
-        description: "The agent's response to the customer."
-      escalated:
-        type: boolean
-        description: "True if the agent escalated the case."
-      suggested_articles:
-        type: array
-        items:
+interface:
+  input:
+    schema:
+      type: object
+      properties:
+        question:
           type: string
-        description: "IDs of relevant help articles, if any."
-    required: ["answer", "escalated"]
-  render:
-    format: "markdown"
-  provenance:
-    citations_required: true
+          description: "The customer's question or request."
+        account_id:
+          type: string
+          description: "Customer account identifier, if known."
+      required: ["question"]
+    examples:
+      - question: "How do I reset my password?"
+      - question: "I was charged twice for my subscription."
+        account_id: "acct-00123"
+  output:
+    schema:
+      type: object
+      properties:
+        answer:
+          type: string
+          description: "The agent's response to the customer."
+        escalated:
+          type: boolean
+          description: "True if the agent escalated the case."
+        suggested_articles:
+          type: array
+          items:
+            type: string
+          description: "IDs of relevant help articles, if any."
+      required: ["answer", "escalated"]
+    render:
+      format: "markdown"
+    provenance:
+      citations_required: true
 ```
 
-The runtime must validate every response against the output schema. A response that fails validation is a run error (trigger retry or fallback). A loose schema — for example, allowing `additionalProperties: true` without justification — is a lint warning. See [JSON Schema in YAML](08-json-schema.md) for the full field reference, supported types, constraints, and worked examples.
+Both `interface.input.schema` and `interface.output.schema` must be valid JSON Schema subsets. The top-level `type` should almost always be `object`. The runtime validates every response against `interface.output.schema` — a response that fails validation is a run error (trigger retry or fallback). A loose output schema — for example, allowing `additionalProperties: true` without justification — is a lint warning. See [JSON Schema in YAML](08-json-schema.md) for the full field reference, supported types, constraints, and worked examples.
+
+Per-field rendering hints are declared in the `ui.ui_hints` section rather than here, to keep all UI concerns in one place.
 
 ---
 
@@ -165,15 +159,15 @@ The runtime must validate every response against the output schema. A response t
 
 ```yaml
 tools:
-  # Reference to a shared registered tool (preferred)
-  - ref: "search-product-kb"
-
-  # Reference with agent-level overrides (can only tighten, never loosen)
-  - ref: "send-email"
-    approval_required: true        # Registry default was false; this agent requires approval
-    max_calls_per_run: 1           # Registry allowed 3; this agent restricts to 1
-
   tool_choice: "auto"              # none | auto | required
+  refs:
+    # Reference to a shared registered tool (preferred)
+    - ref: "search-product-kb"
+
+    # Reference with agent-level overrides (can only tighten, never loosen)
+    - ref: "send-email"
+      approval_required: true        # Registry default was false; this agent requires approval
+      max_calls_per_run: 1           # Registry allowed 3; this agent restricts to 1
 ```
 
 `ref:` must resolve to a registered `.tool.md` file. Unresolvable references are hard validation errors.
@@ -194,13 +188,14 @@ Agent-level overrides can only make constraints stricter than the registry defau
 
 ```yaml
 knowledge:
-  # Reference to a shared KB (preferred)
-  - ref: "product-docs"
+  refs:
+    # Reference to a shared KB (preferred)
+    - ref: "product-docs"
 
-  # Reference with agent-level retrieval overrides
-  - ref: "brand-guidelines"
-    required: true             # Inject directly into context on every run
-    citations_required: true   # Tighten from registry default of false
+    # Reference with agent-level retrieval overrides
+    - ref: "brand-guidelines"
+      required: true             # Inject directly into context on every run
+      citations_required: true   # Tighten from registry default of false
 
   retrieval:                   # Agent-level retrieval policy (applies to all refs unless overridden per ref)
     search_mode: "hybrid"      # keyword | semantic | hybrid
@@ -522,21 +517,29 @@ Who can *call* this agent is not declared in AML. Caller access is managed at th
 ```yaml
 guardrails:
   input:
-    - ref: "pii-scan"
-      mode: "detect"
-      on_fail: "redact"
-    - ref: "prompt-injection-scan"
-      mode: "block"
-      on_fail: "refuse"
+    - ref: "pii-scan"                  # transform — redact PII before the model sees it
+      on_fail: "apply"
+    - ref: "prompt-injection-scan"     # score — block high-severity injection attempts
+      severity_threshold: 7
+      on_fail: "block"
+  tool_input:
+    - ref: "prompt-injection-scan"     # score — scan model-generated tool arguments
+      severity_threshold: 7
+      on_fail: "block"
+  tool_output:
+    - ref: "indirect-injection-scan"   # score — scan tool results before model processes them
+      severity_threshold: 6
+      on_fail: "block"
   tool_calls:
     require_user_confirmation_for:
       - "send-email"
       - "create-ticket"
   output:
-    - ref: "schema-validation"
-      on_fail: "retry"
-    - ref: "unsafe-content-check"
-      on_fail: "refuse"
+    - ref: "unsafe-content-check"      # score — block harmful responses
+      severity_threshold: 5
+      on_fail: "block"
+    - ref: "pii-scan"                  # transform — strip PII the model may have echoed
+      on_fail: "apply"
 ```
 
 #### What guardrails are
@@ -553,23 +556,62 @@ This follows the same pattern as `model`, `tools`, and `knowledge`: the agent fi
 
 #### `input` guardrails
 
-Input guardrails run on the raw input payload before the model processes it. Each entry is evaluated in order; if any entry's `on_fail` action terminates the run (e.g., `refuse`), later entries in the list are not evaluated.
+Input guardrails run on the raw input payload before the model processes it. Each entry is evaluated in order; if any entry's `on_fail` action terminates the run, later entries are not evaluated.
 
 | Field | Required | Description |
 |---|---|---|
 | `ref` | yes | Logical name resolving to a `.guardrail.md` file. |
-| `mode` | no | `detect` (identify and annotate, do not block) or `block` (prevent processing if triggered). Defaults to `block`. |
-| `on_fail` | yes | Action to take when the guardrail triggers. See `on_fail` reference below. |
+| `severity_threshold` | for `score` guardrails | Integer 0–10. Trigger `on_fail` if the returned severity is ≥ this value. |
+| `on_fail` | yes | Action to take when the guardrail triggers. Valid values depend on the referenced guardrail's `behaviour.result_type`. See `on_fail` reference below. |
 
 Common input guardrails:
 
 | Guardrail | Purpose |
 |---|---|
-| `pii_scan` | Detect or redact personally identifiable information before it reaches the model |
-| `prompt_injection_scan` | Detect attempts to override system instructions via user input |
-| `jailbreak_check` | Detect adversarial inputs designed to bypass the model's safety training |
-| `input_length_check` | Reject inputs exceeding a safe character/token limit |
-| `language_check` | Verify the input is in an expected language before processing |
+| `pii-scan` | Redact personally identifiable information before it reaches the model |
+| `prompt-injection-scan` | Detect attempts to override system instructions via user input |
+| `jailbreak-check` | Detect adversarial inputs designed to bypass the model's safety training |
+| `input-length-check` | Reject inputs exceeding a safe character/token limit |
+| `language-check` | Verify the input is in an expected language before processing |
+
+#### `tool_input` guardrails
+
+Tool-input guardrails run on the tool call arguments that the model generated, before the call is dispatched to the tool. They intercept the data *leaving* the agent via a tool.
+
+Primary use case: detecting that the model's output contains injected instructions or is attempting to exfiltrate data through tool arguments — a risk when the model has already processed potentially adversarial content from user input.
+
+| Field | Required | Description |
+|---|---|---|
+| `ref` | yes | Logical name resolving to a `.guardrail.md` file. |
+| `severity_threshold` | for `score` guardrails | Integer 0–10. Trigger `on_fail` if the returned severity is ≥ this value. |
+| `on_fail` | yes | Action to take when the guardrail triggers. |
+
+Common tool-input guardrails:
+
+| Guardrail | Purpose |
+|---|---|
+| `prompt-injection-scan` | Detect injected instructions in model-generated tool arguments |
+| `data-exfiltration-check` | Detect attempts to route sensitive data out through tool calls |
+
+#### `tool_output` guardrails
+
+Tool-output guardrails run on the tool result returned to the runtime, before the model processes it. They intercept data *entering* the agent's context from an external source.
+
+Primary use case: **indirect prompt injection** — an adversary embeds model instructions inside content the agent retrieves (a document, a database record, a web page). Scanning tool results before the model sees them is the mitigation.
+
+| Field | Required | Description |
+|---|---|---|
+| `ref` | yes | Logical name resolving to a `.guardrail.md` file. |
+| `severity_threshold` | for `score` guardrails | Integer 0–10. Trigger `on_fail` if the returned severity is ≥ this value. |
+| `on_fail` | yes | Action to take when the guardrail triggers. |
+
+Common tool-output guardrails:
+
+| Guardrail | Purpose |
+|---|---|
+| `indirect-injection-scan` | Detect instructions embedded in tool results designed to hijack the model |
+| `pii-scan` | Redact PII in tool results before the model processes or echoes them |
+| `content-safety-check` | Scan retrieved documents for harmful content before injection into context |
 
 #### `tool_calls` guardrails
 
@@ -596,28 +638,32 @@ Output guardrails run on the model's response before it is returned to the calle
 | Field | Required | Description |
 |---|---|---|
 | `ref` | yes | Logical name resolving to a `.guardrail.md` file. |
-| `mode` | no | `detect` or `block`. Defaults to `block`. |
+| `severity_threshold` | for `score` guardrails | Integer 0–10. Trigger `on_fail` if the returned severity is ≥ this value. |
 | `on_fail` | yes | Action to take when the guardrail triggers. |
 
 Common output guardrails:
 
 | Guardrail | Purpose |
 |---|---|
-| `schema_validation` | Verify the response matches the declared `output.schema` |
-| `unsafe_content_check` | Detect harmful, offensive, or policy-violating content |
-| `pii_output_scan` | Catch PII the model may have reproduced from tool results or context |
-| `hallucination_check` | Flag responses that contradict information retrieved from KBs or tools |
-| `citation_check` | Verify required citations are present when `provenance.citations_required: true` |
+| `unsafe-content-check` | Detect harmful, offensive, or policy-violating content |
+| `pii-scan` | Catch PII the model may have reproduced from tool results or context |
+| `hallucination-check` | Flag responses that contradict information retrieved from KBs or tools |
+| `citation-check` | Verify required citations are present when `provenance.citations_required: true` |
 
 #### `on_fail` reference
 
-| Value | Behavior |
-|---|---|
-| `redact` | Remove or mask the offending content and allow the (scrubbed) request or response to proceed. Only valid for guardrails that operate on content (PII, unsafe content); not valid for structural checks like `schema_validation`. |
-| `refuse` | Terminate the run and return a platform-standard refusal message to the caller. No response or tool call is executed. Use for security-critical checks (prompt injection, jailbreak, unsafe content). |
-| `retry` | Allow the run to retry up to `runtime.retry_policy.max_attempts` times. On exhaustion, falls back to `refuse`. Appropriate for transient quality issues like schema validation failure. |
-| `escalate` | Trigger the matching rule in `orchestration.escalation` and route the run to its target. The runtime matches the fired guardrail's `ref` against `escalation` rules with `on: "guardrail"`. If no matching rule is found, the run fails. Use when the request exceeds the agent's scope and needs routing to a specialist or a human. |
-| `log_only` | Allow the run to proceed but emit a guardrail event to the audit log. Use only in `mode: "detect"` during roll-out or monitoring phases; never for security controls. |
+Valid values depend on the referenced guardrail's `behaviour.result_type`:
+
+| `result_type` | `on_fail` value | Behavior |
+|---|---|---|
+| `score` | `block` | Halt the pipeline and return a platform-standard refusal to the caller. Use for security-critical checks. |
+| `score` | `warn` | Log a warning event and allow the pipeline to continue. Use for non-critical monitoring. |
+| `score` | `log` | Silently record the guardrail event and continue. Use only during roll-out or observation phases; never for security controls. |
+| `score` | `escalate` | Route the run to the matching rule in `orchestration.escalation`. The runtime matches the fired guardrail's `ref` against escalation rules with `on: "guardrail"`. If no rule matches, the run fails. |
+| `transform` | `apply` | Replace the original content with the guardrail's transformed output (e.g., the redacted version) and continue. |
+| `transform` | `reject` | Halt the pipeline if the transformation fails or cannot be applied. |
+| `annotate` / `enrich` | `skip` | Continue the pipeline without the annotation or enrichment if the guardrail fails. |
+| `annotate` / `enrich` | `fail_closed` | Halt the pipeline if the guardrail fails. |
 
 #### Relationship to `policies`
 
@@ -773,7 +819,7 @@ orchestration:
   can_be_invoked_as_tool: false
   escalation:
     - on: "guardrail"
-      guardrail: "prompt-injection-scan"   # Matches the ref in guardrails.input or guardrails.output
+      guardrail: "prompt-injection-scan"   # Matches the ref in any guardrail position (input, tool_input, tool_output, output)
       target:
         type: "human_queue"
         id: "security-review"
@@ -818,7 +864,7 @@ Each rule has an `on` field that declares when it fires, optional narrowing fiel
 
 | `on` value | Fires when | Narrowing fields |
 |---|---|---|
-| `guardrail` | A named guardrail fires with `on_fail: "escalate"` in `guardrails.input` or `guardrails.output` | `guardrail`: the `ref` value of the triggering guardrail. Required to match a specific guardrail; omit to match any guardrail escalation. |
+| `guardrail` | A named guardrail fires with `on_fail: "escalate"` at any pipeline position (`input`, `tool_input`, `tool_output`, or `output`) | `guardrail`: the `ref` value of the triggering guardrail. Required to match a specific guardrail; omit to match any guardrail escalation. |
 | `model_decision` | The agent's model explicitly produces an escalation decision (as governed by the `# Escalation` section of the Markdown body) | — |
 | `node_failure` | A downstream node in a Graph, Swarm, or Workflow reaches `FAILED` status | `node`: the `id` of the specific node to match. Optional; omit to match any node failure. |
 | `timeout` | The pattern's `execution_timeout` is exceeded | — |

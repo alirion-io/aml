@@ -1,0 +1,1653 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://alirion-io.github.io/aml/schemas/agent.schema.json",
+  "version": "1.2",
+  "title": "AML Agent Definition",
+  "description": "Compiled JSON payload for an AML agent definition (.agent.md). Validates that the compiled output conforms to the AML v1.2 specification.",
+  "type": "object",
+  "required": [
+    "spec_version",
+    "agent_id",
+    "version",
+    "status",
+    "meta",
+    "runtime",
+    "interface",
+    "tools",
+    "artifacts",
+    "role",
+    "system_prompt"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "spec_version": {
+      "title": "Spec Version",
+      "type": "string",
+      "description": "AML format version. Must be a platform-approved version string. The runtime rejects unknown spec versions. Describes the definition format, not the agent's behavior version.",
+      "pattern": "^[0-9]+\\.[0-9]+(\\.[0-9]+)?$"
+    },
+    "agent_id": {
+      "title": "Agent ID",
+      "$ref": "#/$defs/aml_id",
+      "description": "Stable, immutable identifier for the agent lineage. Lowercase kebab-case or snake_case. Cannot change once any version is published."
+    },
+    "version": {
+      "title": "Version",
+      "$ref": "#/$defs/semver",
+      "description": "Semantic version of this definition. Increment on every published change. Patch for wording; minor for backward-compatible behavior; major for breaking schema or tool-access changes."
+    },
+    "status": {
+      "title": "Status",
+      "type": "string",
+      "description": "Lifecycle state. draft=not runnable in production; active=runnable; deprecated=still runnable but hidden for new use; disabled=cannot be run.",
+      "enum": [
+        "draft",
+        "active",
+        "deprecated",
+        "disabled"
+      ]
+    },
+    "meta": {
+      "title": "Metadata",
+      "type": "object",
+      "description": "Business metadata for agent discovery, routing, and governance.",
+      "required": [
+        "name"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "title": "Name",
+          "type": "string",
+          "minLength": 1,
+          "description": "Human-readable display name for this agent."
+        },
+        "category": {
+          "title": "Category",
+          "type": "string",
+          "minLength": 1,
+          "description": "Classification category from a platform-controlled vocabulary (e.g., support, finance, hr). Not compiler-validated."
+        },
+        "description": {
+          "title": "Description",
+          "type": "string",
+          "description": "One to two sentences describing the agent's purpose and behavior."
+        },
+        "owner": {
+          "title": "Owner",
+          "type": "string",
+          "description": "Team or individual responsible for this agent."
+        },
+        "tags": {
+          "title": "Tags",
+          "type": "array",
+          "description": "Searchable labels for discovery and filtering.",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "runtime": {
+      "title": "Runtime",
+      "type": "object",
+      "description": "Model and execution settings for this agent.",
+      "required": [
+        "model"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "model": {
+          "title": "Model",
+          "$ref": "#/$defs/aml_id",
+          "description": "Model identifier. Must resolve to a registered .model.md file. Unresolvable IDs or references to disabled models are hard compile errors."
+        },
+        "fallback_model": {
+          "title": "Fallback Model",
+          "$ref": "#/$defs/aml_id",
+          "description": "Model to use if the primary model is unavailable."
+        },
+        "reasoning_effort": {
+          "title": "Reasoning Effort",
+          "type": "string",
+          "description": "Editorial hint mapped to model-specific parameters. low for simple extraction; medium for standard tasks; high for complex multi-step reasoning.",
+          "enum": [
+            "low",
+            "medium",
+            "high"
+          ]
+        },
+        "temperature": {
+          "title": "Temperature",
+          "type": "number",
+          "description": "Sampling temperature (0.0–1.0). Lower values produce more deterministic outputs. Values above 0.7 for business-critical workflows trigger a lint warning.",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "timeout_seconds": {
+          "title": "Timeout Seconds",
+          "type": "integer",
+          "minimum": 1,
+          "description": "Hard timeout in seconds for a single run."
+        },
+        "max_input_chars": {
+          "title": "Max Input Characters",
+          "type": "integer",
+          "minimum": 1,
+          "description": "Maximum allowed input size in characters."
+        },
+        "max_output_tokens": {
+          "title": "Max Output Tokens",
+          "type": "integer",
+          "minimum": 1,
+          "description": "Maximum allowed output size in tokens."
+        },
+        "max_turns": {
+          "title": "Max Turns",
+          "type": "integer",
+          "minimum": 1,
+          "description": "Maximum number of conversation turns for loop-based agents."
+        },
+        "max_tool_calls": {
+          "title": "Max Tool Calls",
+          "type": "integer",
+          "minimum": 0,
+          "description": "Maximum tool calls permitted per run across all tools."
+        },
+        "retry_policy": {
+          "title": "Retry Policy",
+          "type": "object",
+          "description": "Retry configuration for failed runs.",
+          "additionalProperties": false,
+          "properties": {
+            "max_attempts": {
+              "title": "Max Attempts",
+              "type": "integer",
+              "minimum": 1,
+              "description": "Maximum number of retry attempts."
+            },
+            "backoff_seconds": {
+              "title": "Backoff Seconds",
+              "type": "number",
+              "minimum": 0,
+              "description": "Seconds to wait between retry attempts."
+            }
+          }
+        }
+      }
+    },
+    "interface": {
+      "title": "Interface",
+      "type": "object",
+      "description": "Input and output contract for this agent.",
+      "required": ["input", "output"],
+      "additionalProperties": false,
+      "properties": {
+        "input": {
+          "title": "Input",
+          "type": "object",
+          "description": "Input contract for this agent. Defines the expected shape of data the agent receives.",
+          "required": [
+            "schema"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "schema": {
+              "title": "Schema",
+              "$ref": "#/$defs/json_schema_object",
+              "description": "JSON Schema object describing the agent's input. The top-level type should almost always be object."
+            },
+            "examples": {
+              "title": "Examples",
+              "type": "array",
+              "description": "Example input objects for documentation and testing.",
+              "items": {
+                "type": "object"
+              }
+            }
+          }
+        },
+        "output": {
+          "title": "Output",
+          "type": "object",
+          "description": "Output contract for this agent. Defines the shape of data the agent returns.",
+          "required": [
+            "schema"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "schema": {
+              "title": "Schema",
+              "$ref": "#/$defs/json_schema_object",
+              "description": "JSON Schema object describing the agent's output. Runtime validates every response against this schema."
+            },
+            "render": {
+              "title": "Render",
+              "type": "object",
+              "description": "Output rendering hints for the platform UI.",
+              "additionalProperties": false,
+              "properties": {
+                "format": {
+                  "title": "Format",
+                  "type": "string",
+                  "description": "Target rendering format for the agent's output.",
+                  "enum": [
+                    "markdown",
+                    "plain",
+                    "html",
+                    "json"
+                  ]
+                }
+              }
+            },
+            "provenance": {
+              "title": "Provenance",
+              "type": "object",
+              "description": "Output provenance and citation requirements.",
+              "additionalProperties": false,
+              "properties": {
+                "citations_required": {
+                  "title": "Citations Required",
+                  "type": "boolean",
+                  "description": "If true, the agent must include source citations in its output."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "tools": {
+      "title": "Tools",
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Tool access configuration. refs lists allowed tools; tool_choice controls whether the model must, may, or cannot call tools.",
+      "properties": {
+        "tool_choice": {
+          "title": "Tool Choice",
+          "type": "string",
+          "description": "none=tools advertised but model forbidden from calling them; auto=model decides; required=model must invoke at least one tool.",
+          "enum": [
+            "none",
+            "auto",
+            "required"
+          ]
+        },
+        "refs": {
+          "title": "References",
+          "type": "array",
+          "description": "List of tool references. Each must resolve to a registered .tool.md file. Agent-level overrides can only tighten registry defaults.",
+          "items": {
+            "$ref": "#/$defs/tool_ref_entry"
+          }
+        }
+      }
+    },
+    "knowledge": {
+      "title": "Knowledge",
+      "type": "object",
+      "description": "Knowledge base access configuration. Strongly recommended for any agent making factual claims about mutable information.",
+      "additionalProperties": false,
+      "properties": {
+        "refs": {
+          "title": "References",
+          "type": "array",
+          "description": "List of knowledge base references. Each must resolve to a registered .kb.md file.",
+          "items": {
+            "$ref": "#/$defs/kb_ref_entry"
+          }
+        },
+        "retrieval": {
+          "title": "Retrieval",
+          "type": "object",
+          "description": "Agent-level retrieval policy applied to all KB refs unless overridden per ref.",
+          "additionalProperties": false,
+          "properties": {
+            "search_mode": {
+              "title": "Search Mode",
+              "type": "string",
+              "description": "Retrieval strategy: keyword=BM25-style; semantic=vector similarity; hybrid=combined.",
+              "enum": [
+                "keyword",
+                "semantic",
+                "hybrid"
+              ]
+            },
+            "trigger": {
+              "title": "Trigger",
+              "type": "string",
+              "description": "Condition that triggers retrieval. Use 'auto' for model-driven retrieval."
+            },
+            "max_chunks": {
+              "title": "Max Chunks",
+              "type": "integer",
+              "minimum": 1,
+              "description": "Maximum number of retrieved chunks injected into context."
+            },
+            "max_tokens": {
+              "title": "Max Tokens",
+              "type": "integer",
+              "minimum": 1,
+              "description": "Maximum token budget allocated to retrieved context."
+            },
+            "grounding_required": {
+              "title": "Grounding Required",
+              "type": "boolean",
+              "description": "If true, the agent must ground its responses in retrieved content."
+            },
+            "citations_required": {
+              "title": "Citations Required",
+              "type": "boolean",
+              "description": "If true, the agent must include citations for retrieved content."
+            },
+            "use_when": {
+              "title": "Use When",
+              "type": "array",
+              "description": "Conditions under which the agent should retrieve from knowledge bases.",
+              "items": {
+                "type": "string"
+              }
+            },
+            "avoid_when": {
+              "title": "Avoid When",
+              "type": "array",
+              "description": "Conditions under which the agent should not retrieve from knowledge bases.",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "memory": {
+      "title": "Memory",
+      "type": "object",
+      "description": "Longer-lived memory policy. References named external storage collections that persist beyond a single run.",
+      "required": [
+        "mode"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "mode": {
+          "title": "Mode",
+          "type": "string",
+          "description": "Maximum scope of collections this agent may access: none=no memory; session=current conversation only; project=all sessions under same project; user=all sessions across all projects for same user.",
+          "enum": [
+            "none",
+            "session",
+            "project",
+            "user"
+          ]
+        },
+        "read_collections": {
+          "title": "Read Collections",
+          "type": "array",
+          "description": "Collection IDs this agent may read from. Each must resolve to a registered .collection.md file.",
+          "items": {
+            "$ref": "#/$defs/aml_id"
+          }
+        },
+        "write_collections": {
+          "title": "Write Collections",
+          "type": "array",
+          "description": "Collection IDs this agent may write to. Write behavior is governed by the collection's writeback configuration.",
+          "items": {
+            "$ref": "#/$defs/aml_id"
+          }
+        }
+      }
+    },
+    "state": {
+      "title": "State",
+      "type": "object",
+      "description": "Session-local working state configuration. Describes short-term scratchpad behavior, not persistent shared storage.",
+      "additionalProperties": false,
+      "properties": {
+        "session_history": {
+          "title": "Session History",
+          "type": "string",
+          "description": "ephemeral=conversation history discarded after each turn; session=history accumulated across all turns for the session.",
+          "enum": [
+            "ephemeral",
+            "session"
+          ]
+        },
+        "working_state": {
+          "title": "Working State",
+          "type": "string",
+          "description": "ephemeral=intermediate state (tool results, partial outputs) discarded after each turn; session=preserved across turns.",
+          "enum": [
+            "ephemeral",
+            "session"
+          ]
+        },
+        "scratchpad_visible_to_model": {
+          "title": "Scratchpad Visible To Model",
+          "type": "boolean",
+          "description": "If true, accumulated working_state is injected into the model's context on subsequent turns."
+        },
+        "max_state_tokens": {
+          "title": "Max State Tokens",
+          "type": "integer",
+          "minimum": 1,
+          "description": "Cap on total tokens allocated to state (history + working state) per turn. Older entries are trimmed when exceeded."
+        }
+      }
+    },
+    "artifacts": {
+      "title": "Artifacts",
+      "type": "object",
+      "description": "Storage and retention configuration for run artifacts.",
+      "required": [
+        "enabled"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "enabled": {
+          "title": "Enabled",
+          "type": "boolean",
+          "description": "Whether artifact storage is enabled for this agent."
+        },
+        "save_input": {
+          "title": "Save Input",
+          "type": "boolean",
+          "description": "Whether to persist raw user inputs. Disable if inputs may contain PII."
+        },
+        "save_output": {
+          "title": "Save Output",
+          "type": "boolean",
+          "description": "Whether to persist agent outputs."
+        },
+        "save_intermediate": {
+          "title": "Save Intermediate",
+          "type": "boolean",
+          "description": "Whether to persist intermediate results and tool call outputs."
+        },
+        "retention_class": {
+          "title": "Retention Class",
+          "type": "string",
+          "description": "standard=default platform retention; extended=longer retention; ephemeral=deleted after run; restricted=access-controlled storage.",
+          "enum": [
+            "standard",
+            "extended",
+            "ephemeral",
+            "restricted"
+          ]
+        }
+      }
+    },
+    "policies": {
+      "title": "Policies",
+      "type": "object",
+      "description": "Runtime safety and compliance policies for this agent.",
+      "additionalProperties": false,
+      "properties": {
+        "pii_redaction": {
+          "title": "PII Redaction",
+          "type": "boolean",
+          "description": "If true, PII detected in inputs and outputs is automatically redacted before storage."
+        },
+        "allow_external_http": {
+          "title": "Allow External HTTP",
+          "type": "boolean",
+          "description": "If true, the agent is permitted to make outbound HTTP calls via action tools."
+        },
+        "require_human_approval": {
+          "title": "Require Human Approval",
+          "type": "boolean",
+          "description": "If true, a human must approve the agent's response before it is delivered to the caller."
+        },
+        "blocked_content": {
+          "title": "Blocked Content",
+          "type": "array",
+          "description": "List of content categories this agent is prohibited from generating or processing.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "allowed_connectors": {
+          "title": "Allowed Connectors",
+          "type": "array",
+          "description": "Allowlist of connector identifiers this agent may use.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "data_residency": {
+          "title": "Data Residency",
+          "type": "string",
+          "description": "Data residency constraint (e.g., 'eu', 'us'). Enforced by the platform at deploy time."
+        },
+        "audit_level": {
+          "title": "Audit Level",
+          "type": "string",
+          "description": "none=no audit logging; standard=inputs and outputs logged; full=all intermediate steps including tool calls logged.",
+          "enum": [
+            "none",
+            "standard",
+            "full"
+          ]
+        }
+      }
+    },
+    "role": {
+      "title": "Role",
+      "$ref": "#/$defs/aml_id",
+      "description": "IAM role this agent assumes at runtime. Must resolve to a registered .iam.md file."
+    },
+    "guardrails": {
+      "title": "Guardrails",
+      "type": "object",
+      "description": "Guardrail checks applied at different positions in the agent pipeline.",
+      "additionalProperties": false,
+      "properties": {
+        "input": {
+          "title": "Input",
+          "type": "array",
+          "description": "Guardrail checks applied to the agent's input before it reaches the model.",
+          "items": {
+            "$ref": "#/$defs/guardrail_ref_entry"
+          }
+        },
+        "tool_input": {
+          "title": "Tool Input",
+          "type": "array",
+          "description": "Guardrail checks applied to tool call arguments generated by the model, before dispatch. Primary use: detecting injected instructions or data exfiltration attempts.",
+          "items": {
+            "$ref": "#/$defs/guardrail_ref_entry"
+          }
+        },
+        "tool_output": {
+          "title": "Tool Output",
+          "type": "array",
+          "description": "Guardrail checks applied to tool results returned to the runtime, before the model processes them. Primary use: detecting indirect prompt injection via retrieved content.",
+          "items": {
+            "$ref": "#/$defs/guardrail_ref_entry"
+          }
+        },
+        "output": {
+          "title": "Output",
+          "type": "array",
+          "description": "Guardrail checks applied to the agent's output before it is returned to the caller.",
+          "items": {
+            "$ref": "#/$defs/guardrail_ref_entry"
+          }
+        },
+        "tool_calls": {
+          "title": "Tool Calls",
+          "type": "object",
+          "description": "Guardrail policies applied to tool calls.",
+          "additionalProperties": false,
+          "properties": {
+            "require_user_confirmation_for": {
+              "title": "Require User Confirmation For",
+              "type": "array",
+              "description": "List of tool IDs that require explicit user confirmation before the call is made.",
+              "items": {
+                "$ref": "#/$defs/aml_id"
+              }
+            },
+            "block_tools_on_input_fail": {
+              "title": "Block Tools On Input Fail",
+              "type": "boolean",
+              "description": "If true, all tool calls are blocked when an input guardrail check fails."
+            }
+          }
+        }
+      }
+    },
+    "ui": {
+      "title": "UI",
+      "type": "object",
+      "description": "Platform UI configuration for the agent directory and input form.",
+      "required": [
+        "display_name",
+        "short_description"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "icon": {
+          "title": "Icon",
+          "type": "string",
+          "description": "Icon identifier or URL for this agent in the platform UI."
+        },
+        "display_name": {
+          "title": "Display Name",
+          "type": "string",
+          "minLength": 1,
+          "description": "Human-readable name shown in the agent directory."
+        },
+        "short_description": {
+          "title": "Short Description",
+          "type": "string",
+          "maxLength": 120,
+          "description": "One-line description (max 120 characters) shown in the agent directory listing."
+        },
+        "order": {
+          "title": "Order",
+          "type": "integer",
+          "minimum": 0,
+          "description": "Display order in the agent directory. Lower numbers appear first."
+        },
+        "featured": {
+          "title": "Featured",
+          "type": "boolean",
+          "description": "If true, this agent is highlighted in the featured section of the directory."
+        },
+        "ui_hints": {
+          "title": "UI Hints",
+          "type": "object",
+          "description": "Per-field rendering hints for the agent's input form. Keys must match top-level property names in input.schema.",
+          "additionalProperties": {
+            "$ref": "#/$defs/ui_hint_entry"
+          }
+        },
+        "localization": {
+          "title": "Localization",
+          "type": "object",
+          "description": "Locale support configuration.",
+          "additionalProperties": false,
+          "properties": {
+            "supported_locales": {
+              "title": "Supported Locales",
+              "type": "array",
+              "description": "List of BCP 47 locale codes supported by this agent.",
+              "items": {
+                "type": "string"
+              }
+            },
+            "default_locale": {
+              "title": "Default Locale",
+              "type": "string",
+              "description": "Default locale used when no locale is specified by the caller."
+            },
+            "localized_ui": {
+              "title": "Localized UI",
+              "type": "object",
+              "description": "Per-locale overrides for display_name, short_description, and ui_hints. Keyed by locale code.",
+              "additionalProperties": {
+                "type": "object"
+              }
+            }
+          }
+        }
+      }
+    },
+    "orchestration": {
+      "title": "Orchestration",
+      "type": "object",
+      "description": "Multi-agent orchestration configuration. Defines delegation, invocation, and topology settings.",
+      "additionalProperties": false,
+      "properties": {
+        "can_delegate": {
+          "title": "Can Delegate",
+          "type": "boolean",
+          "description": "If true, this agent may delegate sub-tasks to other agents."
+        },
+        "allowed_delegates": {
+          "title": "Allowed Delegates",
+          "type": "array",
+          "description": "List of agent IDs this agent is permitted to delegate to.",
+          "items": {
+            "$ref": "#/$defs/aml_id"
+          }
+        },
+        "can_be_invoked_as_tool": {
+          "title": "Can Be Invoked As Tool",
+          "type": "boolean",
+          "description": "If true, this agent may be invoked by other orchestrating agents as a tool."
+        },
+        "escalation": {
+          "title": "Escalation",
+          "type": "array",
+          "description": "Escalation rules triggered by specific events (e.g., guardrail failure, model decision, timeout).",
+          "items": {
+            "$ref": "#/$defs/escalation_rule"
+          }
+        },
+        "pattern": {
+          "title": "Pattern",
+          "description": "Multi-agent orchestration topology. One of: graph (directed node-edge), swarm (handoff-based), or workflow (task-dependency).",
+          "oneOf": [
+            {
+              "$ref": "#/$defs/orchestration_graph"
+            },
+            {
+              "$ref": "#/$defs/orchestration_swarm"
+            },
+            {
+              "$ref": "#/$defs/orchestration_workflow"
+            }
+          ]
+        }
+      }
+    },
+    "observability": {
+      "title": "Observability",
+      "type": "object",
+      "description": "Observability configuration for distributed tracing, metrics, and log capture.",
+      "additionalProperties": false,
+      "properties": {
+        "tracing": {
+          "title": "Tracing",
+          "$ref": "#/$defs/observability_signal",
+          "description": "Distributed tracing configuration (OTLP-compatible)."
+        },
+        "metrics": {
+          "title": "Metrics",
+          "$ref": "#/$defs/observability_metrics_signal",
+          "description": "Metrics emission configuration."
+        },
+        "logs": {
+          "title": "Logs",
+          "$ref": "#/$defs/observability_logs_signal",
+          "description": "Log capture configuration."
+        }
+      }
+    },
+    "system_prompt": {
+      "title": "System Prompt",
+      "type": "object",
+      "description": "Structured system prompt compiled from the Markdown body sections of the .agent.md file. Each section becomes a discrete field validated by the schema.",
+      "required": [
+        "purpose",
+        "behaviour",
+        "rules"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "purpose": {
+          "title": "Purpose",
+          "type": "string",
+          "minLength": 1,
+          "contentMediaType": "text/markdown",
+          "description": "Compiled from the '# Purpose' section. One short paragraph describing what the agent is for, who uses it, and in what context."
+        },
+        "behaviour": {
+          "title": "Behaviour",
+          "type": "string",
+          "minLength": 1,
+          "contentMediaType": "text/markdown",
+          "description": "Compiled from the '# System behavior' section. Core instruction block: tone, tool-use logic, reasoning approach, and what a good response looks like."
+        },
+        "rules": {
+          "title": "Rules",
+          "type": "array",
+          "minItems": 1,
+          "description": "Compiled from the '# Rules' section. Non-negotiable constraints, one statement per item, written to be auditable by reviewers.",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "escalation": {
+          "title": "Escalation",
+          "type": "string",
+          "minLength": 1,
+          "contentMediaType": "text/markdown",
+          "description": "Compiled from the optional '# Escalation' section. Conditions under which the agent should refuse, hand off, or request human review."
+        },
+        "examples": {
+          "title": "Examples",
+          "type": "string",
+          "minLength": 1,
+          "contentMediaType": "text/markdown",
+          "description": "Compiled from the optional '# Examples' section. Few-shot examples or representative input/output pairs."
+        },
+        "non_goals": {
+          "title": "Non Goals",
+          "type": "string",
+          "minLength": 1,
+          "contentMediaType": "text/markdown",
+          "description": "Compiled from the optional '# Non-goals' section. What the agent explicitly does not do."
+        },
+        "output_style": {
+          "title": "Output Style",
+          "type": "string",
+          "minLength": 1,
+          "contentMediaType": "text/markdown",
+          "description": "Compiled from the optional '# Output style notes' section. Human-facing rendering guidance for responses."
+        }
+      }
+    }
+  },
+  "$defs": {
+    "aml_id": {
+      "title": "AML ID",
+      "type": "string",
+      "pattern": "^[a-z0-9_-]{3,64}$",
+      "description": "Stable, immutable AML identifier. Lowercase kebab-case or snake_case."
+    },
+    "semver": {
+      "title": "Semver",
+      "type": "string",
+      "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)$",
+      "description": "Semantic version string (MAJOR.MINOR.PATCH)."
+    },
+    "json_schema_object": {
+      "title": "JSON Schema Object",
+      "type": "object",
+      "description": "A valid AML JSON Schema subset (draft-07). The top-level type should be 'object'. $ref, $id, definitions, and recursive schemas are not supported.",
+      "properties": {
+        "type": {
+          "title": "Type",
+          "oneOf": [
+            {
+              "type": "string",
+              "enum": [
+                "object",
+                "array",
+                "string",
+                "number",
+                "integer",
+                "boolean",
+                "null"
+              ]
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "object",
+                  "array",
+                  "string",
+                  "number",
+                  "integer",
+                  "boolean",
+                  "null"
+                ]
+              }
+            }
+          ]
+        },
+        "properties": {
+          "title": "Properties",
+          "type": "object"
+        },
+        "required": {
+          "title": "Required",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": {
+          "title": "Additionalproperties"
+        },
+        "items": {
+          "title": "Items"
+        },
+        "description": {
+          "title": "Description",
+          "type": "string"
+        },
+        "enum": {
+          "title": "Enum",
+          "type": "array"
+        },
+        "const": {
+          "title": "Const"
+        },
+        "format": {
+          "title": "Format",
+          "type": "string"
+        },
+        "minLength": {
+          "title": "Minlength",
+          "type": "integer",
+          "minimum": 0
+        },
+        "maxLength": {
+          "title": "Maxlength",
+          "type": "integer",
+          "minimum": 0
+        },
+        "pattern": {
+          "title": "Pattern",
+          "type": "string"
+        },
+        "minimum": {
+          "title": "Minimum",
+          "type": "number"
+        },
+        "maximum": {
+          "title": "Maximum",
+          "type": "number"
+        },
+        "exclusiveMinimum": {
+          "title": "Exclusiveminimum",
+          "type": "number"
+        },
+        "exclusiveMaximum": {
+          "title": "Exclusivemaximum",
+          "type": "number"
+        },
+        "minItems": {
+          "title": "Minitems",
+          "type": "integer",
+          "minimum": 0
+        },
+        "maxItems": {
+          "title": "Maxitems",
+          "type": "integer",
+          "minimum": 0
+        },
+        "default": {
+          "title": "Default"
+        }
+      }
+    },
+    "tool_ref_entry": {
+      "title": "Tool Reference Entry",
+      "type": "object",
+      "description": "A reference to a registered tool with optional agent-level overrides. Overrides can only tighten registry defaults.",
+      "required": [
+        "ref"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "ref": {
+          "title": "Reference",
+          "$ref": "#/$defs/aml_id",
+          "description": "Tool ID. Must resolve to a registered .tool.md file."
+        },
+        "approval_required": {
+          "title": "Approval Required",
+          "type": "boolean",
+          "description": "If true, human approval is required before this tool is called by this agent."
+        },
+        "max_calls_per_run": {
+          "title": "Max Calls Per Run",
+          "type": "integer",
+          "minimum": 1,
+          "description": "Maximum calls to this tool per run. Must not exceed the tool's registry default."
+        }
+      }
+    },
+    "kb_ref_entry": {
+      "title": "KB Reference Entry",
+      "type": "object",
+      "description": "A reference to a registered knowledge base with optional agent-level retrieval overrides.",
+      "required": [
+        "ref"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "ref": {
+          "title": "Reference",
+          "$ref": "#/$defs/aml_id",
+          "description": "KB ID. Must resolve to a registered .kb.md file."
+        },
+        "required": {
+          "title": "Required",
+          "type": "boolean",
+          "description": "If true, this KB is injected directly into the model context on every run regardless of retrieval trigger."
+        },
+        "citations_required": {
+          "title": "Citations Required",
+          "type": "boolean",
+          "description": "If true, the agent must cite content retrieved from this KB."
+        },
+        "max_chunks": {
+          "title": "Max Chunks",
+          "type": "integer",
+          "minimum": 1,
+          "description": "Maximum chunks retrieved from this KB. Overrides the KB registry default."
+        },
+        "max_tokens": {
+          "title": "Max Tokens",
+          "type": "integer",
+          "minimum": 1,
+          "description": "Maximum token budget for retrieved content from this KB."
+        },
+        "min_score": {
+          "title": "Min Score",
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Minimum relevance score threshold (0.0–1.0) for chunks to be included."
+        }
+      }
+    },
+    "guardrail_ref_entry": {
+      "title": "Guardrail Reference Entry",
+      "type": "object",
+      "description": "A reference to a registered guardrail check with failure handling policy. Valid at all four positions: input, tool_input, tool_output, output.",
+      "required": [
+        "ref",
+        "on_fail"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "ref": {
+          "title": "Reference",
+          "$ref": "#/$defs/aml_id",
+          "description": "Guardrail ID. Must resolve to a registered .guardrail.md file."
+        },
+        "severity_threshold": {
+          "title": "Severity Threshold",
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10,
+          "description": "Required for score guardrails. Trigger on_fail if the returned severity is >= this value (0-10)."
+        },
+        "on_fail": {
+          "title": "On Fail",
+          "type": "string",
+          "description": "Action taken when the guardrail check fails. Valid values depend on the referenced guardrail's behaviour.result_type. score: block|warn|log|escalate. transform: apply|reject. annotate/enrich: skip|fail_closed.",
+          "enum": [
+            "block",
+            "warn",
+            "log",
+            "escalate",
+            "apply",
+            "reject",
+            "skip",
+            "fail_closed"
+          ]
+        }
+      }
+    },
+    "ui_hint_entry": {
+      "title": "UI Hint Entry",
+      "type": "object",
+      "description": "Rendering hint for a single input field in the agent's UI form.",
+      "additionalProperties": false,
+      "properties": {
+        "widget": {
+          "title": "Widget",
+          "type": "string",
+          "description": "UI widget type to render for this input field.",
+          "enum": [
+            "text",
+            "textarea",
+            "radio",
+            "select",
+            "checkbox",
+            "date",
+            "file",
+            "file-multi",
+            "hidden"
+          ]
+        },
+        "label": {
+          "title": "Label",
+          "type": "string",
+          "description": "Display label for this field in the UI form."
+        },
+        "placeholder": {
+          "title": "Placeholder",
+          "type": "string",
+          "description": "Placeholder text shown inside the input before the user types."
+        },
+        "helper_text": {
+          "title": "Helper Text",
+          "type": "string",
+          "description": "Explanatory text shown below the input to guide the user."
+        },
+        "options": {
+          "title": "Options",
+          "type": "array",
+          "description": "Selectable options for radio or select widgets.",
+          "items": {
+            "type": "object",
+            "required": [
+              "value",
+              "label"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "value": {
+                "title": "Value",
+                "type": "string",
+                "description": "The option value submitted to the agent."
+              },
+              "label": {
+                "title": "Label",
+                "type": "string",
+                "description": "The option label shown to the user."
+              }
+            }
+          }
+        },
+        "accept": {
+          "title": "Accept",
+          "type": "array",
+          "description": "Accepted MIME types or file extensions for file widgets (e.g., 'image/png', '.pdf').",
+          "items": {
+            "type": "string"
+          }
+        },
+        "max_size_mb": {
+          "title": "Max Size MB",
+          "type": "number",
+          "minimum": 0,
+          "description": "Maximum allowed file size in megabytes for file widgets."
+        }
+      }
+    },
+    "escalation_rule": {
+      "title": "Escalation Rule",
+      "type": "object",
+      "description": "An escalation rule that triggers routing to a human queue or another agent when a specific event occurs.",
+      "required": [
+        "on",
+        "target"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "on": {
+          "title": "On",
+          "type": "string",
+          "description": "Event that triggers this escalation rule.",
+          "enum": [
+            "guardrail",
+            "model_decision",
+            "node_failure",
+            "timeout"
+          ]
+        },
+        "guardrail": {
+          "title": "Guardrail",
+          "$ref": "#/$defs/aml_id",
+          "description": "Guardrail ID that triggers this rule. Only relevant when on=guardrail."
+        },
+        "node": {
+          "title": "Node",
+          "type": "string",
+          "description": "Node ID that triggers this rule. Only relevant when on=node_failure."
+        },
+        "target": {
+          "title": "Target",
+          "type": "object",
+          "description": "Escalation destination.",
+          "required": [
+            "type",
+            "id"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "type": {
+              "title": "Type",
+              "type": "string",
+              "enum": [
+                "human_queue",
+                "agent"
+              ]
+            },
+            "id": {
+              "title": "ID",
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        }
+      }
+    },
+    "orchestration_graph": {
+      "title": "Orchestration Graph",
+      "type": "object",
+      "description": "Directed graph orchestration topology. Agents are nodes; transitions are edges with optional conditions.",
+      "required": [
+        "type",
+        "nodes",
+        "edges"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "title": "Type",
+          "type": "string",
+          "const": "graph"
+        },
+        "execution_timeout": {
+          "title": "Execution Timeout",
+          "type": "integer",
+          "minimum": 1,
+          "description": "Maximum total execution time in seconds for the graph."
+        },
+        "max_node_executions": {
+          "title": "Max Node Executions",
+          "type": "integer",
+          "minimum": 1,
+          "description": "Maximum total number of node executions across the graph to prevent infinite loops."
+        },
+        "node_timeout": {
+          "title": "Node Timeout",
+          "type": "integer",
+          "minimum": 1,
+          "description": "Maximum execution time in seconds for a single node."
+        },
+        "reset_on_revisit": {
+          "title": "Reset On Revisit",
+          "type": "boolean",
+          "description": "If true, a node's state is reset when it is visited more than once."
+        },
+        "nodes": {
+          "title": "Nodes",
+          "type": "array",
+          "description": "List of agent nodes in the graph.",
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "agent_ref"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "title": "ID",
+                "type": "string",
+                "minLength": 1,
+                "description": "Unique node identifier within this graph."
+              },
+              "agent_ref": {
+                "title": "Agent Reference",
+                "$ref": "#/$defs/aml_id",
+                "description": "Agent ID this node executes."
+              }
+            }
+          }
+        },
+        "edges": {
+          "title": "Edges",
+          "type": "array",
+          "description": "Directed transitions between nodes.",
+          "items": {
+            "type": "object",
+            "required": [
+              "from",
+              "to"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "from": {
+                "title": "From",
+                "type": "string",
+                "minLength": 1,
+                "description": "Source node ID."
+              },
+              "to": {
+                "title": "To",
+                "type": "string",
+                "minLength": 1,
+                "description": "Target node ID."
+              },
+              "condition": {
+                "title": "Condition",
+                "type": "string",
+                "description": "Optional condition expression that must evaluate to true for this edge to be taken."
+              }
+            }
+          }
+        }
+      }
+    },
+    "orchestration_swarm": {
+      "title": "Orchestration Swarm",
+      "type": "object",
+      "description": "Swarm orchestration topology. Agents hand off control to each other dynamically until a terminal condition is reached.",
+      "required": [
+        "type",
+        "agents"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "title": "Type",
+          "type": "string",
+          "const": "swarm"
+        },
+        "max_handoffs": {
+          "title": "Max Handoffs",
+          "type": "integer",
+          "minimum": 1,
+          "description": "Maximum total number of agent handoffs allowed."
+        },
+        "max_iterations": {
+          "title": "Max Iterations",
+          "type": "integer",
+          "minimum": 1,
+          "description": "Maximum total iterations across all agents."
+        },
+        "execution_timeout": {
+          "title": "Execution Timeout",
+          "type": "integer",
+          "minimum": 1,
+          "description": "Maximum total execution time in seconds for the swarm."
+        },
+        "node_timeout": {
+          "title": "Node Timeout",
+          "type": "integer",
+          "minimum": 1,
+          "description": "Maximum execution time in seconds for a single agent turn."
+        },
+        "repetitive_handoff_detection_window": {
+          "title": "Repetitive Handoff Detection Window",
+          "type": "integer",
+          "minimum": 0,
+          "description": "Number of recent handoffs to inspect when detecting repetitive cycles."
+        },
+        "repetitive_handoff_min_unique_agents": {
+          "title": "Repetitive Handoff Min Unique Agents",
+          "type": "integer",
+          "minimum": 0,
+          "description": "Minimum number of unique agents required in the detection window to avoid a cycle error."
+        },
+        "agents": {
+          "title": "Agents",
+          "type": "array",
+          "description": "List of agents participating in this swarm.",
+          "items": {
+            "type": "object",
+            "required": [
+              "ref"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "ref": {
+                "title": "Reference",
+                "$ref": "#/$defs/aml_id",
+                "description": "Agent ID participating in this swarm."
+              }
+            }
+          }
+        }
+      }
+    },
+    "orchestration_workflow": {
+      "title": "Orchestration Workflow",
+      "type": "object",
+      "description": "Workflow orchestration topology. Agents execute tasks in dependency order, with optional parallelism.",
+      "required": [
+        "type",
+        "tasks"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "title": "Type",
+          "type": "string",
+          "const": "workflow"
+        },
+        "max_workers": {
+          "title": "Max Workers",
+          "type": "integer",
+          "minimum": 1,
+          "description": "Maximum number of tasks that may execute concurrently."
+        },
+        "retry_failed_tasks": {
+          "title": "Retry Failed Tasks",
+          "type": "boolean",
+          "description": "If true, failed tasks are retried before the workflow is marked failed."
+        },
+        "tasks": {
+          "title": "Tasks",
+          "type": "array",
+          "minItems": 1,
+          "description": "Ordered list of tasks in this workflow.",
+          "items": {
+            "type": "object",
+            "required": [
+              "task_id",
+              "agent_ref",
+              "description"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "task_id": {
+                "title": "Task ID",
+                "type": "string",
+                "minLength": 1,
+                "description": "Unique identifier for this task within the workflow."
+              },
+              "agent_ref": {
+                "title": "Agent Reference",
+                "$ref": "#/$defs/aml_id",
+                "description": "Agent ID that executes this task."
+              },
+              "description": {
+                "title": "Description",
+                "type": "string",
+                "minLength": 1,
+                "description": "Human-readable description of what this task does."
+              },
+              "priority": {
+                "title": "Priority",
+                "type": "integer",
+                "minimum": 0,
+                "description": "Execution priority. Lower numbers run first when multiple tasks are ready."
+              },
+              "dependencies": {
+                "title": "Dependencies",
+                "type": "array",
+                "description": "List of task_ids that must complete before this task starts.",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "observability_auth": {
+      "title": "Observability Authentication",
+      "type": "object",
+      "description": "Authentication configuration for the observability exporter endpoint.",
+      "required": [
+        "type"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "title": "Type",
+          "type": "string",
+          "description": "Authentication scheme: none=no auth; bearer=Bearer token; mtls=mutual TLS.",
+          "enum": [
+            "none",
+            "bearer",
+            "mtls"
+          ]
+        },
+        "credentials_ref": {
+          "title": "Credentials Reference",
+          "type": "string",
+          "description": "Reference to a secret that holds the credentials for this auth scheme."
+        }
+      }
+    },
+    "observability_signal": {
+      "title": "Observability Signal",
+      "type": "object",
+      "description": "Distributed tracing signal configuration (e.g., for spans exported via OTLP).",
+      "additionalProperties": false,
+      "properties": {
+        "enabled": {
+          "title": "Enabled",
+          "type": "boolean",
+          "description": "Whether this signal is enabled."
+        },
+        "exporter": {
+          "title": "Exporter",
+          "type": "string",
+          "description": "Export destination: otlp=OpenTelemetry collector; console=stdout; none=disabled.",
+          "enum": [
+            "otlp",
+            "console",
+            "none"
+          ]
+        },
+        "endpoint": {
+          "title": "Endpoint",
+          "type": "string",
+          "format": "uri",
+          "description": "Exporter endpoint URI."
+        },
+        "sampling_rate": {
+          "title": "Sampling Rate",
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Fraction of traces to sample (0.0=none, 1.0=all)."
+        },
+        "include_model_inputs": {
+          "title": "Include Model Inputs",
+          "type": "boolean",
+          "description": "If true, model input content is included in spans."
+        },
+        "include_model_outputs": {
+          "title": "Include Model Outputs",
+          "type": "boolean",
+          "description": "If true, model output content is included in spans."
+        },
+        "include_tool_args": {
+          "title": "Include Tool Args",
+          "type": "string",
+          "description": "full=all tool arguments included; redacted=arguments masked; none=excluded.",
+          "enum": [
+            "full",
+            "redacted",
+            "none"
+          ]
+        },
+        "include_tool_results": {
+          "title": "Include Tool Results",
+          "type": "string",
+          "description": "full=all tool results included; redacted=results masked; none=excluded.",
+          "enum": [
+            "full",
+            "redacted",
+            "none"
+          ]
+        },
+        "include_kb_chunks": {
+          "title": "Include KB Chunks",
+          "type": "boolean",
+          "description": "If true, retrieved knowledge base chunks are included in spans."
+        },
+        "propagate_context": {
+          "title": "Propagate Context",
+          "type": "boolean",
+          "description": "If true, W3C trace context is propagated to downstream tool and KB calls."
+        },
+        "auth": {
+          "title": "Authentication",
+          "$ref": "#/$defs/observability_auth",
+          "description": "Authentication for the exporter endpoint."
+        }
+      }
+    },
+    "observability_metrics_signal": {
+      "title": "Observability Metrics Signal",
+      "type": "object",
+      "description": "Metrics emission configuration.",
+      "additionalProperties": false,
+      "properties": {
+        "enabled": {
+          "title": "Enabled",
+          "type": "boolean",
+          "description": "Whether metrics emission is enabled."
+        },
+        "exporter": {
+          "title": "Exporter",
+          "type": "string",
+          "description": "Export destination: otlp=OpenTelemetry collector; console=stdout; none=disabled.",
+          "enum": [
+            "otlp",
+            "console",
+            "none"
+          ]
+        },
+        "endpoint": {
+          "title": "Endpoint",
+          "type": "string",
+          "format": "uri",
+          "description": "Exporter endpoint URI."
+        },
+        "export_interval_seconds": {
+          "title": "Export Interval Seconds",
+          "type": "integer",
+          "minimum": 1,
+          "description": "How often metrics are flushed to the exporter."
+        },
+        "retention_days": {
+          "title": "Retention Days",
+          "type": "integer",
+          "minimum": 1,
+          "description": "How many days metric data is retained on the platform."
+        },
+        "custom_dimensions": {
+          "title": "Custom Dimensions",
+          "type": "array",
+          "description": "Additional dimension keys attached to every metric point.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "auth": {
+          "title": "Authentication",
+          "$ref": "#/$defs/observability_auth",
+          "description": "Authentication for the exporter endpoint."
+        }
+      }
+    },
+    "observability_logs_signal": {
+      "title": "Observability Logs Signal",
+      "type": "object",
+      "description": "Log capture configuration.",
+      "additionalProperties": false,
+      "properties": {
+        "enabled": {
+          "title": "Enabled",
+          "type": "boolean",
+          "description": "Whether log capture is enabled."
+        },
+        "exporter": {
+          "title": "Exporter",
+          "type": "string",
+          "description": "Export destination: otlp=OpenTelemetry collector; console=stdout; none=disabled.",
+          "enum": [
+            "otlp",
+            "console",
+            "none"
+          ]
+        },
+        "endpoint": {
+          "title": "Endpoint",
+          "type": "string",
+          "format": "uri",
+          "description": "Exporter endpoint URI."
+        },
+        "level": {
+          "title": "Level",
+          "type": "string",
+          "description": "Minimum log level to capture and export.",
+          "enum": [
+            "debug",
+            "info",
+            "warn",
+            "error"
+          ]
+        },
+        "structured": {
+          "title": "Structured",
+          "type": "boolean",
+          "description": "If true, logs are emitted as structured JSON rather than plain text."
+        },
+        "include_trace_context": {
+          "title": "Include Trace Context",
+          "type": "boolean",
+          "description": "If true, trace and span IDs are injected into each log record for correlation."
+        },
+        "auth": {
+          "title": "Authentication",
+          "$ref": "#/$defs/observability_auth",
+          "description": "Authentication for the exporter endpoint."
+        }
+      }
+    }
+  }
+}

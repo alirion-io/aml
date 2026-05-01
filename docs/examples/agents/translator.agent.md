@@ -30,62 +30,64 @@ runtime:
     max_attempts: 2
     backoff_seconds: 2
 
-input:
-  schema:
-    type: object
-    properties:
-      source_text:
-        type: string
-        description: "The text to translate."
-      source_language:
-        type: string
-        description: "Optional. Detected automatically if omitted."
-      target_language:
-        type: string
-        description: "The target language (e.g. 'French', 'de', 'ja')."
-      tone:
-        type: string
-        enum: ["formal", "neutral", "casual"]
-        description: "Preferred tone for the output."
-    required: ["source_text", "target_language"]
-  examples:
-    - source_text: "Please find attached the revised invoice."
-      target_language: "French"
-      tone: "formal"
-    - source_text: "Hey, just checking in on that order."
-      target_language: "German"
-      tone: "casual"
-
-output:
-  schema:
-    type: object
-    properties:
-      translated_text:
-        type: string
-        description: "The translated output."
-      detected_language:
-        type: string
-        description: "Detected source language when source_language was omitted."
-      notes:
-        type: array
-        items: { type: string }
-        description: "Optional notes about ambiguity, cultural nuance, or terminology choices."
-    required: ["translated_text"]
-  render:
-    format: "markdown"
-  provenance:
-    citations_required: false
+interface:
+  input:
+    schema:
+      type: object
+      properties:
+        source_text:
+          type: string
+          description: "The text to translate."
+        source_language:
+          type: string
+          description: "Optional. Detected automatically if omitted."
+        target_language:
+          type: string
+          description: "The target language (e.g. 'French', 'de', 'ja')."
+        tone:
+          type: string
+          enum: ["formal", "neutral", "casual"]
+          description: "Preferred tone for the output."
+      required: ["source_text", "target_language"]
+    examples:
+      - source_text: "Please find attached the revised invoice."
+        target_language: "French"
+        tone: "formal"
+      - source_text: "Hey, just checking in on that order."
+        target_language: "German"
+        tone: "casual"
+  output:
+    schema:
+      type: object
+      properties:
+        translated_text:
+          type: string
+          description: "The translated output."
+        detected_language:
+          type: string
+          description: "Detected source language when source_language was omitted."
+        notes:
+          type: array
+          items: { type: string }
+          description: "Optional notes about ambiguity, cultural nuance, or terminology choices."
+      required: ["translated_text"]
+    render:
+      format: "markdown"
+    provenance:
+      citations_required: false
 
 tools:
-  - ref: "glossary-lookup"
-  - ref: "terminology-memory"
   tool_choice: "auto"
+  refs:
+    - ref: "glossary-lookup"
+    - ref: "terminology-memory"
 
 knowledge:
-  - ref: "terminology-kb"
-    required: false
-  - ref: "brand-guidelines"
-    required: false
+  refs:
+    - ref: "terminology-kb"
+      required: false
+    - ref: "brand-guidelines"
+      required: false
   retrieval:
     search_mode: "hybrid"
     trigger: "auto"
