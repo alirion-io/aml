@@ -10,31 +10,29 @@
       
       
       
-        <link rel="canonical" href="https://alirion-io.github.io/aml/customer-preferences.collection/">
+        <link rel="canonical" href="https://alirion-io.github.io/aml/examples/guardrails/azure-content-moderation.guardrail/">
       
       
-        <link rel="prev" href="../legal-policies.kb/">
+        <link rel="prev" href="../bedrock-pii-scan.guardrail/">
       
-      
-        <link rel="next" href="../claude-4-sonnet.model/">
       
       
         
       
       
-      <link rel="icon" href="../assets/favicon.png">
+      <link rel="icon" href="../../../assets/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
     
     
       
-        <title>Customer Preferences - Agent Modeling Language</title>
+        <title>Azure Content Moderation - Agent Modeling Language</title>
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
       
       
 
@@ -53,9 +51,9 @@
       
     
     
-      <link rel="stylesheet" href="../stylesheets/extra.css">
+      <link rel="stylesheet" href="../../../stylesheets/extra.css">
     
-    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -80,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#purpose" class="md-skip">
+        <a href="#content-moderation-azure-ai-content-safety" class="md-skip">
           Skip to content
         </a>
       
@@ -94,9 +92,9 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href=".." title="Agent Modeling Language" class="md-header__button md-logo" aria-label="Agent Modeling Language" data-md-component="logo">
+    <a href="../../.." title="Agent Modeling Language" class="md-header__button md-logo" aria-label="Agent Modeling Language" data-md-component="logo">
       
-  <img src="../assets/alirion-icon-transparent_dark.svg" alt="logo">
+  <img src="../../../assets/alirion-icon-transparent_dark.svg" alt="logo">
 
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -113,7 +111,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Customer Preferences
+              Azure Content Moderation
             
           </span>
         </div>
@@ -231,7 +229,7 @@
   
   
     <li class="md-tabs__item">
-      <a href=".." class="md-tabs__link">
+      <a href="../../.." class="md-tabs__link">
         
   
   
@@ -252,7 +250,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../00-introduction/" class="md-tabs__link">
+        <a href="../../../00-introduction/" class="md-tabs__link">
           
   
   
@@ -283,7 +281,7 @@
     
     
       <li class="md-tabs__item md-tabs__item--active">
-        <a href="../support-agent.agent/" class="md-tabs__link">
+        <a href="../../agents/support-agent.agent/" class="md-tabs__link">
           
   
   
@@ -322,9 +320,9 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href=".." title="Agent Modeling Language" class="md-nav__button md-logo" aria-label="Agent Modeling Language" data-md-component="logo">
+    <a href="../../.." title="Agent Modeling Language" class="md-nav__button md-logo" aria-label="Agent Modeling Language" data-md-component="logo">
       
-  <img src="../assets/alirion-icon-transparent_dark.svg" alt="logo">
+  <img src="../../../assets/alirion-icon-transparent_dark.svg" alt="logo">
 
     </a>
     Agent Modeling Language
@@ -351,7 +349,7 @@
   
   
     <li class="md-nav__item">
-      <a href=".." class="md-nav__link">
+      <a href="../../.." class="md-nav__link">
         
   
   
@@ -430,7 +428,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../00-introduction/" class="md-nav__link">
+      <a href="../../../00-introduction/" class="md-nav__link">
         
   
   
@@ -458,7 +456,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../01-agent-definition/" class="md-nav__link">
+      <a href="../../../01-agent-definition/" class="md-nav__link">
         
   
   
@@ -486,7 +484,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../02-tool-definition/" class="md-nav__link">
+      <a href="../../../02-tool-definition/" class="md-nav__link">
         
   
   
@@ -514,7 +512,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../03-kb-definition/" class="md-nav__link">
+      <a href="../../../03-kb-definition/" class="md-nav__link">
         
   
   
@@ -542,7 +540,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../04-iam-definition/" class="md-nav__link">
+      <a href="../../../04-iam-definition/" class="md-nav__link">
         
   
   
@@ -570,7 +568,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../05-model-definition/" class="md-nav__link">
+      <a href="../../../05-model-definition/" class="md-nav__link">
         
   
   
@@ -598,7 +596,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../06-collection-definition/" class="md-nav__link">
+      <a href="../../../06-collection-definition/" class="md-nav__link">
         
   
   
@@ -626,7 +624,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../07-guardrail-definition/" class="md-nav__link">
+      <a href="../../../07-guardrail-definition/" class="md-nav__link">
         
   
   
@@ -654,7 +652,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../08-json-schema/" class="md-nav__link">
+      <a href="../../../08-json-schema/" class="md-nav__link">
         
   
   
@@ -801,7 +799,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../support-agent.agent/" class="md-nav__link">
+      <a href="../../agents/support-agent.agent/" class="md-nav__link">
         
   
   
@@ -829,7 +827,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../translator.agent/" class="md-nav__link">
+      <a href="../../agents/translator.agent/" class="md-nav__link">
         
   
   
@@ -920,7 +918,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../send-email.tool/" class="md-nav__link">
+      <a href="../../tools/send-email.tool/" class="md-nav__link">
         
   
   
@@ -948,7 +946,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../glossary-lookup.tool/" class="md-nav__link">
+      <a href="../../tools/glossary-lookup.tool/" class="md-nav__link">
         
   
   
@@ -1039,7 +1037,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../brand-guidelines.kb/" class="md-nav__link">
+      <a href="../../knowledge/brand-guidelines.kb/" class="md-nav__link">
         
   
   
@@ -1067,7 +1065,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../legal-policies.kb/" class="md-nav__link">
+      <a href="../../knowledge/legal-policies.kb/" class="md-nav__link">
         
   
   
@@ -1100,8 +1098,6 @@
                 
   
   
-    
-  
   
   
     
@@ -1117,11 +1113,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_4" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_4" >
         
           
           <label class="md-nav__link" for="__nav_3_4" id="__nav_3_4_label" tabindex="">
@@ -1142,7 +1138,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_4_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_4_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_3_4">
             <span class="md-nav__icon md-icon"></span>
             
@@ -1157,19 +1153,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../collections/customer-preferences.collection/" class="md-nav__link">
         
   
   
@@ -1192,7 +1179,6 @@
   
 
       </a>
-      
     </li>
   
 
@@ -1268,7 +1254,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../claude-4-sonnet.model/" class="md-nav__link">
+      <a href="../../models/claude-4-sonnet.model/" class="md-nav__link">
         
   
   
@@ -1296,7 +1282,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../gpt-4o.model/" class="md-nav__link">
+      <a href="../../models/gpt-4o.model/" class="md-nav__link">
         
   
   
@@ -1358,7 +1344,7 @@
   <span class="md-ellipsis">
     
   
-    Guardrails
+    IAM Policies
   
 
     
@@ -1371,6 +1357,99 @@
         
         <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_6_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_3_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    IAM Policies
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../iam/support-agent-role.iam/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Support Agent Role
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_7" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3_7" id="__nav_3_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guardrails
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1410,6 +1489,139 @@
   
 
       </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Azure Content Moderation
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Azure Content Moderation
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#when-to-use-this-guardrail" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        When to use this guardrail
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#recommended-agent-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Recommended agent configuration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#severity-scale-mapping" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Severity scale mapping
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#relationship-to-other-guardrails" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Relationship to other guardrails
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1455,7 +1667,7 @@
   
   
     <li class="md-path__item">
-      <a href=".." class="md-path__link">
+      <a href="../../.." class="md-path__link">
         
   <span class="md-ellipsis">
     Home
@@ -1478,7 +1690,7 @@
     
     
       <li class="md-path__item">
-        <a href="../support-agent.agent/" class="md-path__link">
+        <a href="../../agents/support-agent.agent/" class="md-path__link">
           
   <span class="md-ellipsis">
     Examples
@@ -1499,10 +1711,10 @@
     
     
       <li class="md-path__item">
-        <a href="./" class="md-path__link">
+        <a href="../bedrock-pii-scan.guardrail/" class="md-path__link">
           
   <span class="md-ellipsis">
-    Memory Collections
+    Guardrails
   </span>
 
         </a>
@@ -1524,13 +1736,79 @@
   
 
 
-<h1 id="purpose">Purpose<a class="headerlink" href="#purpose" title="Permanent link">&para;</a></h1>
-<p>Provides persistent user preference memory for support and personalization agents. Preferences and facts about the user are stored per actor (user identity) and retrieved automatically at run start. Agents can immediately tailor tone, language, and product recommendations without requiring the user to re-state context at the beginning of each session.</p>
-<h1 id="content-coverage">Content coverage<a class="headerlink" href="#content-coverage" title="Permanent link">&para;</a></h1>
-<p>Includes explicitly stated preferences ("I prefer email over phone"), implicitly inferred preferences (language choice, formality level), and factual self-disclosures (account type, product in use). Does not store conversation transcripts — use a <code>session-state-cache</code> collection for that.</p>
-<h1 id="notes">Notes<a class="headerlink" href="#notes" title="Permanent link">&para;</a></h1>
-<p>This collection contains PII (actor identifiers mapped to preference data) and is subject to GDPR right-to-erasure requirements. The platform's memory service must support per-actor data deletion triggered by a data subject request.</p>
-<p>Access rights are controlled by the IAM role assigned to each agent that references this collection. <code>approval_required: true</code> is set because this is a project-scoped collection shared across all sessions for a given user — a human approval step prevents a misbehaving or adversarially prompted agent from silently overwriting learned preferences with incorrect data.</p>
+<h1 id="content-moderation-azure-ai-content-safety">Content Moderation (Azure AI Content Safety)<a class="headerlink" href="#content-moderation-azure-ai-content-safety" title="Permanent link">&para;</a></h1>
+<p>Uses <a href="https://learn.microsoft.com/azure/ai-services/content-safety/overview">Azure AI Content Safety</a>
+to evaluate agent inputs and outputs against four harm categories: <strong>Hate</strong>, <strong>SelfHarm</strong>,
+<strong>Sexual</strong>, and <strong>Violence</strong>. Each category is scored on a 0–6 severity scale; this
+guardrail blocks any request or response that meets or exceeds the configured threshold
+for any category.</p>
+<h2 id="when-to-use-this-guardrail">When to use this guardrail<a class="headerlink" href="#when-to-use-this-guardrail" title="Permanent link">&para;</a></h2>
+<p>Attach to the <code>input</code> position to refuse harmful or off-topic user requests before they
+reach the model. Attach to the <code>output</code> position to catch any harmful content the model
+may generate, for example from adversarial prompts or retrieved document fragments.</p>
+<p>Use both positions for customer-facing agents (support bots, public chat interfaces)
+where any exposure to harmful output carries reputational or legal risk.</p>
+<h2 id="recommended-agent-configuration">Recommended agent configuration<a class="headerlink" href="#recommended-agent-configuration" title="Permanent link">&para;</a></h2>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nt">guardrails</span><span class="p">:</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="nt">input</span><span class="p">:</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">ref</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;azure-content-moderation&quot;</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">      </span><span class="nt">severity_threshold</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span><span class="w">     </span><span class="c1"># Trigger on moderate+ content (AML normalized 0–10)</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">      </span><span class="nt">on_fail</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;block&quot;</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">  </span><span class="nt">output</span><span class="p">:</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">ref</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;azure-content-moderation&quot;</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">      </span><span class="nt">severity_threshold</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">      </span><span class="nt">on_fail</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;block&quot;</span>
+</span></code></pre></div>
+<p>Adjust <code>severity_threshold</code> to match your product's content policy:
+- <code>3</code> — strict: block anything above very mild
+- <code>5</code> — balanced: block moderate and above (recommended default)
+- <code>7</code> — permissive: block only severe content</p>
+<h2 id="severity-scale-mapping">Severity scale mapping<a class="headerlink" href="#severity-scale-mapping" title="Permanent link">&para;</a></h2>
+<p>Azure Content Safety returns a 0–6 severity per category. The Lambda wrapper normalizes this to AML's 0–10 scale before returning the result:</p>
+<table>
+<thead>
+<tr>
+<th>Azure severity</th>
+<th>AML severity</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>0–2</td>
+<td>Safe</td>
+</tr>
+<tr>
+<td>2</td>
+<td>3–4</td>
+<td>Low</td>
+</tr>
+<tr>
+<td>4</td>
+<td>5–6</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>6</td>
+<td>8–10</td>
+<td>High</td>
+</tr>
+</tbody>
+</table>
+<h2 id="relationship-to-other-guardrails">Relationship to other guardrails<a class="headerlink" href="#relationship-to-other-guardrails" title="Permanent link">&para;</a></h2>
+<p>This guardrail and <code>bedrock-pii-scan</code> serve different purposes and can be stacked:</p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nt">guardrails</span><span class="p">:</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span><span class="nt">input</span><span class="p">:</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">ref</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;bedrock-pii-scan&quot;</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">      </span><span class="nt">on_fail</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;apply&quot;</span><span class="w">            </span><span class="c1"># Redact PII before content moderation runs</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">ref</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;azure-content-moderation&quot;</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">      </span><span class="nt">severity_threshold</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">      </span><span class="nt">on_fail</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;block&quot;</span><span class="w">            </span><span class="c1"># Block if moderation score &gt;= 5</span>
+</span></code></pre></div>
+<p>PII redaction runs first to strip personal data, then content moderation checks the
+sanitised input for harmful content. Both guardrails must pass before the model
+receives the request.</p>
 
 
 
@@ -1569,7 +1847,7 @@
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../legal-policies.kb/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Legal Policies">
+          <a href="../bedrock-pii-scan.guardrail/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Bedrock PII Scan">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -1579,27 +1857,11 @@
                 Previous
               </span>
               <div class="md-ellipsis">
-                Legal Policies
+                Bedrock PII Scan
               </div>
             </div>
           </a>
         
-        
-          
-          <a href="../claude-4-sonnet.model/" class="md-footer__link md-footer__link--next" aria-label="Next: Claude 4 Sonnet (Bedrock)">
-            <div class="md-footer__title">
-              <span class="md-footer__direction">
-                Next
-              </span>
-              <div class="md-ellipsis">
-                Claude 4 Sonnet (Bedrock)
-              </div>
-            </div>
-            <div class="md-footer__button md-icon">
-              
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
-            </div>
-          </a>
         
       </nav>
     
@@ -1629,10 +1891,10 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.sections", "navigation.tracking", "navigation.path", "navigation.top", "navigation.footer", "search.highlight", "search.suggest", "search.share", "content.code.copy", "content.code.annotate", "toc.follow", "toc.integrate"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.tabs", "navigation.sections", "navigation.tracking", "navigation.path", "navigation.top", "navigation.footer", "search.highlight", "search.suggest", "search.share", "content.code.copy", "content.code.annotate", "toc.follow", "toc.integrate"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
       
     
   </body>

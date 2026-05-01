@@ -10,31 +10,31 @@
       
       
       
-        <link rel="canonical" href="https://alirion-io.github.io/aml/claude-4-sonnet.model/">
+        <link rel="canonical" href="https://alirion-io.github.io/aml/examples/models/gpt-4o.model/">
       
       
-        <link rel="prev" href="../customer-preferences.collection/">
+        <link rel="prev" href="../claude-4-sonnet.model/">
       
       
-        <link rel="next" href="../gpt-4o.model/">
+        <link rel="next" href="../../iam/support-agent-role.iam/">
       
       
         
       
       
-      <link rel="icon" href="../assets/favicon.png">
+      <link rel="icon" href="../../../assets/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
     
     
       
-        <title>Claude 4 Sonnet (Bedrock) - Agent Modeling Language</title>
+        <title>GPT-4o (OpenAI) - Agent Modeling Language</title>
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
       
       
 
@@ -53,9 +53,9 @@
       
     
     
-      <link rel="stylesheet" href="../stylesheets/extra.css">
+      <link rel="stylesheet" href="../../../stylesheets/extra.css">
     
-    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -80,7 +80,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#example-claude-4-sonnet-amazon-bedrock" class="md-skip">
+        <a href="#example-gpt-4o-openai" class="md-skip">
           Skip to content
         </a>
       
@@ -94,9 +94,9 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href=".." title="Agent Modeling Language" class="md-header__button md-logo" aria-label="Agent Modeling Language" data-md-component="logo">
+    <a href="../../.." title="Agent Modeling Language" class="md-header__button md-logo" aria-label="Agent Modeling Language" data-md-component="logo">
       
-  <img src="../assets/alirion-icon-transparent_dark.svg" alt="logo">
+  <img src="../../../assets/alirion-icon-transparent_dark.svg" alt="logo">
 
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -113,7 +113,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Claude 4 Sonnet (Bedrock)
+              GPT-4o (OpenAI)
             
           </span>
         </div>
@@ -231,7 +231,7 @@
   
   
     <li class="md-tabs__item">
-      <a href=".." class="md-tabs__link">
+      <a href="../../.." class="md-tabs__link">
         
   
   
@@ -252,7 +252,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../00-introduction/" class="md-tabs__link">
+        <a href="../../../00-introduction/" class="md-tabs__link">
           
   
   
@@ -283,7 +283,7 @@
     
     
       <li class="md-tabs__item md-tabs__item--active">
-        <a href="../support-agent.agent/" class="md-tabs__link">
+        <a href="../../agents/support-agent.agent/" class="md-tabs__link">
           
   
   
@@ -322,9 +322,9 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href=".." title="Agent Modeling Language" class="md-nav__button md-logo" aria-label="Agent Modeling Language" data-md-component="logo">
+    <a href="../../.." title="Agent Modeling Language" class="md-nav__button md-logo" aria-label="Agent Modeling Language" data-md-component="logo">
       
-  <img src="../assets/alirion-icon-transparent_dark.svg" alt="logo">
+  <img src="../../../assets/alirion-icon-transparent_dark.svg" alt="logo">
 
     </a>
     Agent Modeling Language
@@ -351,7 +351,7 @@
   
   
     <li class="md-nav__item">
-      <a href=".." class="md-nav__link">
+      <a href="../../.." class="md-nav__link">
         
   
   
@@ -430,7 +430,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../00-introduction/" class="md-nav__link">
+      <a href="../../../00-introduction/" class="md-nav__link">
         
   
   
@@ -458,7 +458,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../01-agent-definition/" class="md-nav__link">
+      <a href="../../../01-agent-definition/" class="md-nav__link">
         
   
   
@@ -486,7 +486,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../02-tool-definition/" class="md-nav__link">
+      <a href="../../../02-tool-definition/" class="md-nav__link">
         
   
   
@@ -514,7 +514,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../03-kb-definition/" class="md-nav__link">
+      <a href="../../../03-kb-definition/" class="md-nav__link">
         
   
   
@@ -542,7 +542,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../04-iam-definition/" class="md-nav__link">
+      <a href="../../../04-iam-definition/" class="md-nav__link">
         
   
   
@@ -570,7 +570,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../05-model-definition/" class="md-nav__link">
+      <a href="../../../05-model-definition/" class="md-nav__link">
         
   
   
@@ -598,7 +598,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../06-collection-definition/" class="md-nav__link">
+      <a href="../../../06-collection-definition/" class="md-nav__link">
         
   
   
@@ -626,7 +626,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../07-guardrail-definition/" class="md-nav__link">
+      <a href="../../../07-guardrail-definition/" class="md-nav__link">
         
   
   
@@ -654,7 +654,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../08-json-schema/" class="md-nav__link">
+      <a href="../../../08-json-schema/" class="md-nav__link">
         
   
   
@@ -801,7 +801,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../support-agent.agent/" class="md-nav__link">
+      <a href="../../agents/support-agent.agent/" class="md-nav__link">
         
   
   
@@ -829,7 +829,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../translator.agent/" class="md-nav__link">
+      <a href="../../agents/translator.agent/" class="md-nav__link">
         
   
   
@@ -920,7 +920,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../send-email.tool/" class="md-nav__link">
+      <a href="../../tools/send-email.tool/" class="md-nav__link">
         
   
   
@@ -948,7 +948,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../glossary-lookup.tool/" class="md-nav__link">
+      <a href="../../tools/glossary-lookup.tool/" class="md-nav__link">
         
   
   
@@ -1039,7 +1039,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../brand-guidelines.kb/" class="md-nav__link">
+      <a href="../../knowledge/brand-guidelines.kb/" class="md-nav__link">
         
   
   
@@ -1067,7 +1067,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../legal-policies.kb/" class="md-nav__link">
+      <a href="../../knowledge/legal-policies.kb/" class="md-nav__link">
         
   
   
@@ -1158,7 +1158,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../customer-preferences.collection/" class="md-nav__link">
+      <a href="../../collections/customer-preferences.collection/" class="md-nav__link">
         
   
   
@@ -1255,6 +1255,34 @@
                 
   
   
+  
+  
+    <li class="md-nav__item">
+      <a href="../claude-4-sonnet.model/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Claude 4 Sonnet (Bedrock)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
     
   
   
@@ -1274,7 +1302,7 @@
   <span class="md-ellipsis">
     
   
-    Claude 4 Sonnet (Bedrock)
+    GPT-4o (OpenAI)
   
 
     
@@ -1292,7 +1320,7 @@
   <span class="md-ellipsis">
     
   
-    Claude 4 Sonnet (Bedrock)
+    GPT-4o (OpenAI)
   
 
     
@@ -1332,34 +1360,6 @@
   
 </nav>
       
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../gpt-4o.model/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    GPT-4o (OpenAI)
-  
-
-    
-  </span>
-  
-  
-
-      </a>
     </li>
   
 
@@ -1406,7 +1406,7 @@
   <span class="md-ellipsis">
     
   
-    Guardrails
+    IAM Policies
   
 
     
@@ -1419,6 +1419,97 @@
         
         <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_6_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_3_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    IAM Policies
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../iam/support-agent-role.iam/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Support Agent Role
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_7" id="__nav_3_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guardrails
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1435,7 +1526,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../bedrock-pii-scan.guardrail/" class="md-nav__link">
+      <a href="../../guardrails/bedrock-pii-scan.guardrail/" class="md-nav__link">
         
   
   
@@ -1443,6 +1534,41 @@
     
   
     Bedrock PII Scan
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guardrails/azure-content-moderation.guardrail/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Azure Content Moderation
   
 
     
@@ -1503,7 +1629,7 @@
   
   
     <li class="md-path__item">
-      <a href=".." class="md-path__link">
+      <a href="../../.." class="md-path__link">
         
   <span class="md-ellipsis">
     Home
@@ -1526,7 +1652,7 @@
     
     
       <li class="md-path__item">
-        <a href="../support-agent.agent/" class="md-path__link">
+        <a href="../../agents/support-agent.agent/" class="md-path__link">
           
   <span class="md-ellipsis">
     Examples
@@ -1547,7 +1673,7 @@
     
     
       <li class="md-path__item">
-        <a href="./" class="md-path__link">
+        <a href="../claude-4-sonnet.model/" class="md-path__link">
           
   <span class="md-ellipsis">
     Models
@@ -1572,52 +1698,57 @@
   
 
 
-<h1 id="example-claude-4-sonnet-amazon-bedrock">Example — Claude 4 Sonnet (Amazon Bedrock)<a class="headerlink" href="#example-claude-4-sonnet-amazon-bedrock" title="Permanent link">&para;</a></h1>
+<h1 id="example-gpt-4o-openai">Example — GPT-4o (OpenAI)<a class="headerlink" href="#example-gpt-4o-openai" title="Permanent link">&para;</a></h1>
 <hr />
 <div class="language-markdown highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>---
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>spec_version: &quot;1.2&quot;
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>model_id: &quot;claude-4-sonnet&quot;
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>display_name: &quot;Claude 4 Sonnet (Bedrock, us-east-1)&quot;
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>provider: &quot;bedrock&quot;
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>status: &quot;active&quot;
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>owner: &quot;platform-ml-team&quot;
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>last_updated: &quot;2026-01-15&quot;
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>
-</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>provider_config:
-</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>  bedrock:
-</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>    model_id: &quot;us.anthropic.claude-sonnet-4-20250514-v1:0&quot;
-</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>    region: &quot;us-east-1&quot;
-</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>    credentials:
-</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>      source: &quot;iam_role&quot;
-</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>
-</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>capabilities:
-</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>  context_window: 200000
-</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>  max_output_tokens: 16000
-</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a>  supports_tools: true
-</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a>  supports_vision: true
-</span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a>  supports_system_prompt: true
-</span><span id="__span-0-23"><a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a>  supports_streaming: true
-</span><span id="__span-0-24"><a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a>  modalities: [&quot;text&quot;, &quot;image&quot;]
-</span><span id="__span-0-25"><a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a>
-</span><span id="__span-0-26"><a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a>defaults:
-</span><span id="__span-0-27"><a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a>  temperature: 0.7
-</span><span id="__span-0-28"><a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a><span class="gu">  max_tokens: 4096</span>
-</span><span id="__span-0-29"><a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a><span class="gu">---</span>
-</span><span id="__span-0-30"><a id="__codelineno-0-30" name="__codelineno-0-30" href="#__codelineno-0-30"></a>
-</span><span id="__span-0-31"><a id="__codelineno-0-31" name="__codelineno-0-31" href="#__codelineno-0-31"></a><span class="gh"># Claude 4 Sonnet (Amazon Bedrock)</span>
-</span><span id="__span-0-32"><a id="__codelineno-0-32" name="__codelineno-0-32" href="#__codelineno-0-32"></a>
-</span><span id="__span-0-33"><a id="__codelineno-0-33" name="__codelineno-0-33" href="#__codelineno-0-33"></a>Claude 4 Sonnet is Anthropic&#39;s balanced model for intelligence and speed, accessed here through Amazon Bedrock in <span class="sb">`us-east-1`</span>. It is the default model for most production agents on this platform.
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>model_id: &quot;gpt-4o&quot;
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>version: &quot;1.0.0&quot;
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>status: &quot;active&quot;
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>meta:
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>  name: &quot;GPT-4o (OpenAI)&quot;
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>  owner: &quot;platform-ml-team&quot;
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>  last_updated: &quot;2026-01-15&quot;
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>provider:
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>  type: &quot;openai&quot;
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>  config:
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>    model: &quot;gpt-4o&quot;
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>    credentials:
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>      source: &quot;aws_secrets_manager&quot;
+</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>      secret_id: &quot;prod/openai/api-key&quot;
+</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>      region: &quot;us-east-1&quot;
+</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a>      key: &quot;api_key&quot;
+</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a>
+</span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a>capabilities:
+</span><span id="__span-0-23"><a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a>  context_window: 128000
+</span><span id="__span-0-24"><a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a>  max_output_tokens: 16384
+</span><span id="__span-0-25"><a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a>  supports_tools: true
+</span><span id="__span-0-26"><a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a>  supports_system_prompt: true
+</span><span id="__span-0-27"><a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a>  supports_streaming: true
+</span><span id="__span-0-28"><a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a>  modalities: [&quot;text&quot;, &quot;image&quot;]
+</span><span id="__span-0-29"><a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a>
+</span><span id="__span-0-30"><a id="__codelineno-0-30" name="__codelineno-0-30" href="#__codelineno-0-30"></a>defaults:
+</span><span id="__span-0-31"><a id="__codelineno-0-31" name="__codelineno-0-31" href="#__codelineno-0-31"></a>  temperature: 0.7
+</span><span id="__span-0-32"><a id="__codelineno-0-32" name="__codelineno-0-32" href="#__codelineno-0-32"></a><span class="gu">  max_tokens: 4096</span>
+</span><span id="__span-0-33"><a id="__codelineno-0-33" name="__codelineno-0-33" href="#__codelineno-0-33"></a><span class="gu">---</span>
 </span><span id="__span-0-34"><a id="__codelineno-0-34" name="__codelineno-0-34" href="#__codelineno-0-34"></a>
-</span><span id="__span-0-35"><a id="__codelineno-0-35" name="__codelineno-0-35" href="#__codelineno-0-35"></a>Use this model for agents requiring multi-step reasoning, tool use, and document understanding with a large context window. For high-volume, low-latency agents where response quality requirements are lower, prefer <span class="sb">`claude-4-haiku`</span>. For the most complex reasoning tasks, prefer <span class="sb">`claude-4-opus`</span>.
+</span><span id="__span-0-35"><a id="__codelineno-0-35" name="__codelineno-0-35" href="#__codelineno-0-35"></a><span class="gh"># Description</span>
 </span><span id="__span-0-36"><a id="__codelineno-0-36" name="__codelineno-0-36" href="#__codelineno-0-36"></a>
-</span><span id="__span-0-37"><a id="__codelineno-0-37" name="__codelineno-0-37" href="#__codelineno-0-37"></a>Model access must be enabled in the AWS console for <span class="sb">`us.anthropic.claude-sonnet-4-20250514-v1:0`</span> in <span class="sb">`us-east-1`</span> before deploying any agent that references this model.
+</span><span id="__span-0-37"><a id="__codelineno-0-37" name="__codelineno-0-37" href="#__codelineno-0-37"></a>GPT-4o is OpenAI&#39;s flagship multimodal model, accessed directly through the OpenAI API. It supports text and image inputs, tool use, and a 128,000-token context window.
+</span><span id="__span-0-38"><a id="__codelineno-0-38" name="__codelineno-0-38" href="#__codelineno-0-38"></a>
+</span><span id="__span-0-39"><a id="__codelineno-0-39" name="__codelineno-0-39" href="#__codelineno-0-39"></a>Use this model when agents must interoperate with OpenAI-specific features, when your organization has an existing OpenAI contract, or when evaluating output quality across providers.
+</span><span id="__span-0-40"><a id="__codelineno-0-40" name="__codelineno-0-40" href="#__codelineno-0-40"></a>
+</span><span id="__span-0-41"><a id="__codelineno-0-41" name="__codelineno-0-41" href="#__codelineno-0-41"></a>The credentials are fetched at runtime from the backend declared in <span class="sb">`credentials.source`</span>. They must never appear in any AML file. To use an environment variable during local development, set <span class="sb">`source: &quot;env&quot;`</span> and add <span class="sb">`name: &quot;OPENAI_API_KEY&quot;`</span>.
 </span></code></pre></div>
 <hr />
 <h2 id="notes">Notes<a class="headerlink" href="#notes" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong>Credential model</strong>: The runtime assumes the IAM role declared in the agent's <code>role</code> field. No API key is needed — access is controlled through AWS IAM.</li>
-<li><strong>Cross-region inference</strong>: The <code>us.</code> prefix in the Bedrock <code>model_id</code> enables cross-region inference, routing requests across US regions for availability.</li>
-<li><strong>Fallback</strong>: Agents that use this as their primary model typically use <code>claude-4-haiku</code> as <code>fallback_model</code> for cost or availability reasons.</li>
+<li><strong>Credential model</strong>: The runtime resolves <code>credentials</code> at agent startup. The example above reads the API key from AWS Secrets Manager (<code>prod/openai/api-key</code>, key <code>api_key</code>). For development, substitute <code>source: "env"</code> and <code>name: "OPENAI_API_KEY"</code> to read from an environment variable instead. The key value must never appear in any AML file.</li>
+<li><strong>Secret rotation</strong>: Rotate the secret in AWS Secrets Manager (or whichever backend is declared). No AML files need to change.</li>
+<li><strong>Rate limits</strong>: OpenAI rate limits apply per organization and tier. For high-throughput agents, consider <code>litellm</code> with load balancing across multiple keys.</li>
+<li><strong>Alternative endpoint</strong>: To use an Azure OpenAI deployment instead, set <code>base_url</code> to your Azure endpoint and update <code>credentials</code> accordingly. The <code>model</code> field should match your Azure deployment name.</li>
 </ul>
 
 
@@ -1654,7 +1785,7 @@
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../customer-preferences.collection/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Customer Preferences">
+          <a href="../claude-4-sonnet.model/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Claude 4 Sonnet (Bedrock)">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -1664,20 +1795,20 @@
                 Previous
               </span>
               <div class="md-ellipsis">
-                Customer Preferences
+                Claude 4 Sonnet (Bedrock)
               </div>
             </div>
           </a>
         
         
           
-          <a href="../gpt-4o.model/" class="md-footer__link md-footer__link--next" aria-label="Next: GPT-4o (OpenAI)">
+          <a href="../../iam/support-agent-role.iam/" class="md-footer__link md-footer__link--next" aria-label="Next: Support Agent Role">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                GPT-4o (OpenAI)
+                Support Agent Role
               </div>
             </div>
             <div class="md-footer__button md-icon">
@@ -1714,10 +1845,10 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.sections", "navigation.tracking", "navigation.path", "navigation.top", "navigation.footer", "search.highlight", "search.suggest", "search.share", "content.code.copy", "content.code.annotate", "toc.follow", "toc.integrate"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.tabs", "navigation.sections", "navigation.tracking", "navigation.path", "navigation.top", "navigation.footer", "search.highlight", "search.suggest", "search.share", "content.code.copy", "content.code.annotate", "toc.follow", "toc.integrate"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
       
     
   </body>

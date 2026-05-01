@@ -281,7 +281,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../support-agent.agent/" class="md-tabs__link">
+        <a href="../examples/agents/support-agent.agent/" class="md-tabs__link">
           
   
   
@@ -700,6 +700,56 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-guardrails-are-invoked" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How guardrails are invoked
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#design-decisions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Design decisions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Design decisions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#only-rest-api-and-lambda-are-supported-transport-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Only rest-api and lambda are supported transport types
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#built-in-guardrails-omit-transport-no-special-type-needed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Built-in guardrails omit transport — no special type needed
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#file-structure" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -734,10 +784,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#meta-descriptive-metadata-recommended" class="md-nav__link">
+  <a href="#meta-descriptive-metadata-required" class="md-nav__link">
     <span class="md-ellipsis">
       
-        meta — descriptive metadata (recommended)
+        meta — descriptive metadata (required)
       
     </span>
   </a>
@@ -745,10 +795,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#provider_config-provider-specific-settings-required" class="md-nav__link">
+  <a href="#behaviour-guardrail-contract-required" class="md-nav__link">
     <span class="md-ellipsis">
       
-        provider_config — provider-specific settings (required)
+        behaviour — guardrail contract (required)
       
     </span>
   </a>
@@ -756,10 +806,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#secret_ref-secret-reference-pattern" class="md-nav__link">
+  <a href="#transport-invocation-details-required-for-external-guardrails" class="md-nav__link">
     <span class="md-ellipsis">
       
-        secret_ref — secret reference pattern
+        transport — invocation details (required for external guardrails)
       
     </span>
   </a>
@@ -767,10 +817,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#invocation-execution-settings-required-for-external-providers" class="md-nav__link">
+  <a href="#invocation-execution-settings-required-when-transport-is-present" class="md-nav__link">
     <span class="md-ellipsis">
       
-        invocation — execution settings (required for external providers)
+        invocation — execution settings (required when transport is present)
       
     </span>
   </a>
@@ -778,21 +828,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#fallback-degraded-mode-behavior-recommended-for-external-providers" class="md-nav__link">
+  <a href="#fallback-degraded-mode-behavior-recommended-for-external-transports" class="md-nav__link">
     <span class="md-ellipsis">
       
-        fallback — degraded-mode behavior (recommended for external providers)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#scope-applicable-pipeline-positions-required" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        scope — applicable pipeline positions (required)
+        fallback — degraded-mode behavior (recommended for external transports)
       
     </span>
   </a>
@@ -805,10 +844,110 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#full-example-aws-bedrock-pii-guardrail" class="md-nav__link">
+  <a href="#standard-guardrail-output-format" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Full example: AWS Bedrock PII guardrail
+        Standard guardrail output format
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#agent-call-site-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Agent call-site reference
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Agent call-site reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#score-guardrails" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        score guardrails
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#transform-guardrails" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        transform guardrails
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#annotate-and-enrich-guardrails" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        annotate and enrich guardrails
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#validation-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Validation rules
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Validation rules">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#hard-validation-failures" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hard validation failures
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#recommended-lint-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Recommended lint rules
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#full-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Full example
       
     </span>
   </a>
@@ -981,7 +1120,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../support-agent.agent/" class="md-nav__link">
+      <a href="../examples/agents/support-agent.agent/" class="md-nav__link">
         
   
   
@@ -1009,7 +1148,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../translator.agent/" class="md-nav__link">
+      <a href="../examples/agents/translator.agent/" class="md-nav__link">
         
   
   
@@ -1097,7 +1236,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../send-email.tool/" class="md-nav__link">
+      <a href="../examples/tools/send-email.tool/" class="md-nav__link">
         
   
   
@@ -1125,7 +1264,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../glossary-lookup.tool/" class="md-nav__link">
+      <a href="../examples/tools/glossary-lookup.tool/" class="md-nav__link">
         
   
   
@@ -1213,7 +1352,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../brand-guidelines.kb/" class="md-nav__link">
+      <a href="../examples/knowledge/brand-guidelines.kb/" class="md-nav__link">
         
   
   
@@ -1241,7 +1380,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../legal-policies.kb/" class="md-nav__link">
+      <a href="../examples/knowledge/legal-policies.kb/" class="md-nav__link">
         
   
   
@@ -1329,7 +1468,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../customer-preferences.collection/" class="md-nav__link">
+      <a href="../examples/collections/customer-preferences.collection/" class="md-nav__link">
         
   
   
@@ -1424,7 +1563,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../claude-4-sonnet.model/" class="md-nav__link">
+      <a href="../examples/models/claude-4-sonnet.model/" class="md-nav__link">
         
   
   
@@ -1452,7 +1591,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../gpt-4o.model/" class="md-nav__link">
+      <a href="../examples/models/gpt-4o.model/" class="md-nav__link">
         
   
   
@@ -1511,7 +1650,7 @@
   <span class="md-ellipsis">
     
   
-    Guardrails
+    IAM Policies
   
 
     
@@ -1524,6 +1663,94 @@
         
         <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_6_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_3_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    IAM Policies
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/iam/support-agent-role.iam/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Support Agent Role
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_7" id="__nav_3_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guardrails
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1540,7 +1767,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../bedrock-pii-scan.guardrail/" class="md-nav__link">
+      <a href="../examples/guardrails/bedrock-pii-scan.guardrail/" class="md-nav__link">
         
   
   
@@ -1548,6 +1775,41 @@
     
   
     Bedrock PII Scan
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/guardrails/azure-content-moderation.guardrail/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Azure Content Moderation
   
 
     
@@ -1658,221 +1920,201 @@
 </blockquote>
 <hr />
 <h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
-<p>A guardrail definition file declares one named guardrail check that agents can reference. It maps a stable, human-readable identifier (e.g., <code>pii-scan</code>) to a specific provider, invocation details, and failure policy. The compiler resolves guardrail references from agent definitions and injects the complete provider configuration into the compiled payload. The runtime never reads raw guardrail identifiers — it only executes compiled payloads.</p>
-<p>This indirection serves the same purpose as model definition files: the agent author writes <code>ref: "pii-scan"</code>, not a provider ARN, a version number, a region, or a set of credentials. The platform team controls guardrail backends — including provider-specific settings, environment routing, and secret references — in one place without touching any agent file.</p>
-<p>Guardrail definition files are only required when the guardrail is backed by an external provider service (e.g., AWS Bedrock Guardrails, Azure AI Content Safety) or when the check requires any configuration beyond its identifier. For simple platform-built checks, the inline <code>id</code> field in the agent's <code>guardrails</code> section is sufficient.</p>
+<blockquote>
+<p><strong>A note on naming</strong>: The term <em>guardrail</em> is borrowed from the AI safety world, where it primarily connotes blocking and filtering. In AML, the term is intentionally broader: a guardrail is any runtime-invoked backend that inspects, transforms, tags, or enriches agent data. Use cases range from PII redaction and content moderation to topic classification, sentiment scoring, and metadata injection. If the name feels too narrow for your use case, the underlying concept is simply a <em>runtime pipeline hook</em>.</p>
+</blockquote>
+<p>A guardrail is a special-purpose backend that the agent runtime invokes automatically against agent inputs and outputs — before passing data to the model, or before returning results to the caller. Think of a guardrail as a special tool that the runtime calls, rather than one the model decides to call.</p>
+<p>Guardrails share the same invocation architecture as tools: they receive a structured payload, call a transport backend, and return a structured result. The key differences from tools are:</p>
+<ul>
+<li><strong>Invoked by the runtime, not the model.</strong> The model is unaware that guardrails are running.</li>
+<li><strong>Description is informational only.</strong> Unlike tool descriptions, <code>meta.description</code> is never injected into the model's context.</li>
+<li><strong>Input is implicit.</strong> The agent runtime automatically passes parameters of compatible content types from the agent's interface to the guardrail — no input schema needs to be declared.</li>
+<li><strong>Result determines pipeline behavior.</strong> The guardrail's output drives a decision: halt, transform the payload, annotate it, or continue.</li>
+</ul>
+<p>A guardrail definition file maps a stable identifier (e.g., <code>pii-scan</code>) to a transport backend, invocation policy, and result type. Agent files reference guardrails by ID — they never copy guardrail configuration inline. When a guardrail backend changes, only the guardrail definition file changes; the compiler re-validates all referencing agents automatically.</p>
 <hr />
-<h2 id="file-structure">File structure<a class="headerlink" href="#file-structure" title="Permanent link">&para;</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>---
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>[YAML front matter — all structured fields]
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>---
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a># Description
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>[optional prose — what this guardrail checks, when to use it, usage guidance]
-</span></code></pre></div>
-<p>The prose body is optional and intended for the guardrail registry documentation UI. It does not affect runtime behavior.</p>
-<hr />
-<h2 id="yaml-front-matter-complete-field-reference">YAML front matter — complete field reference<a class="headerlink" href="#yaml-front-matter-complete-field-reference" title="Permanent link">&para;</a></h2>
-<h3 id="top-level-required-fields">Top-level required fields<a class="headerlink" href="#top-level-required-fields" title="Permanent link">&para;</a></h3>
-<p><div class="language-yaml highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nt">spec_version</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;1.2&quot;</span>
-</span></code></pre></div>
-The AML format version. Must equal a platform-approved version string.</p>
-<p><div class="language-yaml highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nt">guardrail_id</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;pii-scan&quot;</span>
-</span></code></pre></div>
-Stable, immutable identifier for this guardrail entry. Used as the value of <code>ref</code> in agent definition <code>guardrails</code> sections. Lowercase kebab-case. Must match <code>^[a-z0-9_-]{3,64}$</code>. Once published, the <code>guardrail_id</code> cannot change — create a new entry for a different check.</p>
-<p><div class="language-yaml highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nt">display_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;PII</span><span class="nv"> </span><span class="s">Scan</span><span class="nv"> </span><span class="s">(Bedrock)&quot;</span>
-</span></code></pre></div>
-Human-readable name shown in the guardrail registry UI and compiler output.</p>
-<p><div class="language-yaml highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nt">provider</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;aws-bedrock-guardrail&quot;</span>
-</span></code></pre></div>
-Provider type. Determines which <code>provider_config</code> sub-key is required. Enum:</p>
+<h2 id="how-guardrails-are-invoked">How guardrails are invoked<a class="headerlink" href="#how-guardrails-are-invoked" title="Permanent link">&para;</a></h2>
+<p>When the agent runtime reaches a guardrail-instrumented pipeline position (defined in the agent's <code>guardrails</code> section), it passes the relevant content as the guardrail's input payload. Four positions are supported:</p>
 <table>
 <thead>
 <tr>
-<th>Value</th>
-<th>Provider</th>
+<th>Position</th>
+<th>Content scanned</th>
+<th>Primary threat addressed</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>aws-bedrock-guardrail</code></td>
-<td>Amazon Bedrock Guardrails</td>
+<td><code>input</code></td>
+<td>Agent input fields matching <code>behaviour.content_types</code>, before the model sees them</td>
+<td>Direct injection, unsafe user input</td>
 </tr>
 <tr>
-<td><code>azure-content-safety</code></td>
-<td>Azure AI Content Safety</td>
+<td><code>tool_input</code></td>
+<td>Tool call arguments generated by the model, before dispatch</td>
+<td>Injected instructions crafted by a compromised model</td>
 </tr>
 <tr>
-<td><code>gcp-natural-language</code></td>
-<td>Google Cloud Natural Language API</td>
+<td><code>tool_output</code></td>
+<td>Tool results returned to the runtime, before the model processes them</td>
+<td>Indirect prompt injection via retrieved content</td>
 </tr>
 <tr>
-<td><code>platform-native</code></td>
-<td>Built-in platform check (no external call)</td>
-</tr>
-<tr>
-<td><code>custom</code></td>
-<td>Custom provider — requires a <code>custom</code> config block</td>
+<td><code>output</code></td>
+<td>Agent output fields matching <code>behaviour.content_types</code>, before returning to the caller</td>
+<td>Model-generated harmful content, PII leakage</td>
 </tr>
 </tbody>
 </table>
+<p>For <code>input</code> and <code>output</code> positions, the runtime collects all parameters from the agent's interface that match the guardrail's declared <code>behaviour.content_types</code>:</p>
+<ul>
+<li>A guardrail with <code>behaviour.content_types: ["text"]</code> receives all <code>string</code>-typed fields from the agent's input or output object.</li>
+<li>A guardrail with <code>behaviour.content_types: ["image"]</code> receives all binary image-typed fields.</li>
+<li>A guardrail with <code>behaviour.content_types: ["text", "image"]</code> receives both.</li>
+</ul>
+<p>For <code>tool_input</code> and <code>tool_output</code> positions, the content is the serialised tool call arguments (as a JSON object) or the tool result (as a JSON object). The <code>behaviour.content_types</code> matching logic applies the same way — a guardrail with <code>content_types: ["text"]</code> receives string-valued fields from the tool argument or result object.</p>
+<p>If no parameters at the attached position match the guardrail's <code>behaviour.content_types</code>, it is a hard validation error at compile time.</p>
+<p>The guardrail receives a normalized input object of the form:</p>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="p">{</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="nt">&quot;content&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;&lt;field_name&gt;&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&lt;field_value&gt;&quot;</span><span class="p">,</span><span class="w"> </span><span class="err">...</span><span class="w"> </span><span class="p">},</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">  </span><span class="nt">&quot;position&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;input&quot;</span><span class="p">,</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">  </span><span class="nt">&quot;agent_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;support-agent&quot;</span><span class="p">,</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">  </span><span class="nt">&quot;run_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;run-abc123&quot;</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="p">}</span>
+</span></code></pre></div>
+<p>The guardrail response follows the <a href="#standard-guardrail-output-format">standard output format</a> described below.</p>
+<hr />
+<h2 id="design-decisions">Design decisions<a class="headerlink" href="#design-decisions" title="Permanent link">&para;</a></h2>
+<p>AML's guardrail spec makes two deliberate choices that diverge from how managed AI platforms typically expose guardrails. This section explains the reasoning so the constraints are understood rather than just followed.</p>
+<h3 id="only-rest-api-and-lambda-are-supported-transport-types">Only <code>rest-api</code> and <code>lambda</code> are supported transport types<a class="headerlink" href="#only-rest-api-and-lambda-are-supported-transport-types" title="Permanent link">&para;</a></h3>
+<p>Platforms such as AWS Bedrock, Azure AI Content Safety, and GCP Natural Language API offer native guardrail or moderation endpoints with their own request/response shapes, versioning schemes, and severity scales. Supporting them as first-class transport types would require the AML runtime to understand each provider's response envelope — and update that logic every time a provider changes their API.</p>
+<p>Instead, AML defines a <a href="#standard-guardrail-output-format">standard output format</a> and requires all guardrail backends to return that shape. Provider-specific calls — including any normalisation from a provider's native scale (e.g., Azure's 0–6) to AML's 0–10 scale — belong in a Lambda function or REST API that the team owns and versions independently.</p>
+<p>This makes the runtime simple and stable. It also makes the normalisation logic explicit, testable, and auditable: it lives in a Lambda you control, not inside the platform.</p>
+<div class="admonition tip">
+<p class="admonition-title">Using AWS Bedrock, Azure or GCP?</p>
+<p>Write a Lambda that calls the provider API, maps the response to the AML output format, and configure this guardrail to call that Lambda. The Lambda's IAM role can hold the provider credentials. The Lambda ARN is pinned in the guardrail definition — versioning and rollback are handled via Lambda aliases or versions.</p>
+</div>
+<h3 id="built-in-guardrails-omit-transport-no-special-type-needed">Built-in guardrails omit <code>transport</code> — no special type needed<a class="headerlink" href="#built-in-guardrails-omit-transport-no-special-type-needed" title="Permanent link">&para;</a></h3>
+<p>Platform-built checks (jailbreak detection, token budget enforcement, etc.) follow the same pattern as tool <code>type: "function"</code>: they are in-process by definition and do not need an external call. Declaring their absence via a <code>transport: { type: "platform-native" }</code> block would be noise — it adds syntax to say "no transport".</p>
+<p>The rule is simple: if <code>transport</code> is present, the guardrail makes an external call and <code>invocation</code> is required. If <code>transport</code> is absent, the runtime invokes it in-process. No special transport type, no exception-handling in the schema.</p>
+<hr />
+<h2 id="file-structure">File structure<a class="headerlink" href="#file-structure" title="Permanent link">&para;</a></h2>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>---
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>[YAML front matter — all structured fields]
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>---
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>[optional prose — what this guardrail checks, when to use it, usage guidance]
+</span></code></pre></div>
+<p>The Markdown body is optional and intended for the guardrail registry documentation UI. It does not affect runtime behavior.</p>
+<hr />
+<h2 id="yaml-front-matter-complete-field-reference">YAML front matter — complete field reference<a class="headerlink" href="#yaml-front-matter-complete-field-reference" title="Permanent link">&para;</a></h2>
+<h3 id="top-level-required-fields">Top-level required fields<a class="headerlink" href="#top-level-required-fields" title="Permanent link">&para;</a></h3>
+<p><div class="language-yaml highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nt">spec_version</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;1.2&quot;</span>
+</span></code></pre></div>
+The AML format version. Must equal a platform-approved version string.</p>
+<p><div class="language-yaml highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nt">guardrail_id</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;pii-scan&quot;</span>
+</span></code></pre></div>
+Stable, immutable identifier for this guardrail entry. Used as the value of <code>ref</code> in agent definition <code>guardrails</code> sections. Lowercase kebab-case. Must match <code>^[a-z0-9_-]{3,64}$</code>. Once published, the <code>guardrail_id</code> cannot change — create a new entry for a different check.</p>
+<p><div class="language-yaml highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;1.0.0&quot;</span>
+</span></code></pre></div>
+Semantic version of this guardrail definition (MAJOR.MINOR.PATCH). Increment whenever transport config or behavior changes.</p>
 <p><div class="language-yaml highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nt">status</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;active&quot;</span>
 </span></code></pre></div>
 Lifecycle state. Enum: <code>active</code> | <code>deprecated</code> | <code>disabled</code>. A <code>deprecated</code> guardrail triggers a lint warning on any agent that references it. A <code>disabled</code> guardrail causes a hard compile error.</p>
-<p><div class="language-yaml highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ai-safety-team&quot;</span>
-</span></code></pre></div>
-Team or individual responsible for maintaining this guardrail entry.</p>
-<p><div class="language-yaml highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="nt">last_updated</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;2026-04-12&quot;</span>
-</span></code></pre></div>
-ISO 8601 date of the last update to this file.</p>
 <hr />
-<h3 id="meta-descriptive-metadata-recommended"><code>meta</code> — descriptive metadata (recommended)<a class="headerlink" href="#meta-descriptive-metadata-recommended" title="Permanent link">&para;</a></h3>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nt">meta</span><span class="p">:</span>
-</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">&gt;</span>
-</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="w">    </span><span class="no">Detects and redacts personally identifiable information in agent inputs</span>
-</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="w">    </span><span class="no">and outputs using AWS Bedrock Guardrails.</span>
-</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="w">  </span><span class="nt">tags</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;pii&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;privacy&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;gdpr&quot;</span><span class="p p-Indicator">]</span>
-</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="w">  </span><span class="nt">applies_to</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;input&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;output&quot;</span><span class="p p-Indicator">]</span><span class="w">    </span><span class="c1"># Which pipeline positions this guardrail is designed for</span>
+<h3 id="meta-descriptive-metadata-required"><code>meta</code> — descriptive metadata (required)<a class="headerlink" href="#meta-descriptive-metadata-required" title="Permanent link">&para;</a></h3>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nt">meta</span><span class="p">:</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;PII</span><span class="nv"> </span><span class="s">Scan</span><span class="nv"> </span><span class="s">(Bedrock)&quot;</span><span class="w">              </span><span class="c1"># Required — display name in the registry UI</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">&gt;</span><span class="w">                          </span><span class="c1"># Optional — informational only, never sent to the model</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">    </span><span class="no">Detects and redacts personally identifiable information in agent inputs</span>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">    </span><span class="no">and outputs using AWS Bedrock Guardrails.</span>
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="w">  </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ai-safety-team&quot;</span><span class="w">                 </span><span class="c1"># Optional</span>
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="w">  </span><span class="nt">tags</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;pii&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;privacy&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;gdpr&quot;</span><span class="p p-Indicator">]</span><span class="w">        </span><span class="c1"># Optional — searchable labels</span>
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="w">  </span><span class="nt">last_updated</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;2026-04-12&quot;</span><span class="w">             </span><span class="c1"># Optional — ISO 8601 date</span>
 </span></code></pre></div>
-<p><code>applies_to</code> is documentation-only — it does not restrict where agents may attach this guardrail. An agent may attach a guardrail to a position not listed in <code>applies_to</code>; the compiler emits a lint warning in that case.</p>
+<p><code>meta.name</code> is the only required sub-field. All others are optional but recommended.</p>
+<p><code>meta.description</code> is informational only — it is displayed in the guardrail registry UI and used for documentation, but is <strong>never injected into the model's context</strong>. The model has no knowledge that guardrails are running.</p>
 <hr />
-<h3 id="provider_config-provider-specific-settings-required"><code>provider_config</code> — provider-specific settings (required)<a class="headerlink" href="#provider_config-provider-specific-settings-required" title="Permanent link">&para;</a></h3>
-<p>Exactly one sub-key matching the <code>provider</code> value must be present.</p>
-<h4 id="aws-bedrock-guardrail-amazon-bedrock-guardrails"><code>aws-bedrock-guardrail</code> — Amazon Bedrock Guardrails<a class="headerlink" href="#aws-bedrock-guardrail-amazon-bedrock-guardrails" title="Permanent link">&para;</a></h4>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="nt">provider_config</span><span class="p">:</span>
-</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="w">  </span><span class="nt">aws-bedrock-guardrail</span><span class="p">:</span>
-</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="w">    </span><span class="nt">guardrail_id</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;abc123xyz&quot;</span><span class="w">       </span><span class="c1"># Required — Bedrock guardrail ID from AWS console</span>
-</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="w">    </span><span class="nt">guardrail_version</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;1&quot;</span><span class="w">          </span><span class="c1"># Required — exact version; use a numeric string, not &quot;DRAFT&quot; in production</span>
-</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="w">    </span><span class="nt">region</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;eu-west-1&quot;</span><span class="w">             </span><span class="c1"># Required — AWS region where the guardrail is deployed</span>
-</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="w">    </span><span class="nt">credentials</span><span class="p">:</span>
-</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="w">      </span><span class="nt">source</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;iam_role&quot;</span><span class="w">            </span><span class="c1"># iam_role | env | aws_profile (default: iam_role)</span>
+<h3 id="behaviour-guardrail-contract-required"><code>behaviour</code> — guardrail contract (required)<a class="headerlink" href="#behaviour-guardrail-contract-required" title="Permanent link">&para;</a></h3>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="nt">behaviour</span><span class="p">:</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">  </span><span class="nt">result_type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;score&quot;</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">  </span><span class="nt">content_types</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;text&quot;</span><span class="p p-Indicator">]</span>
 </span></code></pre></div>
-<p><strong>Why each field is required:</strong></p>
-<ul>
-<li><strong><code>guardrail_id</code></strong> — the opaque identifier assigned by AWS at guardrail creation. It is environment-specific: a guardrail deployed in a dev account has a different ID from its production counterpart. This value never belongs in the agent file itself.</li>
-<li><strong><code>guardrail_version</code></strong> — Bedrock Guardrails are explicitly versioned. Omitting this or using <code>"DRAFT"</code> in production means the guardrail policy may change without notice (Bedrock promotes draft to a new numeric version only on explicit action). Pin to a numeric version and update this file when a new version is published.</li>
-<li><strong><code>region</code></strong> — Bedrock Guardrails are regional resources. A guardrail provisioned in <code>us-east-1</code> cannot be invoked from <code>eu-west-1</code>. This field must be consistent with the agent's <code>policies.data_residency</code> setting; a mismatch is a hard compile error.</li>
-<li><strong><code>credentials.source</code></strong> — <code>iam_role</code> is the recommended production setting — the runtime uses the IAM role declared in the agent definition. <code>env</code> reads <code>AWS_ACCESS_KEY_ID</code> and <code>AWS_SECRET_ACCESS_KEY</code> from the environment (development only). <code>aws_profile</code> uses a named profile (development only).</li>
-</ul>
-<h4 id="azure-content-safety-azure-ai-content-safety"><code>azure-content-safety</code> — Azure AI Content Safety<a class="headerlink" href="#azure-content-safety-azure-ai-content-safety" title="Permanent link">&para;</a></h4>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="nt">provider_config</span><span class="p">:</span>
-</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="w">  </span><span class="nt">azure-content-safety</span><span class="p">:</span>
-</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="w">    </span><span class="nt">endpoint</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;https://&lt;resource-name&gt;.cognitiveservices.azure.com&quot;</span><span class="w">  </span><span class="c1"># Required</span>
-</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="w">    </span><span class="nt">api_version</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;2024-09-01&quot;</span><span class="w">       </span><span class="c1"># Required — pinned API version</span>
-</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="w">    </span><span class="nt">subscription_key</span><span class="p">:</span><span class="w">               </span><span class="c1"># Required — secret reference</span>
-</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="w">      </span><span class="nt">secret_ref</span><span class="p">:</span>
-</span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="w">        </span><span class="nt">source</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;azure_key_vault&quot;</span>
-</span><span id="__span-10-8"><a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="w">        </span><span class="nt">vault_url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;https://myvault.vault.azure.net&quot;</span>
-</span><span id="__span-10-9"><a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a><span class="w">        </span><span class="nt">secret_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;azure-content-safety-key&quot;</span>
-</span><span id="__span-10-10"><a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a><span class="w">    </span><span class="nt">categories</span><span class="p">:</span><span class="w">                     </span><span class="c1"># Optional — which categories to evaluate</span>
-</span><span id="__span-10-11"><a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Hate&quot;</span>
-</span><span id="__span-10-12"><a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a><span class="w">        </span><span class="nt">severity_threshold</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span><span class="w">       </span><span class="c1"># 0–6; block if severity &gt;= threshold</span>
-</span><span id="__span-10-13"><a id="__codelineno-10-13" name="__codelineno-10-13" href="#__codelineno-10-13"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;SelfHarm&quot;</span>
-</span><span id="__span-10-14"><a id="__codelineno-10-14" name="__codelineno-10-14" href="#__codelineno-10-14"></a><span class="w">        </span><span class="nt">severity_threshold</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
-</span><span id="__span-10-15"><a id="__codelineno-10-15" name="__codelineno-10-15" href="#__codelineno-10-15"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Sexual&quot;</span>
-</span><span id="__span-10-16"><a id="__codelineno-10-16" name="__codelineno-10-16" href="#__codelineno-10-16"></a><span class="w">        </span><span class="nt">severity_threshold</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
-</span><span id="__span-10-17"><a id="__codelineno-10-17" name="__codelineno-10-17" href="#__codelineno-10-17"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Violence&quot;</span>
-</span><span id="__span-10-18"><a id="__codelineno-10-18" name="__codelineno-10-18" href="#__codelineno-10-18"></a><span class="w">        </span><span class="nt">severity_threshold</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
-</span></code></pre></div>
-<p><code>severity_threshold</code> maps to Azure's 0–6 severity scale. Azure returns a severity value per category; the guardrail triggers if any category meets or exceeds its threshold. Omitting <code>categories</code> applies the provider's default moderation settings.</p>
-<p>For secret references, see the <a href="#secret_ref----secret-reference-pattern"><code>secret_ref</code> pattern</a> below.</p>
-<h4 id="gcp-natural-language-google-cloud-natural-language-api"><code>gcp-natural-language</code> — Google Cloud Natural Language API<a class="headerlink" href="#gcp-natural-language-google-cloud-natural-language-api" title="Permanent link">&para;</a></h4>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="nt">provider_config</span><span class="p">:</span>
-</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="w">  </span><span class="nt">gcp-natural-language</span><span class="p">:</span>
-</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="w">    </span><span class="nt">project_id</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;my-gcp-project&quot;</span><span class="w">    </span><span class="c1"># Required</span>
-</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="w">    </span><span class="nt">location</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;eu&quot;</span><span class="w">                  </span><span class="c1"># Required — &quot;global&quot; | &quot;eu&quot; | &quot;us&quot;</span>
-</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="w">    </span><span class="nt">credentials</span><span class="p">:</span>
-</span><span id="__span-11-6"><a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a><span class="w">      </span><span class="nt">source</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;workload_identity&quot;</span><span class="w">   </span><span class="c1"># workload_identity | service_account_key | env</span>
-</span><span id="__span-11-7"><a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a><span class="w">      </span><span class="nt">service_account_key</span><span class="p">:</span><span class="w">          </span><span class="c1"># Only if source is service_account_key — secret reference</span>
-</span><span id="__span-11-8"><a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a><span class="w">        </span><span class="nt">secret_ref</span><span class="p">:</span>
-</span><span id="__span-11-9"><a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a><span class="w">          </span><span class="nt">source</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;gcp_secret_manager&quot;</span>
-</span><span id="__span-11-10"><a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a><span class="w">          </span><span class="nt">project</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;my-gcp-project&quot;</span>
-</span><span id="__span-11-11"><a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a><span class="w">          </span><span class="nt">secret</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;nlp-api-service-account&quot;</span>
-</span><span id="__span-11-12"><a id="__codelineno-11-12" name="__codelineno-11-12" href="#__codelineno-11-12"></a><span class="w">    </span><span class="nt">classify_text</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">             </span><span class="c1"># Enable content classification</span>
-</span><span id="__span-11-13"><a id="__codelineno-11-13" name="__codelineno-11-13" href="#__codelineno-11-13"></a><span class="w">    </span><span class="nt">moderate_text</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">             </span><span class="c1"># Enable text moderation endpoint</span>
-</span></code></pre></div>
-<h4 id="platform-native-built-in-platform-check"><code>platform-native</code> — built-in platform check<a class="headerlink" href="#platform-native-built-in-platform-check" title="Permanent link">&para;</a></h4>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="nt">provider_config</span><span class="p">:</span>
-</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="w">  </span><span class="nt">platform-native</span><span class="p">:</span>
-</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="w">    </span><span class="nt">check_id</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;jailbreak_check&quot;</span><span class="w">     </span><span class="c1"># Required — ID in the platform&#39;s built-in check registry</span>
-</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="w">    </span><span class="nt">parameters</span><span class="p">:</span><span class="w">                     </span><span class="c1"># Optional — check-specific configuration</span>
-</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="w">      </span><span class="nt">sensitivity</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;high&quot;</span>
-</span></code></pre></div>
-<p>Use <code>platform-native</code> for all platform-built checks, whether or not they require parameters. This ensures every guardrail in the platform has a definition file, a clear owner, a version history, and is discoverable in the registry.</p>
-<h4 id="custom-custom-provider"><code>custom</code> — custom provider<a class="headerlink" href="#custom-custom-provider" title="Permanent link">&para;</a></h4>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="nt">provider_config</span><span class="p">:</span>
-</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="w">  </span><span class="nt">custom</span><span class="p">:</span>
-</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="w">    </span><span class="nt">endpoint</span><span class="p">:</span><span class="w">                       </span><span class="c1"># Required — the URL of the custom guardrail service</span>
-</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="w">      </span><span class="nt">secret_ref</span><span class="p">:</span>
-</span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="w">        </span><span class="nt">source</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;aws_secrets_manager&quot;</span>
-</span><span id="__span-13-6"><a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a><span class="w">        </span><span class="nt">secret_id</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;prod/guardrails/custom-pii-endpoint&quot;</span>
-</span><span id="__span-13-7"><a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a><span class="w">        </span><span class="nt">region</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;eu-west-1&quot;</span>
-</span><span id="__span-13-8"><a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a><span class="w">    </span><span class="nt">auth</span><span class="p">:</span>
-</span><span id="__span-13-9"><a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a><span class="w">      </span><span class="nt">method</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;bearer&quot;</span><span class="w">              </span><span class="c1"># bearer | api_key | none</span>
-</span><span id="__span-13-10"><a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a><span class="w">      </span><span class="nt">token</span><span class="p">:</span>
-</span><span id="__span-13-11"><a id="__codelineno-13-11" name="__codelineno-13-11" href="#__codelineno-13-11"></a><span class="w">        </span><span class="nt">secret_ref</span><span class="p">:</span>
-</span><span id="__span-13-12"><a id="__codelineno-13-12" name="__codelineno-13-12" href="#__codelineno-13-12"></a><span class="w">          </span><span class="nt">source</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;env&quot;</span>
-</span><span id="__span-13-13"><a id="__codelineno-13-13" name="__codelineno-13-13" href="#__codelineno-13-13"></a><span class="w">          </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;CUSTOM_GUARDRAIL_TOKEN&quot;</span>
-</span><span id="__span-13-14"><a id="__codelineno-13-14" name="__codelineno-13-14" href="#__codelineno-13-14"></a><span class="w">    </span><span class="nt">request_schema</span><span class="p">:</span><span class="w">                 </span><span class="c1"># Shape of the request payload expected by the service</span>
-</span><span id="__span-13-15"><a id="__codelineno-13-15" name="__codelineno-13-15" href="#__codelineno-13-15"></a><span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;object&quot;</span>
-</span><span id="__span-13-16"><a id="__codelineno-13-16" name="__codelineno-13-16" href="#__codelineno-13-16"></a><span class="w">      </span><span class="nt">properties</span><span class="p">:</span>
-</span><span id="__span-13-17"><a id="__codelineno-13-17" name="__codelineno-13-17" href="#__codelineno-13-17"></a><span class="w">        </span><span class="nt">content</span><span class="p">:</span>
-</span><span id="__span-13-18"><a id="__codelineno-13-18" name="__codelineno-13-18" href="#__codelineno-13-18"></a><span class="w">          </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;string&quot;</span>
-</span><span id="__span-13-19"><a id="__codelineno-13-19" name="__codelineno-13-19" href="#__codelineno-13-19"></a><span class="w">        </span><span class="nt">source</span><span class="p">:</span>
-</span><span id="__span-13-20"><a id="__codelineno-13-20" name="__codelineno-13-20" href="#__codelineno-13-20"></a><span class="w">          </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;string&quot;</span>
-</span><span id="__span-13-21"><a id="__codelineno-13-21" name="__codelineno-13-21" href="#__codelineno-13-21"></a><span class="w">          </span><span class="nt">enum</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;input&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;output&quot;</span><span class="p p-Indicator">]</span>
-</span><span id="__span-13-22"><a id="__codelineno-13-22" name="__codelineno-13-22" href="#__codelineno-13-22"></a><span class="w">    </span><span class="nt">response_schema</span><span class="p">:</span><span class="w">                </span><span class="c1"># Shape of the response the platform should parse</span>
-</span><span id="__span-13-23"><a id="__codelineno-13-23" name="__codelineno-13-23" href="#__codelineno-13-23"></a><span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;object&quot;</span>
-</span><span id="__span-13-24"><a id="__codelineno-13-24" name="__codelineno-13-24" href="#__codelineno-13-24"></a><span class="w">      </span><span class="nt">properties</span><span class="p">:</span>
-</span><span id="__span-13-25"><a id="__codelineno-13-25" name="__codelineno-13-25" href="#__codelineno-13-25"></a><span class="w">        </span><span class="nt">triggered</span><span class="p">:</span>
-</span><span id="__span-13-26"><a id="__codelineno-13-26" name="__codelineno-13-26" href="#__codelineno-13-26"></a><span class="w">          </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;boolean&quot;</span>
-</span><span id="__span-13-27"><a id="__codelineno-13-27" name="__codelineno-13-27" href="#__codelineno-13-27"></a><span class="w">        </span><span class="nt">findings</span><span class="p">:</span>
-</span><span id="__span-13-28"><a id="__codelineno-13-28" name="__codelineno-13-28" href="#__codelineno-13-28"></a><span class="w">          </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;array&quot;</span>
-</span></code></pre></div>
+<p>Groups the two fields that define what this guardrail does and what content it can process.</p>
+<p><strong><code>behaviour.result_type</code></strong> declares what kind of output this guardrail produces. The runtime uses this to determine how to interpret the result and which call-site parameters in the agent definition are valid.</p>
+<table>
+<thead>
+<tr>
+<th><code>result_type</code></th>
+<th>What it returns</th>
+<th>Effect</th>
+<th>Typical use cases</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>score</code></td>
+<td>A 0–10 severity integer</td>
+<td>The agent compares the severity against its configured <code>severity_threshold</code>; if met or exceeded, <code>on_fail</code> triggers</td>
+<td>Content moderation, jailbreak detection, prompt injection</td>
+</tr>
+<tr>
+<td><code>transform</code></td>
+<td>Modified content</td>
+<td>The original content is replaced with the guardrail's output before the pipeline continues</td>
+<td>PII redaction, text anonymization</td>
+</tr>
+<tr>
+<td><code>annotate</code></td>
+<td>Metadata tags</td>
+<td>Key-value tags attached to the payload for downstream routing or observability; the payload itself is unchanged</td>
+<td>Language detection, topic classification</td>
+</tr>
+<tr>
+<td><code>enrich</code></td>
+<td>Content to append</td>
+<td>Additional context injected alongside the existing payload</td>
+<td>Disclaimer injection, compliance watermarking</td>
+</tr>
+</tbody>
+</table>
+<p><strong><code>behaviour.content_types</code></strong> lists the content modalities this guardrail is able to process. Supported values: <code>text</code> | <code>image</code> | <code>video</code> | <code>document</code>.</p>
+<p>The runtime uses this to match the guardrail against agent interface parameters. At the attached pipeline position, only parameters whose type matches an entry in <code>behaviour.content_types</code> are passed to the guardrail. Attaching a guardrail to a position where no parameters match its declared content types is a hard compile error. Note that types that can be easily converted to test like numbers are considered as text by guardrails.</p>
 <hr />
-<h3 id="secret_ref-secret-reference-pattern"><code>secret_ref</code> — secret reference pattern<a class="headerlink" href="#secret_ref-secret-reference-pattern" title="Permanent link">&para;</a></h3>
-<p>Any field that requires a secret value (API key, bearer token, endpoint URL) uses a <code>secret_ref</code> object. This allows the runtime to fetch the secret from different backends without the value ever appearing in a definition file.</p>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="c1"># Environment variable</span>
-</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="nt">token</span><span class="p">:</span>
-</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="w">  </span><span class="nt">secret_ref</span><span class="p">:</span>
-</span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="w">    </span><span class="nt">source</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;env&quot;</span>
-</span><span id="__span-14-5"><a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a><span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;MY_GUARDRAIL_API_KEY&quot;</span>
-</span><span id="__span-14-6"><a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a>
-</span><span id="__span-14-7"><a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a><span class="c1"># AWS Secrets Manager</span>
-</span><span id="__span-14-8"><a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a><span class="nt">token</span><span class="p">:</span>
-</span><span id="__span-14-9"><a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a><span class="w">  </span><span class="nt">secret_ref</span><span class="p">:</span>
-</span><span id="__span-14-10"><a id="__codelineno-14-10" name="__codelineno-14-10" href="#__codelineno-14-10"></a><span class="w">    </span><span class="nt">source</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;aws_secrets_manager&quot;</span>
-</span><span id="__span-14-11"><a id="__codelineno-14-11" name="__codelineno-14-11" href="#__codelineno-14-11"></a><span class="w">    </span><span class="nt">secret_id</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;prod/guardrails/pii-scan-key&quot;</span>
-</span><span id="__span-14-12"><a id="__codelineno-14-12" name="__codelineno-14-12" href="#__codelineno-14-12"></a><span class="w">    </span><span class="nt">region</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;eu-west-1&quot;</span><span class="w">            </span><span class="c1"># Optional — defaults to the provider&#39;s region</span>
-</span><span id="__span-14-13"><a id="__codelineno-14-13" name="__codelineno-14-13" href="#__codelineno-14-13"></a><span class="w">    </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;api_key&quot;</span><span class="w">                 </span><span class="c1"># Optional — JSON key if the secret value is a JSON object</span>
-</span><span id="__span-14-14"><a id="__codelineno-14-14" name="__codelineno-14-14" href="#__codelineno-14-14"></a>
-</span><span id="__span-14-15"><a id="__codelineno-14-15" name="__codelineno-14-15" href="#__codelineno-14-15"></a><span class="c1"># GCP Secret Manager</span>
-</span><span id="__span-14-16"><a id="__codelineno-14-16" name="__codelineno-14-16" href="#__codelineno-14-16"></a><span class="nt">token</span><span class="p">:</span>
-</span><span id="__span-14-17"><a id="__codelineno-14-17" name="__codelineno-14-17" href="#__codelineno-14-17"></a><span class="w">  </span><span class="nt">secret_ref</span><span class="p">:</span>
-</span><span id="__span-14-18"><a id="__codelineno-14-18" name="__codelineno-14-18" href="#__codelineno-14-18"></a><span class="w">    </span><span class="nt">source</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;gcp_secret_manager&quot;</span>
-</span><span id="__span-14-19"><a id="__codelineno-14-19" name="__codelineno-14-19" href="#__codelineno-14-19"></a><span class="w">    </span><span class="nt">project</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;my-gcp-project&quot;</span>
-</span><span id="__span-14-20"><a id="__codelineno-14-20" name="__codelineno-14-20" href="#__codelineno-14-20"></a><span class="w">    </span><span class="nt">secret</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;guardrail-api-key&quot;</span>
-</span><span id="__span-14-21"><a id="__codelineno-14-21" name="__codelineno-14-21" href="#__codelineno-14-21"></a><span class="w">    </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;latest&quot;</span><span class="w">              </span><span class="c1"># Optional — defaults to &#39;latest&#39;</span>
-</span><span id="__span-14-22"><a id="__codelineno-14-22" name="__codelineno-14-22" href="#__codelineno-14-22"></a>
-</span><span id="__span-14-23"><a id="__codelineno-14-23" name="__codelineno-14-23" href="#__codelineno-14-23"></a><span class="c1"># Azure Key Vault</span>
-</span><span id="__span-14-24"><a id="__codelineno-14-24" name="__codelineno-14-24" href="#__codelineno-14-24"></a><span class="nt">token</span><span class="p">:</span>
-</span><span id="__span-14-25"><a id="__codelineno-14-25" name="__codelineno-14-25" href="#__codelineno-14-25"></a><span class="w">  </span><span class="nt">secret_ref</span><span class="p">:</span>
-</span><span id="__span-14-26"><a id="__codelineno-14-26" name="__codelineno-14-26" href="#__codelineno-14-26"></a><span class="w">    </span><span class="nt">source</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;azure_key_vault&quot;</span>
-</span><span id="__span-14-27"><a id="__codelineno-14-27" name="__codelineno-14-27" href="#__codelineno-14-27"></a><span class="w">    </span><span class="nt">vault_url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;https://myvault.vault.azure.net&quot;</span>
-</span><span id="__span-14-28"><a id="__codelineno-14-28" name="__codelineno-14-28" href="#__codelineno-14-28"></a><span class="w">    </span><span class="nt">secret_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;guardrail-api-key&quot;</span>
-</span><span id="__span-14-29"><a id="__codelineno-14-29" name="__codelineno-14-29" href="#__codelineno-14-29"></a><span class="w">    </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="w">                    </span><span class="c1"># Optional — omit or leave empty for latest</span>
-</span></code></pre></div>
-<p><code>source</code> enum: <code>env</code> | <code>aws_secrets_manager</code> | <code>gcp_secret_manager</code> | <code>azure_key_vault</code>.</p>
-<p>The runtime resolves the <code>secret_ref</code> once at agent startup and caches the value for the duration of the run. A <code>secret_ref</code> that fails to resolve is a hard runtime error — the agent will not start.</p>
+<h3 id="transport-invocation-details-required-for-external-guardrails"><code>transport</code> — invocation details (required for external guardrails)<a class="headerlink" href="#transport-invocation-details-required-for-external-guardrails" title="Permanent link">&para;</a></h3>
+<p>The <code>transport</code> block defines how the guardrail is called. Two transport types are supported, both identical in definition to their <a href="../02-tool-definition/#transport----invocation-details-required-unless-type-is-function">tool transport</a> counterparts:</p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>rest-api</code></td>
+<td>HTTP/REST endpoint</td>
+</tr>
+<tr>
+<td><code>lambda</code></td>
+<td>AWS Lambda function</td>
+</tr>
+</tbody>
+</table>
+<p>Refer to the <a href="../02-tool-definition/#transport----invocation-details-required-unless-type-is-function">tool transport documentation</a> for the full field reference and <code>credentials</code> block — the definition is identical.</p>
+<p><strong>Provider-specific backends</strong> (AWS Bedrock Guardrails, Azure AI Content Safety, GCP Natural Language, etc.) are not directly supported as transport types. Wrap them in a Lambda function or REST API that calls the provider and returns a response conforming to the <a href="#standard-guardrail-output-format">standard output format</a>. This keeps the AML runtime agnostic to provider-specific response envelopes and normalisation logic.</p>
+<p><strong>Platform-built checks</strong> follow the same pattern as tool <code>type: "function"</code>: omit the <code>transport</code> block entirely. When <code>transport</code> is absent, the runtime invokes the guardrail in-process. Built-in guardrails never time out, never require credentials, and do not need an <code>invocation</code> block.</p>
 <hr />
-<h3 id="invocation-execution-settings-required-for-external-providers"><code>invocation</code> — execution settings (required for external providers)<a class="headerlink" href="#invocation-execution-settings-required-for-external-providers" title="Permanent link">&para;</a></h3>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="nt">invocation</span><span class="p">:</span>
-</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="w">  </span><span class="nt">timeout_ms</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">300</span><span class="w">                  </span><span class="c1"># Hard timeout for the guardrail call</span>
-</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="w">  </span><span class="nt">on_timeout</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;fail_closed&quot;</span><span class="w">        </span><span class="c1"># fail_open | fail_closed</span>
-</span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="w">  </span><span class="nt">on_provider_error</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;fail_closed&quot;</span><span class="w"> </span><span class="c1"># fail_open | fail_closed — behavior on provider 5xx</span>
-</span><span id="__span-15-5"><a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a><span class="w">  </span><span class="nt">retry_policy</span><span class="p">:</span>
-</span><span id="__span-15-6"><a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a><span class="w">    </span><span class="nt">max_attempts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
-</span><span id="__span-15-7"><a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a><span class="w">    </span><span class="nt">backoff_ms</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">100</span>
+<h3 id="invocation-execution-settings-required-when-transport-is-present"><code>invocation</code> — execution settings (required when <code>transport</code> is present)<a class="headerlink" href="#invocation-execution-settings-required-when-transport-is-present" title="Permanent link">&para;</a></h3>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nt">invocation</span><span class="p">:</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">  </span><span class="nt">timeout_ms</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">300</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="w">  </span><span class="nt">on_timeout</span><span class="p">:</span>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="w">    </span><span class="nt">severity</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span><span class="w">                  </span><span class="c1"># Severity returned to the agent if the call times out</span>
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="w">  </span><span class="nt">on_provider_error</span><span class="p">:</span>
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="w">    </span><span class="nt">severity</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span><span class="w">                  </span><span class="c1"># Severity returned to the agent on provider 5xx or network failure</span>
+</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="w">  </span><span class="nt">retry_policy</span><span class="p">:</span>
+</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="w">    </span><span class="nt">max_attempts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
+</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="w">    </span><span class="nt">backoff_ms</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">100</span>
 </span></code></pre></div>
 <table>
 <thead>
@@ -1886,44 +2128,62 @@ ISO 8601 date of the last update to this file.</p>
 <tr>
 <td><code>timeout_ms</code></td>
 <td><code>500</code></td>
-<td>Maximum time to wait for the provider response. If exceeded, <code>on_timeout</code> applies.</td>
+<td>Maximum time in milliseconds to wait for the transport response.</td>
 </tr>
 <tr>
-<td><code>on_timeout</code></td>
-<td><code>fail_closed</code></td>
-<td><code>fail_closed</code> — treat as triggered (block/refuse); <code>fail_open</code> — treat as passed (allow through).</td>
+<td><code>on_timeout.severity</code></td>
+<td><code>10</code></td>
+<td>The severity value (0–10) returned to the agent when the call times out before the retry policy is exhausted.</td>
 </tr>
 <tr>
-<td><code>on_provider_error</code></td>
-<td><code>fail_closed</code></td>
-<td>Same as <code>on_timeout</code> but triggered by a provider error (5xx, network failure).</td>
+<td><code>on_provider_error.severity</code></td>
+<td><code>10</code></td>
+<td>The severity value (0–10) returned to the agent on a provider error (5xx, network failure) after retries.</td>
 </tr>
 <tr>
 <td><code>retry_policy.max_attempts</code></td>
 <td><code>1</code></td>
-<td>How many times to retry a failed call before applying <code>on_provider_error</code>.</td>
+<td>Total call attempts including the initial one.</td>
 </tr>
 <tr>
 <td><code>retry_policy.backoff_ms</code></td>
 <td><code>100</code></td>
-<td>Initial backoff in milliseconds (exponential).</td>
+<td>Initial backoff delay in milliseconds between retries (exponential).</td>
 </tr>
 </tbody>
 </table>
-<p><strong><code>fail_open</code> vs. <code>fail_closed</code></strong></p>
-<p>This is a deliberate safety policy choice. <code>fail_closed</code> means "if we cannot verify safety, block the request." <code>fail_open</code> means "if we cannot verify safety, allow the request." The right default depends on the check:</p>
-<ul>
-<li>For security-critical checks (PII, prompt injection, unsafe content): use <code>fail_closed</code>. Allowing an unverified request is worse than a false block.</li>
-<li>For quality checks (schema validation): <code>fail_open</code> may be acceptable if the check is supplementary and a false block would degrade user experience unacceptably.</li>
-</ul>
-<p>Never set <code>fail_open</code> for guardrails with <code>on_fail: "refuse"</code> on the agent side — the fail-open behavior would silently bypass the refuse action.</p>
+<p><strong>Severity-based error policy</strong></p>
+<p>Rather than a binary <code>fail_open</code> / <code>fail_closed</code> on the guardrail, error conditions return a synthetic severity score. The agent's configured <code>severity_threshold</code> determines whether that synthetic score triggers a pipeline action — all decision logic stays on the agent side.</p>
+<p>The conventional mapping is:</p>
+<table>
+<thead>
+<tr>
+<th>Synthetic severity</th>
+<th>Equivalent intent</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>10</code></td>
+<td>Equivalent to <code>fail_closed</code> — any configured threshold will trigger</td>
+</tr>
+<tr>
+<td><code>0</code></td>
+<td>Equivalent to <code>fail_open</code> — no threshold will trigger</td>
+</tr>
+<tr>
+<td><code>5</code></td>
+<td>Permissive default — triggers on strict agents, passes on lenient ones</td>
+</tr>
+</tbody>
+</table>
+<p>For security-critical guardrails (PII, prompt injection, unsafe content) set both <code>on_timeout.severity</code> and <code>on_provider_error.severity</code> to <code>10</code>. For supplementary or quality checks, consider <code>5</code> to allow lenient agents to continue while strict agents still block.</p>
 <hr />
-<h3 id="fallback-degraded-mode-behavior-recommended-for-external-providers"><code>fallback</code> — degraded-mode behavior (recommended for external providers)<a class="headerlink" href="#fallback-degraded-mode-behavior-recommended-for-external-providers" title="Permanent link">&para;</a></h3>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="nt">fallback</span><span class="p">:</span>
-</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="w">  </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-</span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="w">  </span><span class="nt">fallback_guardrail_id</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;pii-scan-lite&quot;</span><span class="w">   </span><span class="c1"># Platform-native fallback guardrail_id</span>
-</span><span id="__span-16-4"><a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="w">  </span><span class="nt">fallback_mode</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;platform-native&quot;</span><span class="w">         </span><span class="c1"># platform-native | skip</span>
-</span><span id="__span-16-5"><a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a><span class="w">  </span><span class="nt">emit_warning</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">                       </span><span class="c1"># Log a warning event when fallback activates</span>
+<h3 id="fallback-degraded-mode-behavior-recommended-for-external-transports"><code>fallback</code> — degraded-mode behavior (recommended for external transports)<a class="headerlink" href="#fallback-degraded-mode-behavior-recommended-for-external-transports" title="Permanent link">&para;</a></h3>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="nt">fallback</span><span class="p">:</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="w">  </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="w">  </span><span class="nt">fallback_guardrail_id</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;pii-scan-lite&quot;</span><span class="w">   </span><span class="c1"># guardrail_id of the fallback guardrail</span>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="w">  </span><span class="nt">emit_warning</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">                       </span><span class="c1"># Log a warning event when fallback activates</span>
 </span></code></pre></div>
 <table>
 <thead>
@@ -1937,104 +2197,261 @@ ISO 8601 date of the last update to this file.</p>
 <tr>
 <td><code>enabled</code></td>
 <td><code>false</code></td>
-<td>Whether to activate a fallback when the primary provider is unavailable.</td>
+<td>Whether to activate a fallback when the primary transport is unavailable.</td>
 </tr>
 <tr>
 <td><code>fallback_guardrail_id</code></td>
 <td>—</td>
-<td>The <code>guardrail_id</code> of a platform-native fallback check. Must resolve to a registered guardrail with <code>provider: "platform-native"</code>.</td>
-</tr>
-<tr>
-<td><code>fallback_mode</code></td>
-<td><code>platform-native</code></td>
-<td><code>platform-native</code> — invoke the fallback guardrail; <code>skip</code> — skip the check entirely (only for non-critical checks).</td>
+<td>The <code>guardrail_id</code> of the guardrail to invoke as a fallback. The fallback guardrail's own definition — including its transport, invocation policy, and error behavior — governs how it is called.</td>
 </tr>
 <tr>
 <td><code>emit_warning</code></td>
 <td><code>true</code></td>
-<td>Emit a structured warning event to the audit log when fallback activates.</td>
+<td>Emit a structured warning event to the audit log when the fallback activates.</td>
 </tr>
 </tbody>
 </table>
-<p><code>skip</code> should only be used for supplementary, non-security checks. Using <code>skip</code> on a security-critical guardrail effectively acts as <code>fail_open</code> and must be explicitly justified.</p>
+<p>The fallback guardrail is typically a built-in (no <code>transport</code>) check that provides lighter-weight coverage and never fails. Its <code>behaviour.result_type</code> must match the primary guardrail's.</p>
 <hr />
-<h3 id="scope-applicable-pipeline-positions-required"><code>scope</code> — applicable pipeline positions (required)<a class="headerlink" href="#scope-applicable-pipeline-positions-required" title="Permanent link">&para;</a></h3>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="nt">scope</span><span class="p">:</span>
-</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="w">  </span><span class="nt">positions</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;input&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;output&quot;</span><span class="p p-Indicator">]</span><span class="w">   </span><span class="c1"># input | output | tool_call | tool_response</span>
-</span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="w">  </span><span class="nt">content_types</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;text&quot;</span><span class="p p-Indicator">]</span><span class="w">          </span><span class="c1"># text | image | audio | structured</span>
+<h2 id="standard-guardrail-output-format">Standard guardrail output format<a class="headerlink" href="#standard-guardrail-output-format" title="Permanent link">&para;</a></h2>
+<p>AML defines a canonical response format for all guardrails. The runtime enforces this format for agents compiled and deployed with AML Studio. When implementing a custom guardrail transport manually (e.g., a <code>rest-api</code> or <code>lambda</code> backend), the service should return a response conforming to this shape.</p>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="p">{</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="w">  </span><span class="nt">&quot;result_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;score&quot;</span><span class="p">,</span>
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="w">  </span><span class="nt">&quot;severity&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">7</span><span class="p">,</span>
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="w">  </span><span class="nt">&quot;triggered&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="w">  </span><span class="nt">&quot;category_scores&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="w">    </span><span class="nt">&quot;violence&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">7</span><span class="p">,</span>
+</span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="w">    </span><span class="nt">&quot;harassment&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span>
+</span><span id="__span-10-8"><a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="w">  </span><span class="p">},</span>
+</span><span id="__span-10-9"><a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a><span class="w">  </span><span class="nt">&quot;content&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+</span><span id="__span-10-10"><a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a><span class="w">  </span><span class="nt">&quot;annotations&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+</span><span id="__span-10-11"><a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a><span class="w">  </span><span class="nt">&quot;enrichment&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+</span><span id="__span-10-12"><a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a><span class="w">  </span><span class="nt">&quot;raw&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">}</span>
+</span><span id="__span-10-13"><a id="__codelineno-10-13" name="__codelineno-10-13" href="#__codelineno-10-13"></a><span class="p">}</span>
 </span></code></pre></div>
-<p><code>positions</code> declares which pipeline positions this guardrail supports. Agents may attach the guardrail to any of the listed positions. Attaching it to an unlisted position is a lint warning.</p>
-<p><code>content_types</code> declares which content types this guardrail can evaluate. If an agent routes content of an unsupported type to this guardrail, it is a hard validation error.</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Present when</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>result_type</code></td>
+<td>Always</td>
+<td>Mirrors the guardrail's declared <code>result_type</code>.</td>
+</tr>
+<tr>
+<td><code>severity</code></td>
+<td><code>score</code></td>
+<td>Normalized 0–10 severity. Provider-native scales (e.g., Azure 0–6, OpenAI 0–1) are mapped to 0–10 by the runtime.</td>
+</tr>
+<tr>
+<td><code>triggered</code></td>
+<td><code>score</code></td>
+<td><code>true</code> if <code>severity</code> meets or exceeds the agent's configured <code>severity_threshold</code>.</td>
+</tr>
+<tr>
+<td><code>category_scores</code></td>
+<td><code>score</code> (optional)</td>
+<td>Per-category severity map (0–10 each). Useful for audit and routing decisions.</td>
+</tr>
+<tr>
+<td><code>content</code></td>
+<td><code>transform</code></td>
+<td>The modified content that replaces the original field value in the pipeline.</td>
+</tr>
+<tr>
+<td><code>annotations</code></td>
+<td><code>annotate</code></td>
+<td>Key-value metadata tags added to the payload. Downstream agents or routing logic may read these.</td>
+</tr>
+<tr>
+<td><code>enrichment</code></td>
+<td><code>enrich</code></td>
+<td>Content to be appended alongside the existing payload before the next pipeline stage.</td>
+</tr>
+<tr>
+<td><code>raw</code></td>
+<td>Always</td>
+<td>Full provider-native response, preserved for audit trail and debugging.</td>
+</tr>
+</tbody>
+</table>
 <hr />
-<h2 id="full-example-aws-bedrock-pii-guardrail">Full example: AWS Bedrock PII guardrail<a class="headerlink" href="#full-example-aws-bedrock-pii-guardrail" title="Permanent link">&para;</a></h2>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="nn">---</span>
-</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="nt">spec_version</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;1.2&quot;</span>
-</span><span id="__span-18-3"><a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a><span class="nt">guardrail_id</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;pii-scan&quot;</span>
-</span><span id="__span-18-4"><a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a><span class="nt">display_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;PII</span><span class="nv"> </span><span class="s">Scan</span><span class="nv"> </span><span class="s">(Bedrock)&quot;</span>
-</span><span id="__span-18-5"><a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a><span class="nt">provider</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;aws-bedrock-guardrail&quot;</span>
-</span><span id="__span-18-6"><a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a><span class="nt">status</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;active&quot;</span>
-</span><span id="__span-18-7"><a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ai-safety-team&quot;</span>
-</span><span id="__span-18-8"><a id="__codelineno-18-8" name="__codelineno-18-8" href="#__codelineno-18-8"></a><span class="nt">last_updated</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;2026-04-12&quot;</span>
-</span><span id="__span-18-9"><a id="__codelineno-18-9" name="__codelineno-18-9" href="#__codelineno-18-9"></a>
-</span><span id="__span-18-10"><a id="__codelineno-18-10" name="__codelineno-18-10" href="#__codelineno-18-10"></a><span class="nt">meta</span><span class="p">:</span>
-</span><span id="__span-18-11"><a id="__codelineno-18-11" name="__codelineno-18-11" href="#__codelineno-18-11"></a><span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">&gt;</span>
-</span><span id="__span-18-12"><a id="__codelineno-18-12" name="__codelineno-18-12" href="#__codelineno-18-12"></a><span class="w">    </span><span class="no">Detects and redacts personally identifiable information in agent inputs</span>
-</span><span id="__span-18-13"><a id="__codelineno-18-13" name="__codelineno-18-13" href="#__codelineno-18-13"></a><span class="w">    </span><span class="no">and outputs using AWS Bedrock Guardrails.</span>
-</span><span id="__span-18-14"><a id="__codelineno-18-14" name="__codelineno-18-14" href="#__codelineno-18-14"></a><span class="w">  </span><span class="nt">tags</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;pii&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;privacy&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;gdpr&quot;</span><span class="p p-Indicator">]</span>
-</span><span id="__span-18-15"><a id="__codelineno-18-15" name="__codelineno-18-15" href="#__codelineno-18-15"></a><span class="w">  </span><span class="nt">applies_to</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;input&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;output&quot;</span><span class="p p-Indicator">]</span>
-</span><span id="__span-18-16"><a id="__codelineno-18-16" name="__codelineno-18-16" href="#__codelineno-18-16"></a>
-</span><span id="__span-18-17"><a id="__codelineno-18-17" name="__codelineno-18-17" href="#__codelineno-18-17"></a><span class="nt">provider_config</span><span class="p">:</span>
-</span><span id="__span-18-18"><a id="__codelineno-18-18" name="__codelineno-18-18" href="#__codelineno-18-18"></a><span class="w">  </span><span class="nt">aws-bedrock-guardrail</span><span class="p">:</span>
-</span><span id="__span-18-19"><a id="__codelineno-18-19" name="__codelineno-18-19" href="#__codelineno-18-19"></a><span class="w">    </span><span class="nt">guardrail_id</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;abc123xyz&quot;</span>
-</span><span id="__span-18-20"><a id="__codelineno-18-20" name="__codelineno-18-20" href="#__codelineno-18-20"></a><span class="w">    </span><span class="nt">guardrail_version</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;3&quot;</span>
-</span><span id="__span-18-21"><a id="__codelineno-18-21" name="__codelineno-18-21" href="#__codelineno-18-21"></a><span class="w">    </span><span class="nt">region</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;eu-west-1&quot;</span>
-</span><span id="__span-18-22"><a id="__codelineno-18-22" name="__codelineno-18-22" href="#__codelineno-18-22"></a><span class="w">    </span><span class="nt">credentials</span><span class="p">:</span>
-</span><span id="__span-18-23"><a id="__codelineno-18-23" name="__codelineno-18-23" href="#__codelineno-18-23"></a><span class="w">      </span><span class="nt">source</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;iam_role&quot;</span>
-</span><span id="__span-18-24"><a id="__codelineno-18-24" name="__codelineno-18-24" href="#__codelineno-18-24"></a>
-</span><span id="__span-18-25"><a id="__codelineno-18-25" name="__codelineno-18-25" href="#__codelineno-18-25"></a><span class="nt">invocation</span><span class="p">:</span>
-</span><span id="__span-18-26"><a id="__codelineno-18-26" name="__codelineno-18-26" href="#__codelineno-18-26"></a><span class="w">  </span><span class="nt">timeout_ms</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">300</span>
-</span><span id="__span-18-27"><a id="__codelineno-18-27" name="__codelineno-18-27" href="#__codelineno-18-27"></a><span class="w">  </span><span class="nt">on_timeout</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;fail_closed&quot;</span>
-</span><span id="__span-18-28"><a id="__codelineno-18-28" name="__codelineno-18-28" href="#__codelineno-18-28"></a><span class="w">  </span><span class="nt">on_provider_error</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;fail_closed&quot;</span>
-</span><span id="__span-18-29"><a id="__codelineno-18-29" name="__codelineno-18-29" href="#__codelineno-18-29"></a><span class="w">  </span><span class="nt">retry_policy</span><span class="p">:</span>
-</span><span id="__span-18-30"><a id="__codelineno-18-30" name="__codelineno-18-30" href="#__codelineno-18-30"></a><span class="w">    </span><span class="nt">max_attempts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
-</span><span id="__span-18-31"><a id="__codelineno-18-31" name="__codelineno-18-31" href="#__codelineno-18-31"></a><span class="w">    </span><span class="nt">backoff_ms</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">100</span>
-</span><span id="__span-18-32"><a id="__codelineno-18-32" name="__codelineno-18-32" href="#__codelineno-18-32"></a>
-</span><span id="__span-18-33"><a id="__codelineno-18-33" name="__codelineno-18-33" href="#__codelineno-18-33"></a><span class="nt">fallback</span><span class="p">:</span>
-</span><span id="__span-18-34"><a id="__codelineno-18-34" name="__codelineno-18-34" href="#__codelineno-18-34"></a><span class="w">  </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-</span><span id="__span-18-35"><a id="__codelineno-18-35" name="__codelineno-18-35" href="#__codelineno-18-35"></a><span class="w">  </span><span class="nt">fallback_guardrail_id</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;pii-scan-lite&quot;</span>
-</span><span id="__span-18-36"><a id="__codelineno-18-36" name="__codelineno-18-36" href="#__codelineno-18-36"></a><span class="w">  </span><span class="nt">fallback_mode</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;platform-native&quot;</span>
-</span><span id="__span-18-37"><a id="__codelineno-18-37" name="__codelineno-18-37" href="#__codelineno-18-37"></a><span class="w">  </span><span class="nt">emit_warning</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-</span><span id="__span-18-38"><a id="__codelineno-18-38" name="__codelineno-18-38" href="#__codelineno-18-38"></a>
-</span><span id="__span-18-39"><a id="__codelineno-18-39" name="__codelineno-18-39" href="#__codelineno-18-39"></a><span class="nt">scope</span><span class="p">:</span>
-</span><span id="__span-18-40"><a id="__codelineno-18-40" name="__codelineno-18-40" href="#__codelineno-18-40"></a><span class="w">  </span><span class="nt">positions</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;input&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;output&quot;</span><span class="p p-Indicator">]</span>
-</span><span id="__span-18-41"><a id="__codelineno-18-41" name="__codelineno-18-41" href="#__codelineno-18-41"></a><span class="w">  </span><span class="nt">content_types</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;text&quot;</span><span class="p p-Indicator">]</span>
-</span><span id="__span-18-42"><a id="__codelineno-18-42" name="__codelineno-18-42" href="#__codelineno-18-42"></a><span class="nn">---</span>
-</span><span id="__span-18-43"><a id="__codelineno-18-43" name="__codelineno-18-43" href="#__codelineno-18-43"></a>
-</span><span id="__span-18-44"><a id="__codelineno-18-44" name="__codelineno-18-44" href="#__codelineno-18-44"></a><span class="c1"># PII Scan (Bedrock)</span>
-</span><span id="__span-18-45"><a id="__codelineno-18-45" name="__codelineno-18-45" href="#__codelineno-18-45"></a>
-</span><span id="__span-18-46"><a id="__codelineno-18-46" name="__codelineno-18-46" href="#__codelineno-18-46"></a><span class="l l-Scalar l-Scalar-Plain">Uses AWS Bedrock Guardrails to detect and redact personally identifiable information</span>
-</span><span id="__span-18-47"><a id="__codelineno-18-47" name="__codelineno-18-47" href="#__codelineno-18-47"></a><span class="l l-Scalar l-Scalar-Plain">(names, email addresses, phone numbers, national identifiers, and similar) before the</span>
-</span><span id="__span-18-48"><a id="__codelineno-18-48" name="__codelineno-18-48" href="#__codelineno-18-48"></a><span class="l l-Scalar l-Scalar-Plain">model processes input and before responses are returned to callers.</span>
-</span><span id="__span-18-49"><a id="__codelineno-18-49" name="__codelineno-18-49" href="#__codelineno-18-49"></a>
-</span><span id="__span-18-50"><a id="__codelineno-18-50" name="__codelineno-18-50" href="#__codelineno-18-50"></a><span class="l l-Scalar l-Scalar-Plain">**Recommended agent usage:**</span>
-</span><span id="__span-18-51"><a id="__codelineno-18-51" name="__codelineno-18-51" href="#__codelineno-18-51"></a>
-</span><span id="__span-18-52"><a id="__codelineno-18-52" name="__codelineno-18-52" href="#__codelineno-18-52"></a><span class="l l-Scalar l-Scalar-Plain">```yaml</span>
-</span><span id="__span-18-53"><a id="__codelineno-18-53" name="__codelineno-18-53" href="#__codelineno-18-53"></a><span class="l l-Scalar l-Scalar-Plain">guardrails</span><span class="p p-Indicator">:</span>
-</span><span id="__span-18-54"><a id="__codelineno-18-54" name="__codelineno-18-54" href="#__codelineno-18-54"></a><span class="w">  </span><span class="nt">input</span><span class="p">:</span>
-</span><span id="__span-18-55"><a id="__codelineno-18-55" name="__codelineno-18-55" href="#__codelineno-18-55"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">ref</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;pii-scan&quot;</span>
-</span><span id="__span-18-56"><a id="__codelineno-18-56" name="__codelineno-18-56" href="#__codelineno-18-56"></a><span class="w">      </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;detect&quot;</span>
-</span><span id="__span-18-57"><a id="__codelineno-18-57" name="__codelineno-18-57" href="#__codelineno-18-57"></a><span class="w">      </span><span class="nt">on_fail</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;redact&quot;</span>
-</span><span id="__span-18-58"><a id="__codelineno-18-58" name="__codelineno-18-58" href="#__codelineno-18-58"></a><span class="w">  </span><span class="nt">output</span><span class="p">:</span>
-</span><span id="__span-18-59"><a id="__codelineno-18-59" name="__codelineno-18-59" href="#__codelineno-18-59"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">ref</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;pii-scan&quot;</span>
-</span><span id="__span-18-60"><a id="__codelineno-18-60" name="__codelineno-18-60" href="#__codelineno-18-60"></a><span class="w">      </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;block&quot;</span>
-</span><span id="__span-18-61"><a id="__codelineno-18-61" name="__codelineno-18-61" href="#__codelineno-18-61"></a><span class="w">      </span><span class="nt">on_fail</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;redact&quot;</span>
+<h2 id="agent-call-site-reference">Agent call-site reference<a class="headerlink" href="#agent-call-site-reference" title="Permanent link">&para;</a></h2>
+<p>The <code>guardrails</code> section in an agent definition attaches guardrails to pipeline positions. The same per-<code>result_type</code> parameters apply at all four positions (<code>input</code>, <code>tool_input</code>, <code>tool_output</code>, <code>output</code>). This section documents the expected call-site configuration for each type.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The agent definition specification (<a href="../01-agent-definition/">01-agent-definition.md</a>) is the authoritative reference for the <code>guardrails</code> section structure. This section documents the parameters that are specific to each guardrail <code>result_type</code>.</p>
+</div>
+<h3 id="score-guardrails"><code>score</code> guardrails<a class="headerlink" href="#score-guardrails" title="Permanent link">&para;</a></h3>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="nt">guardrails</span><span class="p">:</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="w">  </span><span class="nt">input</span><span class="p">:</span>
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">ref</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;content-moderation&quot;</span>
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="w">      </span><span class="nt">severity_threshold</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span><span class="w">        </span><span class="c1"># Trigger on_fail if the returned severity &gt;= 3</span>
+</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="w">      </span><span class="nt">on_fail</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;block&quot;</span><span class="w">             </span><span class="c1"># block | warn | log | escalate</span>
+</span><span id="__span-11-6"><a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a><span class="w">  </span><span class="nt">tool_output</span><span class="p">:</span>
+</span><span id="__span-11-7"><a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">ref</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;indirect-injection-scan&quot;</span>
+</span><span id="__span-11-8"><a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a><span class="w">      </span><span class="nt">severity_threshold</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">6</span>
+</span><span id="__span-11-9"><a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a><span class="w">      </span><span class="nt">on_fail</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;block&quot;</span>
+</span><span id="__span-11-10"><a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a><span class="w">  </span><span class="nt">output</span><span class="p">:</span>
+</span><span id="__span-11-11"><a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">ref</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;content-moderation&quot;</span>
+</span><span id="__span-11-12"><a id="__codelineno-11-12" name="__codelineno-11-12" href="#__codelineno-11-12"></a><span class="w">      </span><span class="nt">severity_threshold</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">6</span><span class="w">        </span><span class="c1"># More permissive on output</span>
+</span><span id="__span-11-13"><a id="__codelineno-11-13" name="__codelineno-11-13" href="#__codelineno-11-13"></a><span class="w">      </span><span class="nt">on_fail</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;warn&quot;</span>
 </span></code></pre></div>
-<p>Use <code>mode: "detect"</code> on input to redact before the model sees the data, and
-<code>mode: "block"</code> on output to catch any PII the model reproduced from tool results
-or retrieved context.</p>
-<p>This guardrail is required for all agents operating under GDPR, HIPAA, or any
-data-handling policy that restricts exposure of personal data.
-```</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>severity_threshold</code></td>
+<td>yes</td>
+<td>Integer 0–10. If the guardrail's returned severity is greater than or equal to this value, <code>on_fail</code> is triggered.</td>
+</tr>
+<tr>
+<td><code>on_fail</code></td>
+<td>yes</td>
+<td><code>block</code> — halt the pipeline and return an error to the caller. <code>warn</code> — log a warning event and continue. <code>log</code> — silently record the event and continue. <code>escalate</code> — route the run to the matching rule in <code>orchestration.escalation</code>.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="transform-guardrails"><code>transform</code> guardrails<a class="headerlink" href="#transform-guardrails" title="Permanent link">&para;</a></h3>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="nt">guardrails</span><span class="p">:</span>
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="w">  </span><span class="nt">input</span><span class="p">:</span>
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">ref</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;pii-redact&quot;</span>
+</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="w">      </span><span class="nt">on_fail</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;apply&quot;</span><span class="w">             </span><span class="c1"># apply | reject</span>
+</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="w">  </span><span class="nt">tool_output</span><span class="p">:</span>
+</span><span id="__span-12-6"><a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">ref</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;pii-redact&quot;</span><span class="w">            </span><span class="c1"># strip PII from tool results before model sees them</span>
+</span><span id="__span-12-7"><a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a><span class="w">      </span><span class="nt">on_fail</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;apply&quot;</span>
+</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>on_fail</code></td>
+<td>yes</td>
+<td><code>apply</code> — replace the original content with the guardrail's transformed output and continue. <code>reject</code> — if there is any transformation given or the transformation fails or cannot be applied, halt the pipeline.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="annotate-and-enrich-guardrails"><code>annotate</code> and <code>enrich</code> guardrails<a class="headerlink" href="#annotate-and-enrich-guardrails" title="Permanent link">&para;</a></h3>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="nt">guardrails</span><span class="p">:</span>
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="w">  </span><span class="nt">output</span><span class="p">:</span>
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">ref</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;language-detect&quot;</span>
+</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="w">      </span><span class="nt">on_fail</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;skip&quot;</span><span class="w">              </span><span class="c1"># skip | fail_closed</span>
+</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>on_fail</code></td>
+<td>yes</td>
+<td><code>skip</code> — if the guardrail fails, continue the pipeline without the annotation or enrichment. <code>fail_closed</code> — if the guardrail fails, halt the pipeline.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="validation-rules">Validation rules<a class="headerlink" href="#validation-rules" title="Permanent link">&para;</a></h2>
+<h3 id="hard-validation-failures">Hard validation failures<a class="headerlink" href="#hard-validation-failures" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Missing any required field (<code>spec_version</code>, <code>guardrail_id</code>, <code>version</code>, <code>status</code>, <code>behaviour</code>, <code>meta.name</code>).</li>
+<li><code>behaviour.result_type</code> is not one of <code>score</code> | <code>transform</code> | <code>annotate</code> | <code>enrich</code>.</li>
+<li><code>behaviour.content_types</code> contains a value other than <code>text</code> | <code>image</code> | <code>video</code> | <code>document</code>.</li>
+<li><code>transport.type</code> is present but not one of <code>rest-api</code> | <code>lambda</code>.</li>
+<li><code>transport.credentials</code> missing when <code>transport</code> is present.</li>
+<li><code>invocation</code> missing when <code>transport</code> is present.</li>
+<li><code>on_timeout.severity</code> or <code>on_provider_error.severity</code> is outside the 0–10 range.</li>
+<li><code>fallback.fallback_guardrail_id</code> does not resolve to a registered guardrail.</li>
+<li>Agent attaches a guardrail to a position where no parameters at that position match its <code>behaviour.content_types</code>.</li>
+</ul>
+<h3 id="recommended-lint-rules">Recommended lint rules<a class="headerlink" href="#recommended-lint-rules" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>on_timeout.severity</code> or <code>on_provider_error.severity</code> set to <code>0</code> for a <code>score</code> guardrail (effectively <code>fail_open</code> for all agents).</li>
+<li><code>fallback.enabled: false</code> for guardrails with a <code>transport</code> block.</li>
+<li><code>status: "deprecated"</code> without a <code>meta.last_updated</code> date.</li>
+<li>Agent call-site <code>severity_threshold</code> absent for a <code>score</code> guardrail.</li>
+</ul>
+<hr />
+<h2 id="full-example">Full example<a class="headerlink" href="#full-example" title="Permanent link">&para;</a></h2>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="nn">---</span>
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="nt">spec_version</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;1.2&quot;</span>
+</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="nt">guardrail_id</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;pii-scan&quot;</span>
+</span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;1.0.0&quot;</span>
+</span><span id="__span-14-5"><a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a><span class="nt">status</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;active&quot;</span>
+</span><span id="__span-14-6"><a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a>
+</span><span id="__span-14-7"><a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a><span class="nt">behaviour</span><span class="p">:</span>
+</span><span id="__span-14-8"><a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a><span class="w">  </span><span class="nt">result_type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;transform&quot;</span>
+</span><span id="__span-14-9"><a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a><span class="w">  </span><span class="nt">content_types</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;text&quot;</span><span class="p p-Indicator">]</span>
+</span><span id="__span-14-10"><a id="__codelineno-14-10" name="__codelineno-14-10" href="#__codelineno-14-10"></a>
+</span><span id="__span-14-11"><a id="__codelineno-14-11" name="__codelineno-14-11" href="#__codelineno-14-11"></a><span class="nt">meta</span><span class="p">:</span>
+</span><span id="__span-14-12"><a id="__codelineno-14-12" name="__codelineno-14-12" href="#__codelineno-14-12"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;PII</span><span class="nv"> </span><span class="s">Scan</span><span class="nv"> </span><span class="s">(Bedrock)&quot;</span>
+</span><span id="__span-14-13"><a id="__codelineno-14-13" name="__codelineno-14-13" href="#__codelineno-14-13"></a><span class="w">  </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ai-safety-team&quot;</span>
+</span><span id="__span-14-14"><a id="__codelineno-14-14" name="__codelineno-14-14" href="#__codelineno-14-14"></a><span class="w">  </span><span class="nt">last_updated</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;2026-04-12&quot;</span>
+</span><span id="__span-14-15"><a id="__codelineno-14-15" name="__codelineno-14-15" href="#__codelineno-14-15"></a><span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">&gt;</span>
+</span><span id="__span-14-16"><a id="__codelineno-14-16" name="__codelineno-14-16" href="#__codelineno-14-16"></a><span class="w">    </span><span class="no">Detects and redacts personally identifiable information — names, email addresses,</span>
+</span><span id="__span-14-17"><a id="__codelineno-14-17" name="__codelineno-14-17" href="#__codelineno-14-17"></a><span class="w">    </span><span class="no">phone numbers, national identifiers, and similar — using AWS Bedrock Guardrails.</span>
+</span><span id="__span-14-18"><a id="__codelineno-14-18" name="__codelineno-14-18" href="#__codelineno-14-18"></a><span class="w">    </span><span class="no">Suitable for agents operating under GDPR, HIPAA, or any data policy that restricts</span>
+</span><span id="__span-14-19"><a id="__codelineno-14-19" name="__codelineno-14-19" href="#__codelineno-14-19"></a><span class="w">    </span><span class="no">exposure of personal data.</span>
+</span><span id="__span-14-20"><a id="__codelineno-14-20" name="__codelineno-14-20" href="#__codelineno-14-20"></a><span class="w">  </span><span class="nt">tags</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;pii&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;privacy&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;gdpr&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;hipaa&quot;</span><span class="p p-Indicator">]</span>
+</span><span id="__span-14-21"><a id="__codelineno-14-21" name="__codelineno-14-21" href="#__codelineno-14-21"></a>
+</span><span id="__span-14-22"><a id="__codelineno-14-22" name="__codelineno-14-22" href="#__codelineno-14-22"></a><span class="nt">transport</span><span class="p">:</span>
+</span><span id="__span-14-23"><a id="__codelineno-14-23" name="__codelineno-14-23" href="#__codelineno-14-23"></a><span class="w">  </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;lambda&quot;</span>
+</span><span id="__span-14-24"><a id="__codelineno-14-24" name="__codelineno-14-24" href="#__codelineno-14-24"></a><span class="w">  </span><span class="nt">function_arn</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;arn:aws:lambda:eu-west-1:123456789:function:pii-scan-v3&quot;</span>
+</span><span id="__span-14-25"><a id="__codelineno-14-25" name="__codelineno-14-25" href="#__codelineno-14-25"></a><span class="w">  </span><span class="nt">invocation_type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;RequestResponse&quot;</span>
+</span><span id="__span-14-26"><a id="__codelineno-14-26" name="__codelineno-14-26" href="#__codelineno-14-26"></a><span class="w">  </span><span class="nt">payload_format</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;json&quot;</span>
+</span><span id="__span-14-27"><a id="__codelineno-14-27" name="__codelineno-14-27" href="#__codelineno-14-27"></a><span class="w">  </span><span class="nt">credentials</span><span class="p">:</span>
+</span><span id="__span-14-28"><a id="__codelineno-14-28" name="__codelineno-14-28" href="#__codelineno-14-28"></a><span class="w">    </span><span class="nt">scheme</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;iam-role&quot;</span>
+</span><span id="__span-14-29"><a id="__codelineno-14-29" name="__codelineno-14-29" href="#__codelineno-14-29"></a>
+</span><span id="__span-14-30"><a id="__codelineno-14-30" name="__codelineno-14-30" href="#__codelineno-14-30"></a><span class="nt">invocation</span><span class="p">:</span>
+</span><span id="__span-14-31"><a id="__codelineno-14-31" name="__codelineno-14-31" href="#__codelineno-14-31"></a><span class="w">  </span><span class="nt">timeout_ms</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">300</span>
+</span><span id="__span-14-32"><a id="__codelineno-14-32" name="__codelineno-14-32" href="#__codelineno-14-32"></a><span class="w">  </span><span class="nt">on_timeout</span><span class="p">:</span>
+</span><span id="__span-14-33"><a id="__codelineno-14-33" name="__codelineno-14-33" href="#__codelineno-14-33"></a><span class="w">    </span><span class="nt">severity</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span>
+</span><span id="__span-14-34"><a id="__codelineno-14-34" name="__codelineno-14-34" href="#__codelineno-14-34"></a><span class="w">  </span><span class="nt">on_provider_error</span><span class="p">:</span>
+</span><span id="__span-14-35"><a id="__codelineno-14-35" name="__codelineno-14-35" href="#__codelineno-14-35"></a><span class="w">    </span><span class="nt">severity</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span>
+</span><span id="__span-14-36"><a id="__codelineno-14-36" name="__codelineno-14-36" href="#__codelineno-14-36"></a><span class="w">  </span><span class="nt">retry_policy</span><span class="p">:</span>
+</span><span id="__span-14-37"><a id="__codelineno-14-37" name="__codelineno-14-37" href="#__codelineno-14-37"></a><span class="w">    </span><span class="nt">max_attempts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
+</span><span id="__span-14-38"><a id="__codelineno-14-38" name="__codelineno-14-38" href="#__codelineno-14-38"></a><span class="w">    </span><span class="nt">backoff_ms</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">100</span>
+</span><span id="__span-14-39"><a id="__codelineno-14-39" name="__codelineno-14-39" href="#__codelineno-14-39"></a>
+</span><span id="__span-14-40"><a id="__codelineno-14-40" name="__codelineno-14-40" href="#__codelineno-14-40"></a><span class="nt">fallback</span><span class="p">:</span>
+</span><span id="__span-14-41"><a id="__codelineno-14-41" name="__codelineno-14-41" href="#__codelineno-14-41"></a><span class="w">  </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</span><span id="__span-14-42"><a id="__codelineno-14-42" name="__codelineno-14-42" href="#__codelineno-14-42"></a><span class="w">  </span><span class="nt">fallback_guardrail_id</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;pii-scan-lite&quot;</span>
+</span><span id="__span-14-43"><a id="__codelineno-14-43" name="__codelineno-14-43" href="#__codelineno-14-43"></a><span class="w">  </span><span class="nt">emit_warning</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</span><span id="__span-14-44"><a id="__codelineno-14-44" name="__codelineno-14-44" href="#__codelineno-14-44"></a><span class="nn">---</span>
+</span><span id="__span-14-45"><a id="__codelineno-14-45" name="__codelineno-14-45" href="#__codelineno-14-45"></a>
+</span><span id="__span-14-46"><a id="__codelineno-14-46" name="__codelineno-14-46" href="#__codelineno-14-46"></a><span class="l l-Scalar l-Scalar-Plain">Uses AWS Bedrock Guardrails to detect and redact personally identifiable information</span>
+</span><span id="__span-14-47"><a id="__codelineno-14-47" name="__codelineno-14-47" href="#__codelineno-14-47"></a><span class="l l-Scalar l-Scalar-Plain">before the model processes input and before responses are returned to callers.</span>
+</span><span id="__span-14-48"><a id="__codelineno-14-48" name="__codelineno-14-48" href="#__codelineno-14-48"></a>
+</span><span id="__span-14-49"><a id="__codelineno-14-49" name="__codelineno-14-49" href="#__codelineno-14-49"></a><span class="l l-Scalar l-Scalar-Plain">## Recommended agent configuration</span>
+</span><span id="__span-14-50"><a id="__codelineno-14-50" name="__codelineno-14-50" href="#__codelineno-14-50"></a>
+</span><span id="__span-14-51"><a id="__codelineno-14-51" name="__codelineno-14-51" href="#__codelineno-14-51"></a><span class="l l-Scalar l-Scalar-Plain">```yaml</span>
+</span><span id="__span-14-52"><a id="__codelineno-14-52" name="__codelineno-14-52" href="#__codelineno-14-52"></a><span class="l l-Scalar l-Scalar-Plain">guardrails</span><span class="p p-Indicator">:</span>
+</span><span id="__span-14-53"><a id="__codelineno-14-53" name="__codelineno-14-53" href="#__codelineno-14-53"></a><span class="w">  </span><span class="nt">input</span><span class="p">:</span>
+</span><span id="__span-14-54"><a id="__codelineno-14-54" name="__codelineno-14-54" href="#__codelineno-14-54"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">ref</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;pii-scan&quot;</span>
+</span><span id="__span-14-55"><a id="__codelineno-14-55" name="__codelineno-14-55" href="#__codelineno-14-55"></a><span class="w">      </span><span class="nt">on_fail</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;apply&quot;</span><span class="w">          </span><span class="c1"># Apply the redacted version before the model sees the data</span>
+</span><span id="__span-14-56"><a id="__codelineno-14-56" name="__codelineno-14-56" href="#__codelineno-14-56"></a><span class="w">  </span><span class="nt">output</span><span class="p">:</span>
+</span><span id="__span-14-57"><a id="__codelineno-14-57" name="__codelineno-14-57" href="#__codelineno-14-57"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">ref</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;pii-scan&quot;</span>
+</span><span id="__span-14-58"><a id="__codelineno-14-58" name="__codelineno-14-58" href="#__codelineno-14-58"></a><span class="w">      </span><span class="nt">on_fail</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;reject&quot;</span><span class="w">         </span><span class="c1"># If output redaction fails, halt rather than leak PII</span>
+</span></code></pre></div>
 <hr />
 <h2 id="relationship-to-policiespii_redaction">Relationship to <code>policies.pii_redaction</code><a class="headerlink" href="#relationship-to-policiespii_redaction" title="Permanent link">&para;</a></h2>
 <p>The <code>policies.pii_redaction: true</code> flag in the agent definition and a <code>ref: "pii-scan"</code> guardrail can coexist and both run. They serve complementary roles:</p>
@@ -2050,12 +2467,12 @@ data-handling policy that restricts exposure of personal data.
 <tr>
 <td><strong>What runs it</strong></td>
 <td>Platform-built redaction pass (always available)</td>
-<td>External provider (Bedrock, Azure, etc.)</td>
+<td>External transport (Bedrock, Azure, etc.)</td>
 </tr>
 <tr>
 <td><strong>Configuration</strong></td>
 <td>None — on or off</td>
-<td>Full provider config, version pinning, fallback</td>
+<td>Full transport config, version pinning, fallback</td>
 </tr>
 <tr>
 <td><strong>Precision</strong></td>
@@ -2069,7 +2486,7 @@ data-handling policy that restricts exposure of personal data.
 </tr>
 </tbody>
 </table>
-<p>In a defense-in-depth configuration, set both: <code>pii_redaction: true</code> for baseline coverage that never fails, and a provider-backed guardrail for higher-precision detection on sensitive workflows.</p>
+<p>In a defense-in-depth configuration, set both: <code>pii_redaction: true</code> for baseline coverage that never fails, and a transport-backed guardrail for higher-precision detection on sensitive workflows.</p>
 
 
 
