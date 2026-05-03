@@ -16,7 +16,7 @@
         <link rel="prev" href="../06-collection-definition/">
       
       
-        <link rel="next" href="../08-json-schema/">
+        <link rel="next" href="../09-transport-credentials/">
       
       
         
@@ -969,6 +969,34 @@
   
 </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../09-transport-credentials/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Transport & Credentials
+  
+
+    
+  </span>
+  
+  
+
+      </a>
     </li>
   
 
@@ -2101,7 +2129,7 @@ Lifecycle state. Enum: <code>active</code> | <code>deprecated</code> | <code>dis
 </tr>
 </tbody>
 </table>
-<p>Refer to the <a href="../02-tool-definition/#transport----invocation-details-required-unless-type-is-function">tool transport documentation</a> for the full field reference and <code>credentials</code> block — the definition is identical.</p>
+<p>Refer to <a href="../09-transport-credentials/">Transport &amp; Credentials</a> for the full field reference, credential schemes, and secret sources.</p>
 <p><strong>Provider-specific backends</strong> (AWS Bedrock Guardrails, Azure AI Content Safety, GCP Natural Language, etc.) are not directly supported as transport types. Wrap them in a Lambda function or REST API that calls the provider and returns a response conforming to the <a href="#standard-guardrail-output-format">standard output format</a>. This keeps the AML runtime agnostic to provider-specific response envelopes and normalisation logic.</p>
 <p><strong>Platform-built checks</strong> follow the same pattern as tool <code>type: "function"</code>: omit the <code>transport</code> block entirely. When <code>transport</code> is absent, the runtime invokes the guardrail in-process. Built-in guardrails never time out, never require credentials, and do not need an <code>invocation</code> block.</p>
 <hr />
@@ -2539,13 +2567,13 @@ Lifecycle state. Enum: <code>active</code> | <code>deprecated</code> | <code>dis
         
         
           
-          <a href="../08-json-schema/" class="md-footer__link md-footer__link--next" aria-label="Next: JSON Schema in YAML">
+          <a href="../09-transport-credentials/" class="md-footer__link md-footer__link--next" aria-label="Next: Transport &amp; Credentials">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                JSON Schema in YAML
+                Transport & Credentials
               </div>
             </div>
             <div class="md-footer__button md-icon">

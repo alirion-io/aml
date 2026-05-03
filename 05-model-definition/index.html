@@ -842,6 +842,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../09-transport-credentials/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Transport & Credentials
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../08-json-schema/" class="md-nav__link">
         
   
@@ -1891,20 +1919,19 @@ Lifecycle state. Enum: <code>active</code> | <code>deprecated</code> | <code>dis
 </span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="w">    </span><span class="nt">model_id</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;us.anthropic.claude-sonnet-4-20250514-v1:0&quot;</span><span class="w">   </span><span class="c1"># Required — Bedrock model ID</span>
 </span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="w">    </span><span class="nt">region</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;us-east-1&quot;</span><span class="w">                                       </span><span class="c1"># Required — AWS region</span>
 </span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="w">    </span><span class="nt">credentials</span><span class="p">:</span>
-</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="w">      </span><span class="nt">source</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;iam_role&quot;</span><span class="w">    </span><span class="c1"># iam_role | env_aws (default: iam_role)</span>
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="w">      </span><span class="nt">source</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;iam_role&quot;</span><span class="w">    </span><span class="c1"># iam_role | service-account (default: iam_role)</span>
 </span></code></pre></div>
-<p>Or with explicit environment variables:</p>
+<p>Or with a service account stored in a secret manager:</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nt">provider</span><span class="p">:</span>
 </span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">  </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;bedrock&quot;</span>
 </span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="w">  </span><span class="nt">config</span><span class="p">:</span>
 </span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="w">    </span><span class="nt">model_id</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;us.anthropic.claude-sonnet-4-20250514-v1:0&quot;</span>
 </span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="w">    </span><span class="nt">region</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;us-east-1&quot;</span>
 </span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="w">    </span><span class="nt">credentials</span><span class="p">:</span>
-</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="w">      </span><span class="nt">source</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;env_aws&quot;</span>
-</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="w">      </span><span class="nt">access_key_id</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;MY_AWS_KEY_ID&quot;</span><span class="w">         </span><span class="c1"># Name of the env var holding the access key ID</span>
-</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="w">      </span><span class="nt">secret_access_key</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;MY_AWS_SECRET_KEY&quot;</span><span class="w"> </span><span class="c1"># Name of the env var holding the secret access key</span>
+</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="w">      </span><span class="nt">source</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;service-account&quot;</span>
+</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="w">      </span><span class="nt">secret_id</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;prod/aws/bedrock-credentials&quot;</span><span class="w">  </span><span class="c1"># Secret containing the AWS credentials JSON</span>
 </span></code></pre></div>
-<p><code>credentials.source: "iam_role"</code> is the recommended production setting — the runtime assumes the IAM role declared in the agent definition and requires no extra fields. <code>env_aws</code> reads credentials from the environment variables named in <code>access_key_id</code> and <code>secret_access_key</code>. These are env var <em>names</em>, not the values themselves — the runtime resolves them at startup.</p>
+<p><code>credentials.source: "iam_role"</code> is the recommended production setting — the runtime assumes the IAM role declared in the agent definition and requires no extra fields. <code>service-account</code> reads AWS credentials from a JSON object stored in a secret manager. The resolved secret must contain <code>access_key_id</code> and <code>secret_access_key</code> fields. See the <a href="../09-transport-credentials/#service-account">Transport &amp; Credentials reference</a> for the full structure and supported backends.</p>
 <p>Model access must be enabled in Amazon Bedrock for the specified <code>model_id</code> and region. See the <a href="https://docs.aws.amazon.com/bedrock/latest/userguide/model-access-modify.html">AWS documentation</a>.</p>
 <h4 id="anthropic-anthropic-direct-api"><code>anthropic</code> — Anthropic direct API<a class="headerlink" href="#anthropic-anthropic-direct-api" title="Permanent link">&para;</a></h4>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="nt">provider</span><span class="p">:</span>
@@ -2013,39 +2040,40 @@ Lifecycle state. Enum: <code>active</code> | <code>deprecated</code> | <code>dis
 </span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="nt">credentials</span><span class="p">:</span>
 </span><span id="__span-18-3"><a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a><span class="w">  </span><span class="nt">source</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;iam_role&quot;</span>
 </span><span id="__span-18-4"><a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a>
-</span><span id="__span-18-5"><a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a><span class="c1"># Two AWS credential env vars (Bedrock with explicit keys)</span>
+</span><span id="__span-18-5"><a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a><span class="c1"># Service account JSON secret (Bedrock with explicit keys)</span>
 </span><span id="__span-18-6"><a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a><span class="nt">credentials</span><span class="p">:</span>
-</span><span id="__span-18-7"><a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a><span class="w">  </span><span class="nt">source</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;env_aws&quot;</span>
-</span><span id="__span-18-8"><a id="__codelineno-18-8" name="__codelineno-18-8" href="#__codelineno-18-8"></a><span class="w">  </span><span class="nt">access_key_id</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;MY_AWS_KEY_ID&quot;</span><span class="w">          </span><span class="c1"># Name of the env var holding the access key ID</span>
-</span><span id="__span-18-9"><a id="__codelineno-18-9" name="__codelineno-18-9" href="#__codelineno-18-9"></a><span class="w">  </span><span class="nt">secret_access_key</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;MY_AWS_SECRET_KEY&quot;</span><span class="w"> </span><span class="c1"># Name of the env var holding the secret access key</span>
-</span><span id="__span-18-10"><a id="__codelineno-18-10" name="__codelineno-18-10" href="#__codelineno-18-10"></a>
-</span><span id="__span-18-11"><a id="__codelineno-18-11" name="__codelineno-18-11" href="#__codelineno-18-11"></a><span class="c1"># Single environment variable (API key providers)</span>
-</span><span id="__span-18-12"><a id="__codelineno-18-12" name="__codelineno-18-12" href="#__codelineno-18-12"></a><span class="nt">credentials</span><span class="p">:</span>
-</span><span id="__span-18-13"><a id="__codelineno-18-13" name="__codelineno-18-13" href="#__codelineno-18-13"></a><span class="w">  </span><span class="nt">source</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;env&quot;</span>
-</span><span id="__span-18-14"><a id="__codelineno-18-14" name="__codelineno-18-14" href="#__codelineno-18-14"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;OPENAI_API_KEY&quot;</span><span class="w">         </span><span class="c1"># Name of the environment variable</span>
-</span><span id="__span-18-15"><a id="__codelineno-18-15" name="__codelineno-18-15" href="#__codelineno-18-15"></a>
-</span><span id="__span-18-16"><a id="__codelineno-18-16" name="__codelineno-18-16" href="#__codelineno-18-16"></a><span class="c1"># AWS Secrets Manager</span>
-</span><span id="__span-18-17"><a id="__codelineno-18-17" name="__codelineno-18-17" href="#__codelineno-18-17"></a><span class="nt">credentials</span><span class="p">:</span>
-</span><span id="__span-18-18"><a id="__codelineno-18-18" name="__codelineno-18-18" href="#__codelineno-18-18"></a><span class="w">  </span><span class="nt">source</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;aws_secrets_manager&quot;</span>
-</span><span id="__span-18-19"><a id="__codelineno-18-19" name="__codelineno-18-19" href="#__codelineno-18-19"></a><span class="w">  </span><span class="nt">secret_id</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;prod/openai/api-key&quot;</span><span class="w">  </span><span class="c1"># Secret name or full ARN</span>
-</span><span id="__span-18-20"><a id="__codelineno-18-20" name="__codelineno-18-20" href="#__codelineno-18-20"></a><span class="w">  </span><span class="nt">region</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;us-east-1&quot;</span><span class="w">               </span><span class="c1"># Optional — defaults to the provider&#39;s region</span>
-</span><span id="__span-18-21"><a id="__codelineno-18-21" name="__codelineno-18-21" href="#__codelineno-18-21"></a><span class="w">  </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;api_key&quot;</span><span class="w">                    </span><span class="c1"># Optional — JSON key if the secret value is a JSON object</span>
-</span><span id="__span-18-22"><a id="__codelineno-18-22" name="__codelineno-18-22" href="#__codelineno-18-22"></a>
-</span><span id="__span-18-23"><a id="__codelineno-18-23" name="__codelineno-18-23" href="#__codelineno-18-23"></a><span class="c1"># GCP Secret Manager</span>
-</span><span id="__span-18-24"><a id="__codelineno-18-24" name="__codelineno-18-24" href="#__codelineno-18-24"></a><span class="nt">credentials</span><span class="p">:</span>
-</span><span id="__span-18-25"><a id="__codelineno-18-25" name="__codelineno-18-25" href="#__codelineno-18-25"></a><span class="w">  </span><span class="nt">source</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;gcp_secret_manager&quot;</span>
-</span><span id="__span-18-26"><a id="__codelineno-18-26" name="__codelineno-18-26" href="#__codelineno-18-26"></a><span class="w">  </span><span class="nt">project</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;my-gcp-project&quot;</span>
-</span><span id="__span-18-27"><a id="__codelineno-18-27" name="__codelineno-18-27" href="#__codelineno-18-27"></a><span class="w">  </span><span class="nt">secret</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;openai-api-key&quot;</span>
-</span><span id="__span-18-28"><a id="__codelineno-18-28" name="__codelineno-18-28" href="#__codelineno-18-28"></a><span class="w">  </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;latest&quot;</span><span class="w">                  </span><span class="c1"># Optional — defaults to &#39;latest&#39;</span>
-</span><span id="__span-18-29"><a id="__codelineno-18-29" name="__codelineno-18-29" href="#__codelineno-18-29"></a>
-</span><span id="__span-18-30"><a id="__codelineno-18-30" name="__codelineno-18-30" href="#__codelineno-18-30"></a><span class="c1"># Azure Key Vault</span>
-</span><span id="__span-18-31"><a id="__codelineno-18-31" name="__codelineno-18-31" href="#__codelineno-18-31"></a><span class="nt">credentials</span><span class="p">:</span>
-</span><span id="__span-18-32"><a id="__codelineno-18-32" name="__codelineno-18-32" href="#__codelineno-18-32"></a><span class="w">  </span><span class="nt">source</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;azure_key_vault&quot;</span>
-</span><span id="__span-18-33"><a id="__codelineno-18-33" name="__codelineno-18-33" href="#__codelineno-18-33"></a><span class="w">  </span><span class="nt">vault_url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;https://myvault.vault.azure.net&quot;</span>
-</span><span id="__span-18-34"><a id="__codelineno-18-34" name="__codelineno-18-34" href="#__codelineno-18-34"></a><span class="w">  </span><span class="nt">secret_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;openai-api-key&quot;</span>
-</span><span id="__span-18-35"><a id="__codelineno-18-35" name="__codelineno-18-35" href="#__codelineno-18-35"></a><span class="w">  </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="w">                        </span><span class="c1"># Optional — omit or leave empty for latest</span>
+</span><span id="__span-18-7"><a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a><span class="w">  </span><span class="nt">source</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;service-account&quot;</span>
+</span><span id="__span-18-8"><a id="__codelineno-18-8" name="__codelineno-18-8" href="#__codelineno-18-8"></a><span class="w">  </span><span class="nt">secret_id</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;prod/aws/bedrock-credentials&quot;</span><span class="w">   </span><span class="c1"># Secret containing the AWS credentials JSON</span>
+</span><span id="__span-18-9"><a id="__codelineno-18-9" name="__codelineno-18-9" href="#__codelineno-18-9"></a><span class="c1"># The resolved secret must be a JSON object: { &quot;access_key_id&quot;: &quot;...&quot;, &quot;secret_access_key&quot;: &quot;...&quot; }</span>
+</span><span id="__span-18-10"><a id="__codelineno-18-10" name="__codelineno-18-10" href="#__codelineno-18-10"></a><span class="c1"># See the Transport &amp; Credentials reference for the full structure and supported backends.</span>
+</span><span id="__span-18-11"><a id="__codelineno-18-11" name="__codelineno-18-11" href="#__codelineno-18-11"></a>
+</span><span id="__span-18-12"><a id="__codelineno-18-12" name="__codelineno-18-12" href="#__codelineno-18-12"></a><span class="c1"># Single environment variable (API key providers)</span>
+</span><span id="__span-18-13"><a id="__codelineno-18-13" name="__codelineno-18-13" href="#__codelineno-18-13"></a><span class="nt">credentials</span><span class="p">:</span>
+</span><span id="__span-18-14"><a id="__codelineno-18-14" name="__codelineno-18-14" href="#__codelineno-18-14"></a><span class="w">  </span><span class="nt">source</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;env&quot;</span>
+</span><span id="__span-18-15"><a id="__codelineno-18-15" name="__codelineno-18-15" href="#__codelineno-18-15"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;OPENAI_API_KEY&quot;</span><span class="w">         </span><span class="c1"># Name of the environment variable</span>
+</span><span id="__span-18-16"><a id="__codelineno-18-16" name="__codelineno-18-16" href="#__codelineno-18-16"></a>
+</span><span id="__span-18-17"><a id="__codelineno-18-17" name="__codelineno-18-17" href="#__codelineno-18-17"></a><span class="c1"># AWS Secrets Manager</span>
+</span><span id="__span-18-18"><a id="__codelineno-18-18" name="__codelineno-18-18" href="#__codelineno-18-18"></a><span class="nt">credentials</span><span class="p">:</span>
+</span><span id="__span-18-19"><a id="__codelineno-18-19" name="__codelineno-18-19" href="#__codelineno-18-19"></a><span class="w">  </span><span class="nt">source</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;aws_secrets_manager&quot;</span>
+</span><span id="__span-18-20"><a id="__codelineno-18-20" name="__codelineno-18-20" href="#__codelineno-18-20"></a><span class="w">  </span><span class="nt">secret_id</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;prod/openai/api-key&quot;</span><span class="w">  </span><span class="c1"># Secret name or full ARN</span>
+</span><span id="__span-18-21"><a id="__codelineno-18-21" name="__codelineno-18-21" href="#__codelineno-18-21"></a><span class="w">  </span><span class="nt">region</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;us-east-1&quot;</span><span class="w">               </span><span class="c1"># Optional — defaults to the provider&#39;s region</span>
+</span><span id="__span-18-22"><a id="__codelineno-18-22" name="__codelineno-18-22" href="#__codelineno-18-22"></a><span class="w">  </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;api_key&quot;</span><span class="w">                    </span><span class="c1"># Optional — JSON key if the secret value is a JSON object</span>
+</span><span id="__span-18-23"><a id="__codelineno-18-23" name="__codelineno-18-23" href="#__codelineno-18-23"></a>
+</span><span id="__span-18-24"><a id="__codelineno-18-24" name="__codelineno-18-24" href="#__codelineno-18-24"></a><span class="c1"># GCP Secret Manager</span>
+</span><span id="__span-18-25"><a id="__codelineno-18-25" name="__codelineno-18-25" href="#__codelineno-18-25"></a><span class="nt">credentials</span><span class="p">:</span>
+</span><span id="__span-18-26"><a id="__codelineno-18-26" name="__codelineno-18-26" href="#__codelineno-18-26"></a><span class="w">  </span><span class="nt">source</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;gcp_secret_manager&quot;</span>
+</span><span id="__span-18-27"><a id="__codelineno-18-27" name="__codelineno-18-27" href="#__codelineno-18-27"></a><span class="w">  </span><span class="nt">project</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;my-gcp-project&quot;</span>
+</span><span id="__span-18-28"><a id="__codelineno-18-28" name="__codelineno-18-28" href="#__codelineno-18-28"></a><span class="w">  </span><span class="nt">secret</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;openai-api-key&quot;</span>
+</span><span id="__span-18-29"><a id="__codelineno-18-29" name="__codelineno-18-29" href="#__codelineno-18-29"></a><span class="w">  </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;latest&quot;</span><span class="w">                  </span><span class="c1"># Optional — defaults to &#39;latest&#39;</span>
+</span><span id="__span-18-30"><a id="__codelineno-18-30" name="__codelineno-18-30" href="#__codelineno-18-30"></a>
+</span><span id="__span-18-31"><a id="__codelineno-18-31" name="__codelineno-18-31" href="#__codelineno-18-31"></a><span class="c1"># Azure Key Vault</span>
+</span><span id="__span-18-32"><a id="__codelineno-18-32" name="__codelineno-18-32" href="#__codelineno-18-32"></a><span class="nt">credentials</span><span class="p">:</span>
+</span><span id="__span-18-33"><a id="__codelineno-18-33" name="__codelineno-18-33" href="#__codelineno-18-33"></a><span class="w">  </span><span class="nt">source</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;azure_key_vault&quot;</span>
+</span><span id="__span-18-34"><a id="__codelineno-18-34" name="__codelineno-18-34" href="#__codelineno-18-34"></a><span class="w">  </span><span class="nt">vault_url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;https://myvault.vault.azure.net&quot;</span>
+</span><span id="__span-18-35"><a id="__codelineno-18-35" name="__codelineno-18-35" href="#__codelineno-18-35"></a><span class="w">  </span><span class="nt">secret_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;openai-api-key&quot;</span>
+</span><span id="__span-18-36"><a id="__codelineno-18-36" name="__codelineno-18-36" href="#__codelineno-18-36"></a><span class="w">  </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="w">                        </span><span class="c1"># Optional — omit or leave empty for latest</span>
 </span></code></pre></div>
-<p><code>source</code> enum: <code>iam_role</code> | <code>env_aws</code> | <code>env</code> | <code>aws_secrets_manager</code> | <code>gcp_secret_manager</code> | <code>azure_key_vault</code>.</p>
+<p><code>source</code> enum: <code>iam_role</code> | <code>service-account</code> | <code>env</code> | <code>aws_secrets_manager</code> | <code>gcp_secret_manager</code> | <code>azure_key_vault</code>.</p>
 <p>The runtime resolves <code>credentials</code> once at agent startup and caches the value for the duration of the run. The resolved value is never written to logs or persisted. A <code>credentials</code> block that fails to resolve at startup is a hard runtime error — the agent will not start.</p>
 <hr />
 <h3 id="capabilities-model-capability-declaration-recommended"><code>capabilities</code> — model capability declaration (recommended)<a class="headerlink" href="#capabilities-model-capability-declaration-recommended" title="Permanent link">&para;</a></h3>
@@ -2163,7 +2191,7 @@ Lifecycle state. Enum: <code>active</code> | <code>deprecated</code> | <code>dis
 <td>Hard error</td>
 </tr>
 <tr>
-<td><code>credentials</code> for <code>env_aws</code> is missing <code>access_key_id</code> or <code>secret_access_key</code></td>
+<td><code>credentials</code> for <code>service-account</code> is missing <code>secret_id</code></td>
 <td>Hard error</td>
 </tr>
 <tr>
@@ -2187,7 +2215,7 @@ Lifecycle state. Enum: <code>active</code> | <code>deprecated</code> | <code>dis
 <td>Lint warning</td>
 </tr>
 <tr>
-<td><code>credentials.source: env</code> or <code>credentials.source: env_aws</code> used in a production-targeted definition (prefer a secret manager)</td>
+<td><code>credentials.source: env</code> used in a production-targeted definition (prefer a secret manager)</td>
 <td>Lint warning</td>
 </tr>
 <tr>
@@ -2235,7 +2263,7 @@ Lifecycle state. Enum: <code>active</code> | <code>deprecated</code> | <code>dis
 <h1 id="description">Description<a class="headerlink" href="#description" title="Permanent link">&para;</a></h1>
 <p>Claude 4 Sonnet is Anthropic's balanced model for intelligence and speed, accessed via Amazon Bedrock in <code>us-east-1</code>. It supports text and image inputs, native tool use, and a 200,000-token context window.</p>
 <p>Use this model for general-purpose agent workloads that require strong reasoning, tool orchestration, or document understanding without the latency or cost of a larger frontier model. Prefer <code>claude-4-opus</code> when maximum reasoning depth matters more than throughput.</p>
-<p>Credentials use <code>source: "iam_role"</code> — the runtime assumes the IAM role declared in the agent definition and requires no extra secret configuration. For local development, set <code>source: "env_aws"</code> and export <code>AWS_ACCESS_KEY_ID</code> / <code>AWS_SECRET_ACCESS_KEY</code>.</p>
+<p>Credentials use <code>source: "iam_role"</code> — the runtime assumes the IAM role declared in the agent definition and requires no extra secret configuration. For local development, set <code>source: "service-account"</code> and store a JSON object with <code>access_key_id</code> and <code>secret_access_key</code> in a secret manager or local secret source — see the <a href="../09-transport-credentials/#service-account">Transport &amp; Credentials reference</a>.</p>
 
 
 

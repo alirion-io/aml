@@ -3,6 +3,16 @@
    Mimics https://strandsagents.com/docs/ design
    ============================================================ */
 
+/* ---------- Sidebar width ---------- */
+.md-sidebar--primary {
+  width: 280px;
+}
+
+.md-sidebar--primary .md-sidebar__inner {
+  padding-right: 0;
+  padding-left: 0;
+}
+
 /* ---------- Dark scheme (slate) custom colors ---------- */
 [data-md-color-scheme="slate"] {
   /* Background layers */

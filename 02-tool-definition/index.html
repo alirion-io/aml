@@ -859,6 +859,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../09-transport-credentials/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Transport & Credentials
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../08-json-schema/" class="md-nav__link">
         
   
@@ -1994,11 +2022,12 @@ Lifecycle state. Enum: <code>draft</code> | <code>active</code> | <code>deprecat
 <h4 id="transporttype-lambda"><code>transport.type: "lambda"</code><a class="headerlink" href="#transporttype-lambda" title="Permanent link">&para;</a></h4>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="nt">transport</span><span class="p">:</span>
 </span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="w">  </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;lambda&quot;</span>
-</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="w">  </span><span class="nt">function_arn</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;arn:aws:lambda:eu-west-1:123456789:function:send-email-v2&quot;</span>
-</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="w">  </span><span class="nt">invocation_type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;RequestResponse&quot;</span>
-</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="w">  </span><span class="nt">payload_format</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;json&quot;</span>
-</span><span id="__span-11-6"><a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a><span class="w">  </span><span class="nt">credentials</span><span class="p">:</span>
-</span><span id="__span-11-7"><a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a><span class="w">    </span><span class="nt">scheme</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;iam-role&quot;</span>
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="w">  </span><span class="nt">provider</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;aws&quot;</span>
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="w">  </span><span class="nt">function_id</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;arn:aws:lambda:eu-west-1:123456789:function:send-email-v2&quot;</span>
+</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="w">  </span><span class="nt">invocation_type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;RequestResponse&quot;</span>
+</span><span id="__span-11-6"><a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a><span class="w">  </span><span class="nt">payload_format</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;json&quot;</span>
+</span><span id="__span-11-7"><a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a><span class="w">  </span><span class="nt">credentials</span><span class="p">:</span>
+</span><span id="__span-11-8"><a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a><span class="w">    </span><span class="nt">scheme</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;iam-role&quot;</span>
 </span></code></pre></div>
 <table>
 <thead>
@@ -2010,9 +2039,14 @@ Lifecycle state. Enum: <code>draft</code> | <code>active</code> | <code>deprecat
 </thead>
 <tbody>
 <tr>
-<td><code>function_arn</code></td>
+<td><code>provider</code></td>
 <td>yes</td>
-<td>Fully qualified ARN of the Lambda function.</td>
+<td>Cloud provider: <code>aws</code> | <code>gcp</code> | <code>azure</code>.</td>
+</tr>
+<tr>
+<td><code>function_id</code></td>
+<td>yes</td>
+<td>Provider-specific function identifier. AWS: full ARN (<code>arn:aws:lambda:…</code>). GCP: resource name (<code>projects/…/functions/…</code>). Azure: resource path or function URL.</td>
 </tr>
 <tr>
 <td><code>invocation_type</code></td>
@@ -2068,7 +2102,7 @@ Lifecycle state. Enum: <code>draft</code> | <code>active</code> | <code>deprecat
 <h4 id="transporttype-message-queue"><code>transport.type: "message-queue"</code><a class="headerlink" href="#transporttype-message-queue" title="Permanent link">&para;</a></h4>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="nt">transport</span><span class="p">:</span>
 </span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="w">  </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;message-queue&quot;</span>
-</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="w">  </span><span class="nt">provider</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;aws-sqs&quot;</span>
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="w">  </span><span class="nt">provider</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;aws&quot;</span>
 </span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="w">  </span><span class="nt">queue_url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;https://sqs.eu-west-1.amazonaws.com/123456789/email-outbox&quot;</span>
 </span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="w">  </span><span class="nt">message_format</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;json&quot;</span>
 </span><span id="__span-13-6"><a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a><span class="w">  </span><span class="nt">response_queue_url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;https://sqs.eu-west-1.amazonaws.com/123456789/email-results&quot;</span>
@@ -2087,7 +2121,7 @@ Lifecycle state. Enum: <code>draft</code> | <code>active</code> | <code>deprecat
 <tr>
 <td><code>provider</code></td>
 <td>yes</td>
-<td>Queue provider. Enum: <code>aws-sqs</code> | <code>gcp-pubsub</code> | <code>azure-servicebus</code> | <code>kafka</code>.</td>
+<td>Queue provider. Enum: <code>aws</code> | <code>gcp</code> | <code>azure</code> | <code>kafka</code>.</td>
 </tr>
 <tr>
 <td><code>queue_url</code></td>
@@ -2111,12 +2145,11 @@ Lifecycle state. Enum: <code>draft</code> | <code>active</code> | <code>deprecat
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="nt">transport</span><span class="p">:</span>
 </span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="w">  </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;database&quot;</span>
 </span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="w">  </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;postgresql&quot;</span>
-</span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="w">  </span><span class="nt">connection_source</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;secrets:prod/db/connection&quot;</span>
-</span><span id="__span-14-5"><a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a><span class="w">  </span><span class="nt">query_method</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;parameterised-sql&quot;</span>
-</span><span id="__span-14-6"><a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a><span class="w">  </span><span class="nt">credentials</span><span class="p">:</span>
-</span><span id="__span-14-7"><a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a><span class="w">    </span><span class="nt">scheme</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;service-account&quot;</span>
-</span><span id="__span-14-8"><a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a><span class="w">    </span><span class="nt">source</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;aws_secrets_manager&quot;</span>
-</span><span id="__span-14-9"><a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a><span class="w">    </span><span class="nt">secret_id</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;prod/db/credentials&quot;</span>
+</span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="w">  </span><span class="nt">query_method</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;parameterised-sql&quot;</span>
+</span><span id="__span-14-5"><a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a><span class="w">  </span><span class="nt">credentials</span><span class="p">:</span>
+</span><span id="__span-14-6"><a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a><span class="w">    </span><span class="nt">scheme</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;service-account&quot;</span>
+</span><span id="__span-14-7"><a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a><span class="w">    </span><span class="nt">source</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;aws_secrets_manager&quot;</span>
+</span><span id="__span-14-8"><a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a><span class="w">    </span><span class="nt">secret_id</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;prod/db/connection&quot;</span>
 </span></code></pre></div>
 <table>
 <thead>
@@ -2130,12 +2163,7 @@ Lifecycle state. Enum: <code>draft</code> | <code>active</code> | <code>deprecat
 <tr>
 <td><code>engine</code></td>
 <td>yes</td>
-<td>Database engine. Enum: <code>postgresql</code> | <code>mysql</code> | <code>mssql</code> | <code>bigquery</code> | <code>snowflake</code>.</td>
-</tr>
-<tr>
-<td><code>connection_source</code></td>
-<td>yes</td>
-<td>Where the runtime fetches the connection details. Format: <code>env:&lt;VAR&gt;</code> or <code>secrets:&lt;path&gt;</code>. The referenced value must be a JSON object — see secret format below.</td>
+<td>Database engine. Enum: <code>postgresql</code> | <code>mysql</code> | <code>mssql</code> | <code>bigquery</code> | <code>snowflake</code> | <code>rds-data-api</code>.</td>
 </tr>
 <tr>
 <td><code>query_method</code></td>
@@ -2144,327 +2172,24 @@ Lifecycle state. Enum: <code>draft</code> | <code>active</code> | <code>deprecat
 </tr>
 </tbody>
 </table>
-<p><strong><code>connection_source</code> secret format</strong> — a JSON object with the following fields:</p>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="p">{</span>
-</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="w">  </span><span class="nt">&quot;host&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;db.internal.example.com&quot;</span><span class="p">,</span>
-</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="w">  </span><span class="nt">&quot;port&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">5432</span><span class="p">,</span>
-</span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="w">  </span><span class="nt">&quot;database&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;mydb&quot;</span>
-</span><span id="__span-15-5"><a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a><span class="p">}</span>
-</span></code></pre></div>
-<p>Credentials (<code>username</code> / <code>password</code>) are intentionally kept separate in <code>transport.credentials</code> so they can rotate independently of the connection details.</p>
-<p><strong><code>transport.credentials</code> secret format</strong> (when <code>credentials.scheme</code> is <code>service-account</code> for a database) — a JSON object:</p>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="p">{</span>
-</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="w">  </span><span class="nt">&quot;username&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;agent_read_user&quot;</span><span class="p">,</span>
-</span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="w">  </span><span class="nt">&quot;password&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;s3cr3t&quot;</span>
-</span><span id="__span-16-4"><a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="p">}</span>
-</span></code></pre></div>
-<p>If the secret uses different key names, override them with <code>username_key</code> and <code>password_key</code>:</p>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="nt">credentials</span><span class="p">:</span>
-</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="w">  </span><span class="nt">scheme</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;service-account&quot;</span>
-</span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="w">  </span><span class="nt">source</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;aws_secrets_manager&quot;</span>
-</span><span id="__span-17-4"><a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a><span class="w">  </span><span class="nt">secret_id</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;prod/db/credentials&quot;</span>
-</span><span id="__span-17-5"><a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a><span class="w">  </span><span class="nt">username_key</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;user&quot;</span>
-</span><span id="__span-17-6"><a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a><span class="w">  </span><span class="nt">password_key</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;pass&quot;</span>
-</span></code></pre></div>
-<table>
-<thead>
-<tr>
-<th>Field</th>
-<th>Required</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>username_key</code></td>
-<td>no</td>
-<td>Key name for the username in the resolved JSON object. Default: <code>username</code>.</td>
-</tr>
-<tr>
-<td><code>password_key</code></td>
-<td>no</td>
-<td>Key name for the password in the resolved JSON object. Default: <code>password</code>.</td>
-</tr>
-</tbody>
-</table>
+<p>All connection parameters live inside <code>credentials</code>. With <code>service-account</code>, the resolved secret must be a JSON object with engine-specific connection fields. With <code>iam-role</code>, those parameters are placed directly in the credential object.</p>
 <hr />
 <h4 id="transportcredentials-authentication"><code>transport.credentials</code> — authentication<a class="headerlink" href="#transportcredentials-authentication" title="Permanent link">&para;</a></h4>
-<p><code>credentials</code> is a required sub-block of every transport type except <code>function</code>. It declares how the runtime obtains and presents credentials to the remote system.</p>
-<p>The <code>credentials</code> block follows the same structure as model provider credentials: <code>scheme</code> selects the authentication method, and <code>source</code> (plus its associated fields) specifies how the runtime resolves the secret value. This pattern is consistent across all AML definitions.</p>
-<p><strong><code>credentials.scheme</code> values:</strong></p>
-<table>
-<thead>
-<tr>
-<th>Value</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>none</code></td>
-<td>No authentication. Internal trusted-network services only.</td>
-</tr>
-<tr>
-<td><code>api-key</code></td>
-<td>Static API key sent in an HTTP header. Requires <code>source</code> + <code>header</code>.</td>
-</tr>
-<tr>
-<td><code>bearer-token</code></td>
-<td>Bearer token sent in the <code>Authorization</code> header. Requires <code>source</code>.</td>
-</tr>
-<tr>
-<td><code>oauth2</code></td>
-<td>OAuth 2.0 client credentials flow. Requires <code>token_url</code> + <code>client_id</code> + <code>client_secret</code>.</td>
-</tr>
-<tr>
-<td><code>service-account</code></td>
-<td>Named service identity whose credential lives in the secrets manager. Requires <code>source</code>.</td>
-</tr>
-<tr>
-<td><code>iam-role</code></td>
-<td>Cloud platform identity (AWS IAM Role, GCP Workload Identity, Azure Managed Identity). No extra fields needed.</td>
-</tr>
-</tbody>
-</table>
-<p><strong><code>credentials.source</code> values</strong> (same as model provider credentials):</p>
-<table>
-<thead>
-<tr>
-<th>Value</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>env</code></td>
-<td>Environment variable named in <code>name</code>.</td>
-</tr>
-<tr>
-<td><code>env_aws</code></td>
-<td>Two AWS credential env vars: <code>access_key_id</code> and <code>secret_access_key</code>.</td>
-</tr>
-<tr>
-<td><code>aws_secrets_manager</code></td>
-<td>AWS Secrets Manager; requires <code>secret_id</code>.</td>
-</tr>
-<tr>
-<td><code>gcp_secret_manager</code></td>
-<td>GCP Secret Manager; requires <code>project</code> and <code>secret</code>.</td>
-</tr>
-<tr>
-<td><code>azure_key_vault</code></td>
-<td>Azure Key Vault; requires <code>vault_url</code> and <code>secret_name</code>.</td>
-</tr>
-</tbody>
-</table>
-<p>When <code>scheme</code> is <code>iam-role</code>, <code>source</code> is not required — the runtime uses the attached identity automatically.</p>
-<p><strong>Secret value shapes</strong> — what the runtime expects to find at the resolved path:</p>
-<table>
-<thead>
-<tr>
-<th>Scheme</th>
-<th>Expected secret value</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>api-key</code></td>
-<td>Plain string — the key value.</td>
-</tr>
-<tr>
-<td><code>bearer-token</code></td>
-<td>Plain string — the token value.</td>
-</tr>
-<tr>
-<td><code>oauth2</code></td>
-<td>Client ID and client secret resolved separately via <code>client_id</code> and <code>client_secret</code> (each a <code>secret_ref</code>).</td>
-</tr>
-<tr>
-<td><code>service-account</code> (non-database)</td>
-<td>Plain string — the service account token.</td>
-</tr>
-<tr>
-<td><code>service-account</code> (database)</td>
-<td>JSON object — <code>{ "username": "...", "password": "..." }</code>.</td>
-</tr>
-</tbody>
-</table>
-<h5 id="scheme-none"><code>scheme: "none"</code><a class="headerlink" href="#scheme-none" title="Permanent link">&para;</a></h5>
-<p>No authentication. Only valid for internal services operating inside a trusted network boundary.</p>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="nt">credentials</span><span class="p">:</span>
-</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="w">  </span><span class="nt">scheme</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;none&quot;</span>
-</span></code></pre></div>
-<h5 id="scheme-api-key"><code>scheme: "api-key"</code><a class="headerlink" href="#scheme-api-key" title="Permanent link">&para;</a></h5>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="nt">credentials</span><span class="p">:</span>
-</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="w">  </span><span class="nt">scheme</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;api-key&quot;</span>
-</span><span id="__span-19-3"><a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a><span class="w">  </span><span class="nt">source</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;env&quot;</span>
-</span><span id="__span-19-4"><a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;SERVICE_API_KEY&quot;</span>
-</span><span id="__span-19-5"><a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a><span class="w">  </span><span class="nt">header</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;X-Api-Key&quot;</span><span class="w">          </span><span class="c1"># Header name to send the key in. Default: X-Api-Key.</span>
-</span></code></pre></div>
-<table>
-<thead>
-<tr>
-<th>Field</th>
-<th>Required</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>source</code> / <code>name</code></td>
-<td>yes</td>
-<td>Where to resolve the key at runtime.</td>
-</tr>
-<tr>
-<td><code>header</code></td>
-<td>yes</td>
-<td>HTTP header name. Default: <code>X-Api-Key</code>.</td>
-</tr>
-</tbody>
-</table>
-<h5 id="scheme-bearer-token"><code>scheme: "bearer-token"</code><a class="headerlink" href="#scheme-bearer-token" title="Permanent link">&para;</a></h5>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="nt">credentials</span><span class="p">:</span>
-</span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="w">  </span><span class="nt">scheme</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;bearer-token&quot;</span>
-</span><span id="__span-20-3"><a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a><span class="w">  </span><span class="nt">source</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;aws_secrets_manager&quot;</span>
-</span><span id="__span-20-4"><a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a><span class="w">  </span><span class="nt">secret_id</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;prod/service/token&quot;</span>
-</span></code></pre></div>
-<table>
-<thead>
-<tr>
-<th>Field</th>
-<th>Required</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>source</code> / …</td>
-<td>yes</td>
-<td>Where to resolve the token at runtime.</td>
-</tr>
-</tbody>
-</table>
-<h5 id="scheme-oauth2"><code>scheme: "oauth2"</code><a class="headerlink" href="#scheme-oauth2" title="Permanent link">&para;</a></h5>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="nt">credentials</span><span class="p">:</span>
-</span><span id="__span-21-2"><a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="w">  </span><span class="nt">scheme</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;oauth2&quot;</span>
-</span><span id="__span-21-3"><a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a><span class="w">  </span><span class="nt">token_url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;https://auth.example.com/oauth/token&quot;</span>
-</span><span id="__span-21-4"><a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a><span class="w">  </span><span class="nt">client_id</span><span class="p">:</span>
-</span><span id="__span-21-5"><a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a><span class="w">    </span><span class="nt">source</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;env&quot;</span>
-</span><span id="__span-21-6"><a id="__codelineno-21-6" name="__codelineno-21-6" href="#__codelineno-21-6"></a><span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;OAUTH_CLIENT_ID&quot;</span>
-</span><span id="__span-21-7"><a id="__codelineno-21-7" name="__codelineno-21-7" href="#__codelineno-21-7"></a><span class="w">  </span><span class="nt">client_secret</span><span class="p">:</span>
-</span><span id="__span-21-8"><a id="__codelineno-21-8" name="__codelineno-21-8" href="#__codelineno-21-8"></a><span class="w">    </span><span class="nt">source</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;aws_secrets_manager&quot;</span>
-</span><span id="__span-21-9"><a id="__codelineno-21-9" name="__codelineno-21-9" href="#__codelineno-21-9"></a><span class="w">    </span><span class="nt">secret_id</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;prod/oauth/client-secret&quot;</span>
-</span><span id="__span-21-10"><a id="__codelineno-21-10" name="__codelineno-21-10" href="#__codelineno-21-10"></a><span class="w">  </span><span class="nt">scopes</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;mail:send&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;audit:write&quot;</span><span class="p p-Indicator">]</span>
-</span><span id="__span-21-11"><a id="__codelineno-21-11" name="__codelineno-21-11" href="#__codelineno-21-11"></a><span class="w">  </span><span class="nt">grant_type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;client_credentials&quot;</span>
-</span></code></pre></div>
-<table>
-<thead>
-<tr>
-<th>Field</th>
-<th>Required</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>token_url</code></td>
-<td>yes</td>
-<td>OAuth 2.0 token endpoint.</td>
-</tr>
-<tr>
-<td><code>client_id</code></td>
-<td>yes</td>
-<td>Where to resolve the client ID (a <code>secret_ref</code> object).</td>
-</tr>
-<tr>
-<td><code>client_secret</code></td>
-<td>yes</td>
-<td>Where to resolve the client secret (a <code>secret_ref</code> object).</td>
-</tr>
-<tr>
-<td><code>scopes</code></td>
-<td>no</td>
-<td>List of OAuth scopes to request.</td>
-</tr>
-<tr>
-<td><code>grant_type</code></td>
-<td>no</td>
-<td>OAuth grant type. Default: <code>client_credentials</code>.</td>
-</tr>
-</tbody>
-</table>
-<h5 id="scheme-service-account"><code>scheme: "service-account"</code><a class="headerlink" href="#scheme-service-account" title="Permanent link">&para;</a></h5>
-<p>A named identity created explicitly for a non-human caller. Its credential (token, key, or username/password) is stored in the secrets manager, provisioned manually, and must be rotated by the owning team or a secrets manager policy.</p>
-<p>Use this when the target system does not participate in cloud IAM — a Postgres database, an internal REST API with its own auth, a third-party SaaS service, etc.</p>
-<p>The expected secret value shape depends on the transport: a plain string token for HTTP-based transports, a JSON credentials object for <code>database</code> transport (see the secret value shapes table above).</p>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="nt">credentials</span><span class="p">:</span>
-</span><span id="__span-22-2"><a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a><span class="w">  </span><span class="nt">scheme</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;service-account&quot;</span>
-</span><span id="__span-22-3"><a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a><span class="w">  </span><span class="nt">source</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;aws_secrets_manager&quot;</span>
-</span><span id="__span-22-4"><a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a><span class="w">  </span><span class="nt">secret_id</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;prod/agent/service-token&quot;</span>
-</span></code></pre></div>
-<table>
-<thead>
-<tr>
-<th>Field</th>
-<th>Required</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>source</code> / …</td>
-<td>yes</td>
-<td>Where to resolve the service account token or credentials.</td>
-</tr>
-</tbody>
-</table>
-<h5 id="scheme-iam-role"><code>scheme: "iam-role"</code><a class="headerlink" href="#scheme-iam-role" title="Permanent link">&para;</a></h5>
-<p>The cloud platform assigns an identity to the execution environment automatically (AWS IAM Role, GCP Workload Identity, Azure Managed Identity). The runtime obtains a short-lived token from the local cloud metadata service at call time — no credential is stored or provisioned.</p>
-<p>Use this when both the agent runtime and the target service are within the same cloud ecosystem (e.g. a Lambda calling an S3 bucket, or a Cloud Run service calling a Cloud SQL instance with IAM authentication enabled). It cannot be used for systems outside the cloud provider's identity boundary.</p>
-<table>
-<thead>
-<tr>
-<th></th>
-<th><code>service-account</code></th>
-<th><code>iam-role</code></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Credential stored in secrets manager?</td>
-<td>Yes</td>
-<td>No</td>
-</tr>
-<tr>
-<td>Rotation managed by?</td>
-<td>Owning team or policy</td>
-<td>Cloud platform, automatically</td>
-</tr>
-<tr>
-<td>Works with</td>
-<td>Any system that accepts a token, key, or password</td>
-<td>Cloud-native services in the same provider ecosystem</td>
-</tr>
-</tbody>
-</table>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="nt">credentials</span><span class="p">:</span>
-</span><span id="__span-23-2"><a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a><span class="w">  </span><span class="nt">scheme</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;iam-role&quot;</span>
-</span></code></pre></div>
-<p>No additional fields are required.</p>
+<p>See <a href="../09-transport-credentials/">Transport &amp; Credentials</a> for the full <code>credentials</code> block reference, including all credential schemes (<code>none</code>, <code>iam-role</code>, <code>api-key</code>, <code>bearer-token</code>, <code>oauth2</code>, <code>service-account</code>), secret sources (<code>env</code>, <code>aws_secrets_manager</code>, <code>gcp_secret_manager</code>, <code>azure_key_vault</code>), and connection objects for database and cloud transports.</p>
 <hr />
 <h3 id="use_guidance-when-to-use-required"><code>use_guidance</code> — when to use (required)<a class="headerlink" href="#use_guidance-when-to-use-required" title="Permanent link">&para;</a></h3>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="nt">use_guidance</span><span class="p">:</span>
-</span><span id="__span-24-2"><a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a><span class="w">  </span><span class="nt">use_when</span><span class="p">:</span>
-</span><span id="__span-24-3"><a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;user</span><span class="nv"> </span><span class="s">has</span><span class="nv"> </span><span class="s">confirmed</span><span class="nv"> </span><span class="s">they</span><span class="nv"> </span><span class="s">want</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">confirmation</span><span class="nv"> </span><span class="s">email</span><span class="nv"> </span><span class="s">sent&quot;</span>
-</span><span id="__span-24-4"><a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;a</span><span class="nv"> </span><span class="s">case</span><span class="nv"> </span><span class="s">is</span><span class="nv"> </span><span class="s">resolved</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">customer</span><span class="nv"> </span><span class="s">should</span><span class="nv"> </span><span class="s">be</span><span class="nv"> </span><span class="s">notified&quot;</span>
-</span><span id="__span-24-5"><a id="__codelineno-24-5" name="__codelineno-24-5" href="#__codelineno-24-5"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;a</span><span class="nv"> </span><span class="s">document</span><span class="nv"> </span><span class="s">needs</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">be</span><span class="nv"> </span><span class="s">delivered</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">user&#39;s</span><span class="nv"> </span><span class="s">registered</span><span class="nv"> </span><span class="s">email&quot;</span>
-</span><span id="__span-24-6"><a id="__codelineno-24-6" name="__codelineno-24-6" href="#__codelineno-24-6"></a><span class="w">  </span><span class="nt">avoid_when</span><span class="p">:</span>
-</span><span id="__span-24-7"><a id="__codelineno-24-7" name="__codelineno-24-7" href="#__codelineno-24-7"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;user</span><span class="nv"> </span><span class="s">has</span><span class="nv"> </span><span class="s">not</span><span class="nv"> </span><span class="s">explicitly</span><span class="nv"> </span><span class="s">requested</span><span class="nv"> </span><span class="s">or</span><span class="nv"> </span><span class="s">confirmed</span><span class="nv"> </span><span class="s">an</span><span class="nv"> </span><span class="s">email&quot;</span>
-</span><span id="__span-24-8"><a id="__codelineno-24-8" name="__codelineno-24-8" href="#__codelineno-24-8"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;the</span><span class="nv"> </span><span class="s">recipient</span><span class="nv"> </span><span class="s">address</span><span class="nv"> </span><span class="s">has</span><span class="nv"> </span><span class="s">not</span><span class="nv"> </span><span class="s">been</span><span class="nv"> </span><span class="s">verified&quot;</span>
-</span><span id="__span-24-9"><a id="__codelineno-24-9" name="__codelineno-24-9" href="#__codelineno-24-9"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;the</span><span class="nv"> </span><span class="s">content</span><span class="nv"> </span><span class="s">would</span><span class="nv"> </span><span class="s">constitute</span><span class="nv"> </span><span class="s">bulk</span><span class="nv"> </span><span class="s">or</span><span class="nv"> </span><span class="s">marketing</span><span class="nv"> </span><span class="s">communication&quot;</span>
-</span><span id="__span-24-10"><a id="__codelineno-24-10" name="__codelineno-24-10" href="#__codelineno-24-10"></a><span class="w">  </span><span class="nt">side_effects</span><span class="p">:</span>
-</span><span id="__span-24-11"><a id="__codelineno-24-11" name="__codelineno-24-11" href="#__codelineno-24-11"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;Sends</span><span class="nv"> </span><span class="s">an</span><span class="nv"> </span><span class="s">email</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">specified</span><span class="nv"> </span><span class="s">recipients</span><span class="nv"> </span><span class="s">—</span><span class="nv"> </span><span class="s">this</span><span class="nv"> </span><span class="s">cannot</span><span class="nv"> </span><span class="s">be</span><span class="nv"> </span><span class="s">undone.&quot;</span>
-</span><span id="__span-24-12"><a id="__codelineno-24-12" name="__codelineno-24-12" href="#__codelineno-24-12"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;Writes</span><span class="nv"> </span><span class="s">an</span><span class="nv"> </span><span class="s">audit</span><span class="nv"> </span><span class="s">log</span><span class="nv"> </span><span class="s">entry</span><span class="nv"> </span><span class="s">on</span><span class="nv"> </span><span class="s">every</span><span class="nv"> </span><span class="s">call.&quot;</span>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="nt">use_guidance</span><span class="p">:</span>
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="w">  </span><span class="nt">use_when</span><span class="p">:</span>
+</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;user</span><span class="nv"> </span><span class="s">has</span><span class="nv"> </span><span class="s">confirmed</span><span class="nv"> </span><span class="s">they</span><span class="nv"> </span><span class="s">want</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">confirmation</span><span class="nv"> </span><span class="s">email</span><span class="nv"> </span><span class="s">sent&quot;</span>
+</span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;a</span><span class="nv"> </span><span class="s">case</span><span class="nv"> </span><span class="s">is</span><span class="nv"> </span><span class="s">resolved</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">customer</span><span class="nv"> </span><span class="s">should</span><span class="nv"> </span><span class="s">be</span><span class="nv"> </span><span class="s">notified&quot;</span>
+</span><span id="__span-15-5"><a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;a</span><span class="nv"> </span><span class="s">document</span><span class="nv"> </span><span class="s">needs</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">be</span><span class="nv"> </span><span class="s">delivered</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">user&#39;s</span><span class="nv"> </span><span class="s">registered</span><span class="nv"> </span><span class="s">email&quot;</span>
+</span><span id="__span-15-6"><a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a><span class="w">  </span><span class="nt">avoid_when</span><span class="p">:</span>
+</span><span id="__span-15-7"><a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;user</span><span class="nv"> </span><span class="s">has</span><span class="nv"> </span><span class="s">not</span><span class="nv"> </span><span class="s">explicitly</span><span class="nv"> </span><span class="s">requested</span><span class="nv"> </span><span class="s">or</span><span class="nv"> </span><span class="s">confirmed</span><span class="nv"> </span><span class="s">an</span><span class="nv"> </span><span class="s">email&quot;</span>
+</span><span id="__span-15-8"><a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;the</span><span class="nv"> </span><span class="s">recipient</span><span class="nv"> </span><span class="s">address</span><span class="nv"> </span><span class="s">has</span><span class="nv"> </span><span class="s">not</span><span class="nv"> </span><span class="s">been</span><span class="nv"> </span><span class="s">verified&quot;</span>
+</span><span id="__span-15-9"><a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;the</span><span class="nv"> </span><span class="s">content</span><span class="nv"> </span><span class="s">would</span><span class="nv"> </span><span class="s">constitute</span><span class="nv"> </span><span class="s">bulk</span><span class="nv"> </span><span class="s">or</span><span class="nv"> </span><span class="s">marketing</span><span class="nv"> </span><span class="s">communication&quot;</span>
+</span><span id="__span-15-10"><a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a><span class="w">  </span><span class="nt">side_effects</span><span class="p">:</span>
+</span><span id="__span-15-11"><a id="__codelineno-15-11" name="__codelineno-15-11" href="#__codelineno-15-11"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;Sends</span><span class="nv"> </span><span class="s">an</span><span class="nv"> </span><span class="s">email</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">specified</span><span class="nv"> </span><span class="s">recipients</span><span class="nv"> </span><span class="s">—</span><span class="nv"> </span><span class="s">this</span><span class="nv"> </span><span class="s">cannot</span><span class="nv"> </span><span class="s">be</span><span class="nv"> </span><span class="s">undone.&quot;</span>
+</span><span id="__span-15-12"><a id="__codelineno-15-12" name="__codelineno-15-12" href="#__codelineno-15-12"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;Writes</span><span class="nv"> </span><span class="s">an</span><span class="nv"> </span><span class="s">audit</span><span class="nv"> </span><span class="s">log</span><span class="nv"> </span><span class="s">entry</span><span class="nv"> </span><span class="s">on</span><span class="nv"> </span><span class="s">every</span><span class="nv"> </span><span class="s">call.&quot;</span>
 </span></code></pre></div>
 <p><code>use_when</code> and <code>avoid_when</code> are behavioral hints compiled into the agent's instruction context. They help the model decide when to invoke the tool and when to prefer an alternative. <code>side_effects</code> must explicitly describe any real-world consequences of calling the tool.</p>
 <hr />
@@ -2482,7 +2207,7 @@ Lifecycle state. Enum: <code>draft</code> | <code>active</code> | <code>deprecat
 <li><code>transport.credentials</code> missing when <code>transport</code> is present.</li>
 <li><code>transport.credentials.scheme</code> is an unknown value.</li>
 <li><code>transport.credentials.source</code> missing when <code>scheme</code> requires it (<code>api-key</code>, <code>bearer-token</code>, <code>service-account</code>).</li>
-<li><code>transport.credentials.client_id</code> or <code>transport.credentials.client_secret</code> missing when <code>scheme</code> is <code>oauth2</code>.</li>
+<li><code>transport.credentials.provider</code> or <code>transport.credentials.function_id</code> missing when <code>scheme</code> is <code>oauth2</code>.</li>
 </ul>
 <h3 id="recommended-lint-rules">Recommended lint rules<a class="headerlink" href="#recommended-lint-rules" title="Permanent link">&para;</a></h3>
 <ul>
@@ -2493,95 +2218,95 @@ Lifecycle state. Enum: <code>draft</code> | <code>active</code> | <code>deprecat
 </ul>
 <hr />
 <h2 id="minimal-complete-example-read-only-retrieval-tool">Minimal complete example — read-only retrieval tool<a class="headerlink" href="#minimal-complete-example-read-only-retrieval-tool" title="Permanent link">&para;</a></h2>
-<div class="language-markdown highlight"><pre><span></span><code><span id="__span-25-1"><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>---
-</span><span id="__span-25-2"><a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a>spec_version: &quot;1.2&quot;
-</span><span id="__span-25-3"><a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a>tool_id: &quot;search-product-kb&quot;
-</span><span id="__span-25-4"><a id="__codelineno-25-4" name="__codelineno-25-4" href="#__codelineno-25-4"></a>version: &quot;1.0.0&quot;
-</span><span id="__span-25-5"><a id="__codelineno-25-5" name="__codelineno-25-5" href="#__codelineno-25-5"></a>status: &quot;active&quot;
-</span><span id="__span-25-6"><a id="__codelineno-25-6" name="__codelineno-25-6" href="#__codelineno-25-6"></a>
-</span><span id="__span-25-7"><a id="__codelineno-25-7" name="__codelineno-25-7" href="#__codelineno-25-7"></a>meta:
-</span><span id="__span-25-8"><a id="__codelineno-25-8" name="__codelineno-25-8" href="#__codelineno-25-8"></a>  name: &quot;Search Product Knowledge Base&quot;
-</span><span id="__span-25-9"><a id="__codelineno-25-9" name="__codelineno-25-9" href="#__codelineno-25-9"></a>  description: &gt;
-</span><span id="__span-25-10"><a id="__codelineno-25-10" name="__codelineno-25-10" href="#__codelineno-25-10"></a>    Search the internal product documentation for feature behavior, API details,
-</span><span id="__span-25-11"><a id="__codelineno-25-11" name="__codelineno-25-11" href="#__codelineno-25-11"></a>    release notes, known issues, and troubleshooting steps.
-</span><span id="__span-25-12"><a id="__codelineno-25-12" name="__codelineno-25-12" href="#__codelineno-25-12"></a>    Use for product or technical questions requiring authoritative internal documentation.
-</span><span id="__span-25-13"><a id="__codelineno-25-13" name="__codelineno-25-13" href="#__codelineno-25-13"></a>    Do not use for HR, finance, legal, or general web questions.
-</span><span id="__span-25-14"><a id="__codelineno-25-14" name="__codelineno-25-14" href="#__codelineno-25-14"></a>  owner: &quot;platform-engineering&quot;
-</span><span id="__span-25-15"><a id="__codelineno-25-15" name="__codelineno-25-15" href="#__codelineno-25-15"></a>  tags: [&quot;search&quot;, &quot;product&quot;, &quot;retrieval&quot;]
-</span><span id="__span-25-16"><a id="__codelineno-25-16" name="__codelineno-25-16" href="#__codelineno-25-16"></a>  last_updated: &quot;2025-04-01&quot;
-</span><span id="__span-25-17"><a id="__codelineno-25-17" name="__codelineno-25-17" href="#__codelineno-25-17"></a>
-</span><span id="__span-25-18"><a id="__codelineno-25-18" name="__codelineno-25-18" href="#__codelineno-25-18"></a>type: &quot;retrieval&quot;
-</span><span id="__span-25-19"><a id="__codelineno-25-19" name="__codelineno-25-19" href="#__codelineno-25-19"></a>
-</span><span id="__span-25-20"><a id="__codelineno-25-20" name="__codelineno-25-20" href="#__codelineno-25-20"></a>interface:
-</span><span id="__span-25-21"><a id="__codelineno-25-21" name="__codelineno-25-21" href="#__codelineno-25-21"></a>  input:
-</span><span id="__span-25-22"><a id="__codelineno-25-22" name="__codelineno-25-22" href="#__codelineno-25-22"></a>    type: object
-</span><span id="__span-25-23"><a id="__codelineno-25-23" name="__codelineno-25-23" href="#__codelineno-25-23"></a>    properties:
-</span><span id="__span-25-24"><a id="__codelineno-25-24" name="__codelineno-25-24" href="#__codelineno-25-24"></a>      query:
-</span><span id="__span-25-25"><a id="__codelineno-25-25" name="__codelineno-25-25" href="#__codelineno-25-25"></a>        type: string
-</span><span id="__span-25-26"><a id="__codelineno-25-26" name="__codelineno-25-26" href="#__codelineno-25-26"></a>        description: &quot;Search query in natural language.&quot;
-</span><span id="__span-25-27"><a id="__codelineno-25-27" name="__codelineno-25-27" href="#__codelineno-25-27"></a>      top_k:
-</span><span id="__span-25-28"><a id="__codelineno-25-28" name="__codelineno-25-28" href="#__codelineno-25-28"></a>        type: integer
-</span><span id="__span-25-29"><a id="__codelineno-25-29" name="__codelineno-25-29" href="#__codelineno-25-29"></a>        description: &quot;Maximum results to return. Default 5, max 20.&quot;
-</span><span id="__span-25-30"><a id="__codelineno-25-30" name="__codelineno-25-30" href="#__codelineno-25-30"></a>        default: 5
-</span><span id="__span-25-31"><a id="__codelineno-25-31" name="__codelineno-25-31" href="#__codelineno-25-31"></a>    required: [&quot;query&quot;]
-</span><span id="__span-25-32"><a id="__codelineno-25-32" name="__codelineno-25-32" href="#__codelineno-25-32"></a>  output:
-</span><span id="__span-25-33"><a id="__codelineno-25-33" name="__codelineno-25-33" href="#__codelineno-25-33"></a>    type: object
-</span><span id="__span-25-34"><a id="__codelineno-25-34" name="__codelineno-25-34" href="#__codelineno-25-34"></a>    properties:
-</span><span id="__span-25-35"><a id="__codelineno-25-35" name="__codelineno-25-35" href="#__codelineno-25-35"></a>      results:
-</span><span id="__span-25-36"><a id="__codelineno-25-36" name="__codelineno-25-36" href="#__codelineno-25-36"></a>        type: array
-</span><span id="__span-25-37"><a id="__codelineno-25-37" name="__codelineno-25-37" href="#__codelineno-25-37"></a>        description: &quot;List of matching documents.&quot;
-</span><span id="__span-25-38"><a id="__codelineno-25-38" name="__codelineno-25-38" href="#__codelineno-25-38"></a>        items:
-</span><span id="__span-25-39"><a id="__codelineno-25-39" name="__codelineno-25-39" href="#__codelineno-25-39"></a>          type: object
-</span><span id="__span-25-40"><a id="__codelineno-25-40" name="__codelineno-25-40" href="#__codelineno-25-40"></a>          properties:
-</span><span id="__span-25-41"><a id="__codelineno-25-41" name="__codelineno-25-41" href="#__codelineno-25-41"></a>            id:
-</span><span id="__span-25-42"><a id="__codelineno-25-42" name="__codelineno-25-42" href="#__codelineno-25-42"></a>              type: string
-</span><span id="__span-25-43"><a id="__codelineno-25-43" name="__codelineno-25-43" href="#__codelineno-25-43"></a>              description: &quot;Unique document identifier.&quot;
-</span><span id="__span-25-44"><a id="__codelineno-25-44" name="__codelineno-25-44" href="#__codelineno-25-44"></a>            title:
-</span><span id="__span-25-45"><a id="__codelineno-25-45" name="__codelineno-25-45" href="#__codelineno-25-45"></a>              type: string
-</span><span id="__span-25-46"><a id="__codelineno-25-46" name="__codelineno-25-46" href="#__codelineno-25-46"></a>              description: &quot;Document title.&quot;
-</span><span id="__span-25-47"><a id="__codelineno-25-47" name="__codelineno-25-47" href="#__codelineno-25-47"></a>            snippet:
-</span><span id="__span-25-48"><a id="__codelineno-25-48" name="__codelineno-25-48" href="#__codelineno-25-48"></a>              type: string
-</span><span id="__span-25-49"><a id="__codelineno-25-49" name="__codelineno-25-49" href="#__codelineno-25-49"></a>              description: &quot;Relevant excerpt from the document.&quot;
-</span><span id="__span-25-50"><a id="__codelineno-25-50" name="__codelineno-25-50" href="#__codelineno-25-50"></a>            url:
-</span><span id="__span-25-51"><a id="__codelineno-25-51" name="__codelineno-25-51" href="#__codelineno-25-51"></a>              type: string
-</span><span id="__span-25-52"><a id="__codelineno-25-52" name="__codelineno-25-52" href="#__codelineno-25-52"></a>              format: &quot;uri&quot;
-</span><span id="__span-25-53"><a id="__codelineno-25-53" name="__codelineno-25-53" href="#__codelineno-25-53"></a>              description: &quot;Link to the full document.&quot;
-</span><span id="__span-25-54"><a id="__codelineno-25-54" name="__codelineno-25-54" href="#__codelineno-25-54"></a>            score:
-</span><span id="__span-25-55"><a id="__codelineno-25-55" name="__codelineno-25-55" href="#__codelineno-25-55"></a>              type: number
-</span><span id="__span-25-56"><a id="__codelineno-25-56" name="__codelineno-25-56" href="#__codelineno-25-56"></a>              description: &quot;Relevance score, 0.0–1.0.&quot;
-</span><span id="__span-25-57"><a id="__codelineno-25-57" name="__codelineno-25-57" href="#__codelineno-25-57"></a>          required: [&quot;id&quot;, &quot;title&quot;, &quot;snippet&quot;]
-</span><span id="__span-25-58"><a id="__codelineno-25-58" name="__codelineno-25-58" href="#__codelineno-25-58"></a>      total:
-</span><span id="__span-25-59"><a id="__codelineno-25-59" name="__codelineno-25-59" href="#__codelineno-25-59"></a>        type: integer
-</span><span id="__span-25-60"><a id="__codelineno-25-60" name="__codelineno-25-60" href="#__codelineno-25-60"></a>        description: &quot;Total number of matching documents.&quot;
-</span><span id="__span-25-61"><a id="__codelineno-25-61" name="__codelineno-25-61" href="#__codelineno-25-61"></a>    required: [&quot;results&quot;, &quot;total&quot;]
-</span><span id="__span-25-62"><a id="__codelineno-25-62" name="__codelineno-25-62" href="#__codelineno-25-62"></a>
-</span><span id="__span-25-63"><a id="__codelineno-25-63" name="__codelineno-25-63" href="#__codelineno-25-63"></a>transport:
-</span><span id="__span-25-64"><a id="__codelineno-25-64" name="__codelineno-25-64" href="#__codelineno-25-64"></a>  type: &quot;rest-api&quot;
-</span><span id="__span-25-65"><a id="__codelineno-25-65" name="__codelineno-25-65" href="#__codelineno-25-65"></a>  base_url: &quot;https://kb.internal.example.com/v2&quot;
-</span><span id="__span-25-66"><a id="__codelineno-25-66" name="__codelineno-25-66" href="#__codelineno-25-66"></a>  endpoint: &quot;POST /search&quot;
-</span><span id="__span-25-67"><a id="__codelineno-25-67" name="__codelineno-25-67" href="#__codelineno-25-67"></a>  timeout_ms: 8000
-</span><span id="__span-25-68"><a id="__codelineno-25-68" name="__codelineno-25-68" href="#__codelineno-25-68"></a>  credentials:
-</span><span id="__span-25-69"><a id="__codelineno-25-69" name="__codelineno-25-69" href="#__codelineno-25-69"></a>    scheme: &quot;service-account&quot;
-</span><span id="__span-25-70"><a id="__codelineno-25-70" name="__codelineno-25-70" href="#__codelineno-25-70"></a>    source: &quot;aws_secrets_manager&quot;
-</span><span id="__span-25-71"><a id="__codelineno-25-71" name="__codelineno-25-71" href="#__codelineno-25-71"></a>    secret_id: &quot;prod/agent/kb-token&quot;
-</span><span id="__span-25-72"><a id="__codelineno-25-72" name="__codelineno-25-72" href="#__codelineno-25-72"></a>
-</span><span id="__span-25-73"><a id="__codelineno-25-73" name="__codelineno-25-73" href="#__codelineno-25-73"></a>use_guidance:
-</span><span id="__span-25-74"><a id="__codelineno-25-74" name="__codelineno-25-74" href="#__codelineno-25-74"></a>  use_when:
-</span><span id="__span-25-75"><a id="__codelineno-25-75" name="__codelineno-25-75" href="#__codelineno-25-75"></a><span class="w">    </span><span class="k">-</span><span class="w"> </span>&quot;question asks for specific product feature behavior or configuration&quot;
-</span><span id="__span-25-76"><a id="__codelineno-25-76" name="__codelineno-25-76" href="#__codelineno-25-76"></a><span class="w">    </span><span class="k">-</span><span class="w"> </span>&quot;troubleshooting requires authoritative internal documentation&quot;
-</span><span id="__span-25-77"><a id="__codelineno-25-77" name="__codelineno-25-77" href="#__codelineno-25-77"></a>  avoid_when:
-</span><span id="__span-25-78"><a id="__codelineno-25-78" name="__codelineno-25-78" href="#__codelineno-25-78"></a><span class="w">    </span><span class="k">-</span><span class="w"> </span>&quot;question is purely conversational or general knowledge&quot;
-</span><span id="__span-25-79"><a id="__codelineno-25-79" name="__codelineno-25-79" href="#__codelineno-25-79"></a><span class="w">    </span><span class="k">-</span><span class="w"> </span>&quot;question is outside product or technical support scope&quot;
-</span><span id="__span-25-80"><a id="__codelineno-25-80" name="__codelineno-25-80" href="#__codelineno-25-80"></a><span class="gu">  side_effects: &quot;None. Read-only.&quot;</span>
-</span><span id="__span-25-81"><a id="__codelineno-25-81" name="__codelineno-25-81" href="#__codelineno-25-81"></a><span class="gu">---</span>
-</span><span id="__span-25-82"><a id="__codelineno-25-82" name="__codelineno-25-82" href="#__codelineno-25-82"></a>
-</span><span id="__span-25-83"><a id="__codelineno-25-83" name="__codelineno-25-83" href="#__codelineno-25-83"></a><span class="gh"># Purpose</span>
-</span><span id="__span-25-84"><a id="__codelineno-25-84" name="__codelineno-25-84" href="#__codelineno-25-84"></a>Gives agents access to the internal product knowledge base for authoritative answers
-</span><span id="__span-25-85"><a id="__codelineno-25-85" name="__codelineno-25-85" href="#__codelineno-25-85"></a>to product and technical questions.
-</span><span id="__span-25-86"><a id="__codelineno-25-86" name="__codelineno-25-86" href="#__codelineno-25-86"></a>
-</span><span id="__span-25-87"><a id="__codelineno-25-87" name="__codelineno-25-87" href="#__codelineno-25-87"></a><span class="gh"># Notes</span>
-</span><span id="__span-25-88"><a id="__codelineno-25-88" name="__codelineno-25-88" href="#__codelineno-25-88"></a>Managed by the platform-engineering team. Contact <span class="ni">#platform</span>-ai-tools for access requests
-</span><span id="__span-25-89"><a id="__codelineno-25-89" name="__codelineno-25-89" href="#__codelineno-25-89"></a>or to report indexing issues. The index refreshes every 6 hours.
+<div class="language-markdown highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>---
+</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>spec_version: &quot;1.2&quot;
+</span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>tool_id: &quot;search-product-kb&quot;
+</span><span id="__span-16-4"><a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a>version: &quot;1.0.0&quot;
+</span><span id="__span-16-5"><a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a>status: &quot;active&quot;
+</span><span id="__span-16-6"><a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a>
+</span><span id="__span-16-7"><a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a>meta:
+</span><span id="__span-16-8"><a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a>  name: &quot;Search Product Knowledge Base&quot;
+</span><span id="__span-16-9"><a id="__codelineno-16-9" name="__codelineno-16-9" href="#__codelineno-16-9"></a>  description: &gt;
+</span><span id="__span-16-10"><a id="__codelineno-16-10" name="__codelineno-16-10" href="#__codelineno-16-10"></a>    Search the internal product documentation for feature behavior, API details,
+</span><span id="__span-16-11"><a id="__codelineno-16-11" name="__codelineno-16-11" href="#__codelineno-16-11"></a>    release notes, known issues, and troubleshooting steps.
+</span><span id="__span-16-12"><a id="__codelineno-16-12" name="__codelineno-16-12" href="#__codelineno-16-12"></a>    Use for product or technical questions requiring authoritative internal documentation.
+</span><span id="__span-16-13"><a id="__codelineno-16-13" name="__codelineno-16-13" href="#__codelineno-16-13"></a>    Do not use for HR, finance, legal, or general web questions.
+</span><span id="__span-16-14"><a id="__codelineno-16-14" name="__codelineno-16-14" href="#__codelineno-16-14"></a>  owner: &quot;platform-engineering&quot;
+</span><span id="__span-16-15"><a id="__codelineno-16-15" name="__codelineno-16-15" href="#__codelineno-16-15"></a>  tags: [&quot;search&quot;, &quot;product&quot;, &quot;retrieval&quot;]
+</span><span id="__span-16-16"><a id="__codelineno-16-16" name="__codelineno-16-16" href="#__codelineno-16-16"></a>  last_updated: &quot;2025-04-01&quot;
+</span><span id="__span-16-17"><a id="__codelineno-16-17" name="__codelineno-16-17" href="#__codelineno-16-17"></a>
+</span><span id="__span-16-18"><a id="__codelineno-16-18" name="__codelineno-16-18" href="#__codelineno-16-18"></a>type: &quot;retrieval&quot;
+</span><span id="__span-16-19"><a id="__codelineno-16-19" name="__codelineno-16-19" href="#__codelineno-16-19"></a>
+</span><span id="__span-16-20"><a id="__codelineno-16-20" name="__codelineno-16-20" href="#__codelineno-16-20"></a>interface:
+</span><span id="__span-16-21"><a id="__codelineno-16-21" name="__codelineno-16-21" href="#__codelineno-16-21"></a>  input:
+</span><span id="__span-16-22"><a id="__codelineno-16-22" name="__codelineno-16-22" href="#__codelineno-16-22"></a>    type: object
+</span><span id="__span-16-23"><a id="__codelineno-16-23" name="__codelineno-16-23" href="#__codelineno-16-23"></a>    properties:
+</span><span id="__span-16-24"><a id="__codelineno-16-24" name="__codelineno-16-24" href="#__codelineno-16-24"></a>      query:
+</span><span id="__span-16-25"><a id="__codelineno-16-25" name="__codelineno-16-25" href="#__codelineno-16-25"></a>        type: string
+</span><span id="__span-16-26"><a id="__codelineno-16-26" name="__codelineno-16-26" href="#__codelineno-16-26"></a>        description: &quot;Search query in natural language.&quot;
+</span><span id="__span-16-27"><a id="__codelineno-16-27" name="__codelineno-16-27" href="#__codelineno-16-27"></a>      top_k:
+</span><span id="__span-16-28"><a id="__codelineno-16-28" name="__codelineno-16-28" href="#__codelineno-16-28"></a>        type: integer
+</span><span id="__span-16-29"><a id="__codelineno-16-29" name="__codelineno-16-29" href="#__codelineno-16-29"></a>        description: &quot;Maximum results to return. Default 5, max 20.&quot;
+</span><span id="__span-16-30"><a id="__codelineno-16-30" name="__codelineno-16-30" href="#__codelineno-16-30"></a>        default: 5
+</span><span id="__span-16-31"><a id="__codelineno-16-31" name="__codelineno-16-31" href="#__codelineno-16-31"></a>    required: [&quot;query&quot;]
+</span><span id="__span-16-32"><a id="__codelineno-16-32" name="__codelineno-16-32" href="#__codelineno-16-32"></a>  output:
+</span><span id="__span-16-33"><a id="__codelineno-16-33" name="__codelineno-16-33" href="#__codelineno-16-33"></a>    type: object
+</span><span id="__span-16-34"><a id="__codelineno-16-34" name="__codelineno-16-34" href="#__codelineno-16-34"></a>    properties:
+</span><span id="__span-16-35"><a id="__codelineno-16-35" name="__codelineno-16-35" href="#__codelineno-16-35"></a>      results:
+</span><span id="__span-16-36"><a id="__codelineno-16-36" name="__codelineno-16-36" href="#__codelineno-16-36"></a>        type: array
+</span><span id="__span-16-37"><a id="__codelineno-16-37" name="__codelineno-16-37" href="#__codelineno-16-37"></a>        description: &quot;List of matching documents.&quot;
+</span><span id="__span-16-38"><a id="__codelineno-16-38" name="__codelineno-16-38" href="#__codelineno-16-38"></a>        items:
+</span><span id="__span-16-39"><a id="__codelineno-16-39" name="__codelineno-16-39" href="#__codelineno-16-39"></a>          type: object
+</span><span id="__span-16-40"><a id="__codelineno-16-40" name="__codelineno-16-40" href="#__codelineno-16-40"></a>          properties:
+</span><span id="__span-16-41"><a id="__codelineno-16-41" name="__codelineno-16-41" href="#__codelineno-16-41"></a>            id:
+</span><span id="__span-16-42"><a id="__codelineno-16-42" name="__codelineno-16-42" href="#__codelineno-16-42"></a>              type: string
+</span><span id="__span-16-43"><a id="__codelineno-16-43" name="__codelineno-16-43" href="#__codelineno-16-43"></a>              description: &quot;Unique document identifier.&quot;
+</span><span id="__span-16-44"><a id="__codelineno-16-44" name="__codelineno-16-44" href="#__codelineno-16-44"></a>            title:
+</span><span id="__span-16-45"><a id="__codelineno-16-45" name="__codelineno-16-45" href="#__codelineno-16-45"></a>              type: string
+</span><span id="__span-16-46"><a id="__codelineno-16-46" name="__codelineno-16-46" href="#__codelineno-16-46"></a>              description: &quot;Document title.&quot;
+</span><span id="__span-16-47"><a id="__codelineno-16-47" name="__codelineno-16-47" href="#__codelineno-16-47"></a>            snippet:
+</span><span id="__span-16-48"><a id="__codelineno-16-48" name="__codelineno-16-48" href="#__codelineno-16-48"></a>              type: string
+</span><span id="__span-16-49"><a id="__codelineno-16-49" name="__codelineno-16-49" href="#__codelineno-16-49"></a>              description: &quot;Relevant excerpt from the document.&quot;
+</span><span id="__span-16-50"><a id="__codelineno-16-50" name="__codelineno-16-50" href="#__codelineno-16-50"></a>            url:
+</span><span id="__span-16-51"><a id="__codelineno-16-51" name="__codelineno-16-51" href="#__codelineno-16-51"></a>              type: string
+</span><span id="__span-16-52"><a id="__codelineno-16-52" name="__codelineno-16-52" href="#__codelineno-16-52"></a>              format: &quot;uri&quot;
+</span><span id="__span-16-53"><a id="__codelineno-16-53" name="__codelineno-16-53" href="#__codelineno-16-53"></a>              description: &quot;Link to the full document.&quot;
+</span><span id="__span-16-54"><a id="__codelineno-16-54" name="__codelineno-16-54" href="#__codelineno-16-54"></a>            score:
+</span><span id="__span-16-55"><a id="__codelineno-16-55" name="__codelineno-16-55" href="#__codelineno-16-55"></a>              type: number
+</span><span id="__span-16-56"><a id="__codelineno-16-56" name="__codelineno-16-56" href="#__codelineno-16-56"></a>              description: &quot;Relevance score, 0.0–1.0.&quot;
+</span><span id="__span-16-57"><a id="__codelineno-16-57" name="__codelineno-16-57" href="#__codelineno-16-57"></a>          required: [&quot;id&quot;, &quot;title&quot;, &quot;snippet&quot;]
+</span><span id="__span-16-58"><a id="__codelineno-16-58" name="__codelineno-16-58" href="#__codelineno-16-58"></a>      total:
+</span><span id="__span-16-59"><a id="__codelineno-16-59" name="__codelineno-16-59" href="#__codelineno-16-59"></a>        type: integer
+</span><span id="__span-16-60"><a id="__codelineno-16-60" name="__codelineno-16-60" href="#__codelineno-16-60"></a>        description: &quot;Total number of matching documents.&quot;
+</span><span id="__span-16-61"><a id="__codelineno-16-61" name="__codelineno-16-61" href="#__codelineno-16-61"></a>    required: [&quot;results&quot;, &quot;total&quot;]
+</span><span id="__span-16-62"><a id="__codelineno-16-62" name="__codelineno-16-62" href="#__codelineno-16-62"></a>
+</span><span id="__span-16-63"><a id="__codelineno-16-63" name="__codelineno-16-63" href="#__codelineno-16-63"></a>transport:
+</span><span id="__span-16-64"><a id="__codelineno-16-64" name="__codelineno-16-64" href="#__codelineno-16-64"></a>  type: &quot;rest-api&quot;
+</span><span id="__span-16-65"><a id="__codelineno-16-65" name="__codelineno-16-65" href="#__codelineno-16-65"></a>  base_url: &quot;https://kb.internal.example.com/v2&quot;
+</span><span id="__span-16-66"><a id="__codelineno-16-66" name="__codelineno-16-66" href="#__codelineno-16-66"></a>  endpoint: &quot;POST /search&quot;
+</span><span id="__span-16-67"><a id="__codelineno-16-67" name="__codelineno-16-67" href="#__codelineno-16-67"></a>  timeout_ms: 8000
+</span><span id="__span-16-68"><a id="__codelineno-16-68" name="__codelineno-16-68" href="#__codelineno-16-68"></a>  credentials:
+</span><span id="__span-16-69"><a id="__codelineno-16-69" name="__codelineno-16-69" href="#__codelineno-16-69"></a>    scheme: &quot;service-account&quot;
+</span><span id="__span-16-70"><a id="__codelineno-16-70" name="__codelineno-16-70" href="#__codelineno-16-70"></a>    source: &quot;aws_secrets_manager&quot;
+</span><span id="__span-16-71"><a id="__codelineno-16-71" name="__codelineno-16-71" href="#__codelineno-16-71"></a>    secret_id: &quot;prod/agent/kb-token&quot;
+</span><span id="__span-16-72"><a id="__codelineno-16-72" name="__codelineno-16-72" href="#__codelineno-16-72"></a>
+</span><span id="__span-16-73"><a id="__codelineno-16-73" name="__codelineno-16-73" href="#__codelineno-16-73"></a>use_guidance:
+</span><span id="__span-16-74"><a id="__codelineno-16-74" name="__codelineno-16-74" href="#__codelineno-16-74"></a>  use_when:
+</span><span id="__span-16-75"><a id="__codelineno-16-75" name="__codelineno-16-75" href="#__codelineno-16-75"></a><span class="w">    </span><span class="k">-</span><span class="w"> </span>&quot;question asks for specific product feature behavior or configuration&quot;
+</span><span id="__span-16-76"><a id="__codelineno-16-76" name="__codelineno-16-76" href="#__codelineno-16-76"></a><span class="w">    </span><span class="k">-</span><span class="w"> </span>&quot;troubleshooting requires authoritative internal documentation&quot;
+</span><span id="__span-16-77"><a id="__codelineno-16-77" name="__codelineno-16-77" href="#__codelineno-16-77"></a>  avoid_when:
+</span><span id="__span-16-78"><a id="__codelineno-16-78" name="__codelineno-16-78" href="#__codelineno-16-78"></a><span class="w">    </span><span class="k">-</span><span class="w"> </span>&quot;question is purely conversational or general knowledge&quot;
+</span><span id="__span-16-79"><a id="__codelineno-16-79" name="__codelineno-16-79" href="#__codelineno-16-79"></a><span class="w">    </span><span class="k">-</span><span class="w"> </span>&quot;question is outside product or technical support scope&quot;
+</span><span id="__span-16-80"><a id="__codelineno-16-80" name="__codelineno-16-80" href="#__codelineno-16-80"></a><span class="gu">  side_effects: &quot;None. Read-only.&quot;</span>
+</span><span id="__span-16-81"><a id="__codelineno-16-81" name="__codelineno-16-81" href="#__codelineno-16-81"></a><span class="gu">---</span>
+</span><span id="__span-16-82"><a id="__codelineno-16-82" name="__codelineno-16-82" href="#__codelineno-16-82"></a>
+</span><span id="__span-16-83"><a id="__codelineno-16-83" name="__codelineno-16-83" href="#__codelineno-16-83"></a><span class="gh"># Purpose</span>
+</span><span id="__span-16-84"><a id="__codelineno-16-84" name="__codelineno-16-84" href="#__codelineno-16-84"></a>Gives agents access to the internal product knowledge base for authoritative answers
+</span><span id="__span-16-85"><a id="__codelineno-16-85" name="__codelineno-16-85" href="#__codelineno-16-85"></a>to product and technical questions.
+</span><span id="__span-16-86"><a id="__codelineno-16-86" name="__codelineno-16-86" href="#__codelineno-16-86"></a>
+</span><span id="__span-16-87"><a id="__codelineno-16-87" name="__codelineno-16-87" href="#__codelineno-16-87"></a><span class="gh"># Notes</span>
+</span><span id="__span-16-88"><a id="__codelineno-16-88" name="__codelineno-16-88" href="#__codelineno-16-88"></a>Managed by the platform-engineering team. Contact <span class="ni">#platform</span>-ai-tools for access requests
+</span><span id="__span-16-89"><a id="__codelineno-16-89" name="__codelineno-16-89" href="#__codelineno-16-89"></a>or to report indexing issues. The index refreshes every 6 hours.
 </span></code></pre></div>
 
 

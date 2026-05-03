@@ -2,90 +2,94 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://alirion-io.github.io/aml/</loc>
-         <lastmod>2026-05-01</lastmod>
+         <lastmod>2026-05-03</lastmod>
     </url>
     <url>
          <loc>https://alirion-io.github.io/aml/00-introduction/</loc>
-         <lastmod>2026-05-01</lastmod>
+         <lastmod>2026-05-03</lastmod>
     </url>
     <url>
          <loc>https://alirion-io.github.io/aml/01-agent-definition/</loc>
-         <lastmod>2026-05-01</lastmod>
+         <lastmod>2026-05-03</lastmod>
     </url>
     <url>
          <loc>https://alirion-io.github.io/aml/02-tool-definition/</loc>
-         <lastmod>2026-05-01</lastmod>
+         <lastmod>2026-05-03</lastmod>
     </url>
     <url>
          <loc>https://alirion-io.github.io/aml/03-kb-definition/</loc>
-         <lastmod>2026-05-01</lastmod>
+         <lastmod>2026-05-03</lastmod>
     </url>
     <url>
          <loc>https://alirion-io.github.io/aml/04-iam-definition/</loc>
-         <lastmod>2026-05-01</lastmod>
+         <lastmod>2026-05-03</lastmod>
     </url>
     <url>
          <loc>https://alirion-io.github.io/aml/05-model-definition/</loc>
-         <lastmod>2026-05-01</lastmod>
+         <lastmod>2026-05-03</lastmod>
     </url>
     <url>
          <loc>https://alirion-io.github.io/aml/06-collection-definition/</loc>
-         <lastmod>2026-05-01</lastmod>
+         <lastmod>2026-05-03</lastmod>
     </url>
     <url>
          <loc>https://alirion-io.github.io/aml/07-guardrail-definition/</loc>
-         <lastmod>2026-05-01</lastmod>
+         <lastmod>2026-05-03</lastmod>
     </url>
     <url>
          <loc>https://alirion-io.github.io/aml/08-json-schema/</loc>
-         <lastmod>2026-05-01</lastmod>
+         <lastmod>2026-05-03</lastmod>
+    </url>
+    <url>
+         <loc>https://alirion-io.github.io/aml/09-transport-credentials/</loc>
+         <lastmod>2026-05-03</lastmod>
     </url>
     <url>
          <loc>https://alirion-io.github.io/aml/examples/agents/support-agent.agent/</loc>
-         <lastmod>2026-05-01</lastmod>
+         <lastmod>2026-05-03</lastmod>
     </url>
     <url>
          <loc>https://alirion-io.github.io/aml/examples/agents/translator.agent/</loc>
-         <lastmod>2026-05-01</lastmod>
+         <lastmod>2026-05-03</lastmod>
     </url>
     <url>
          <loc>https://alirion-io.github.io/aml/examples/collections/customer-preferences.collection/</loc>
-         <lastmod>2026-05-01</lastmod>
+         <lastmod>2026-05-03</lastmod>
     </url>
     <url>
          <loc>https://alirion-io.github.io/aml/examples/guardrails/azure-content-moderation.guardrail/</loc>
-         <lastmod>2026-05-01</lastmod>
+         <lastmod>2026-05-03</lastmod>
     </url>
     <url>
          <loc>https://alirion-io.github.io/aml/examples/guardrails/bedrock-pii-scan.guardrail/</loc>
-         <lastmod>2026-05-01</lastmod>
+         <lastmod>2026-05-03</lastmod>
     </url>
     <url>
          <loc>https://alirion-io.github.io/aml/examples/iam/support-agent-role.iam/</loc>
-         <lastmod>2026-05-01</lastmod>
+         <lastmod>2026-05-03</lastmod>
     </url>
     <url>
          <loc>https://alirion-io.github.io/aml/examples/knowledge/brand-guidelines.kb/</loc>
-         <lastmod>2026-05-01</lastmod>
+         <lastmod>2026-05-03</lastmod>
     </url>
     <url>
          <loc>https://alirion-io.github.io/aml/examples/knowledge/legal-policies.kb/</loc>
-         <lastmod>2026-05-01</lastmod>
+         <lastmod>2026-05-03</lastmod>
     </url>
     <url>
          <loc>https://alirion-io.github.io/aml/examples/models/claude-4-sonnet.model/</loc>
-         <lastmod>2026-05-01</lastmod>
+         <lastmod>2026-05-03</lastmod>
     </url>
     <url>
          <loc>https://alirion-io.github.io/aml/examples/models/gpt-4o.model/</loc>
-         <lastmod>2026-05-01</lastmod>
+         <lastmod>2026-05-03</lastmod>
     </url>
     <url>
          <loc>https://alirion-io.github.io/aml/examples/tools/glossary-lookup.tool/</loc>
-         <lastmod>2026-05-01</lastmod>
+         <lastmod>2026-05-03</lastmod>
     </url>
     <url>
          <loc>https://alirion-io.github.io/aml/examples/tools/send-email.tool/</loc>
-         <lastmod>2026-05-01</lastmod>
+         <lastmod>2026-05-03</lastmod>
     </url>
 </urlset>

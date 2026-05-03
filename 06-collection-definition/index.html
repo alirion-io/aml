@@ -876,6 +876,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../09-transport-credentials/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Transport & Credentials
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../08-json-schema/" class="md-nav__link">
         
   
@@ -2056,7 +2084,7 @@ Enum: <code>draft</code> | <code>active</code> | <code>deprecated</code> | <code
 <p><code>s3</code> is appropriate when low-latency sub-millisecond reads are not required and durability or cost are the primary concern. Prefer <code>valkey</code> when the session must be restored quickly (e.g., synchronous Lambda chains).</p>
 <h4 id="type-custom-custom-backend"><code>type: "custom"</code> — custom backend<a class="headerlink" href="#type-custom-custom-backend" title="Permanent link">&para;</a></h4>
 <p>A <code>custom</code> backend delegates all memory management to an external endpoint you own and operate. The runtime calls it using the same <code>transport</code> model as tools and guardrails — either a REST API or a Lambda function. Your endpoint must implement the <strong>Strands <code>SnapshotStorage</code> interface</strong> to be compatible with AML runtime: the runtime will call it for every snapshot read, write, list, and delete operation, using a fixed JSON contract for each operation type.</p>
-<p>Two transport types are supported, identical in definition to their <a href="../02-tool-definition/#transport----invocation-details-required-unless-type-is-function">tool transport</a> and <a href="../07-guardrail-definition/#transport----invocation-details-required-for-external-guardrails">guardrail transport</a> counterparts:</p>
+<p>Two transport types are supported. Both follow the definitions in <a href="../09-transport-credentials/">Transport &amp; Credentials</a>:</p>
 <table>
 <thead>
 <tr>
@@ -2100,7 +2128,7 @@ Enum: <code>draft</code> | <code>active</code> | <code>deprecated</code> | <code
 </span><span id="__span-11-7"><a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a><span class="w">    </span><span class="nt">credentials</span><span class="p">:</span>
 </span><span id="__span-11-8"><a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a><span class="w">      </span><span class="nt">scheme</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;iam-role&quot;</span>
 </span></code></pre></div>
-<p>Refer to the <a href="../02-tool-definition/#transport----invocation-details-required-unless-type-is-function">tool transport documentation</a> for the full <code>credentials</code> block field reference — the definition is identical.</p>
+<p>Refer to <a href="../09-transport-credentials/">Transport &amp; Credentials</a> for the full <code>credentials</code> block field reference.</p>
 <hr />
 <h5 id="snapshotstorage-interface-contract">SnapshotStorage interface contract<a class="headerlink" href="#snapshotstorage-interface-contract" title="Permanent link">&para;</a></h5>
 <p>Your endpoint must implement the following five operations. The runtime calls them automatically — your implementation decides where the data is stored (DynamoDB, PostgreSQL, Redis, a third-party service, etc.).</p>

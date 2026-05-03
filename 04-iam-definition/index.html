@@ -627,15 +627,15 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#yaml-front-matter-complete-field-reference" class="md-nav__link">
+  <a href="#yaml-front-matter" class="md-nav__link">
     <span class="md-ellipsis">
       
-        YAML front matter — complete field reference
+        YAML front matter
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="YAML front matter — complete field reference">
+    <nav class="md-nav" aria-label="YAML front matter">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -650,10 +650,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#meta-descriptive-metadata-required" class="md-nav__link">
+  <a href="#meta-required" class="md-nav__link">
     <span class="md-ellipsis">
       
-        meta — descriptive metadata (required)
+        meta (required)
       
     </span>
   </a>
@@ -661,10 +661,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#cloud-cloud-role-binding-optional-recommended" class="md-nav__link">
+  <a href="#cloud-recommended" class="md-nav__link">
     <span class="md-ellipsis">
       
-        cloud — cloud role binding (optional, recommended)
+        cloud (recommended)
       
     </span>
   </a>
@@ -672,10 +672,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#tools-tool-grants-optional" class="md-nav__link">
+  <a href="#tools-optional" class="md-nav__link">
     <span class="md-ellipsis">
       
-        tools — tool grants (optional)
+        tools (optional)
       
     </span>
   </a>
@@ -683,10 +683,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#knowledge_bases-kb-access-grants-optional" class="md-nav__link">
+  <a href="#knowledge_bases-optional" class="md-nav__link">
     <span class="md-ellipsis">
       
-        knowledge_bases — KB access grants (optional)
+        knowledge_bases (optional)
       
     </span>
   </a>
@@ -694,10 +694,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#collections-memory-collection-grants-optional" class="md-nav__link">
+  <a href="#collections-optional" class="md-nav__link">
     <span class="md-ellipsis">
       
-        collections — memory collection grants (optional)
+        collections (optional)
       
     </span>
   </a>
@@ -721,10 +721,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#example-complete-iam-role-file" class="md-nav__link">
+  <a href="#example" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Example — complete IAM role file
+        Example
       
     </span>
   </a>
@@ -850,6 +850,34 @@
     
   
     Guardrail Definition
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../09-transport-credentials/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Transport & Credentials
   
 
     
@@ -1825,7 +1853,7 @@
 </span></code></pre></div>
 <p>The Markdown body is entirely editorial. The compiler ignores it.</p>
 <hr />
-<h2 id="yaml-front-matter-complete-field-reference">YAML front matter — complete field reference<a class="headerlink" href="#yaml-front-matter-complete-field-reference" title="Permanent link">&para;</a></h2>
+<h2 id="yaml-front-matter">YAML front matter<a class="headerlink" href="#yaml-front-matter" title="Permanent link">&para;</a></h2>
 <h3 id="top-level-required-fields">Top-level required fields<a class="headerlink" href="#top-level-required-fields" title="Permanent link">&para;</a></h3>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nt">spec_version</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;1.2&quot;</span>
 </span></code></pre></div>
@@ -1839,7 +1867,8 @@ Semantic version. Patch for descriptions or annotation changes; minor for adding
 </span></code></pre></div>
 Lifecycle state. Enum: <code>draft</code> | <code>active</code> | <code>deprecated</code> | <code>disabled</code>. Agents referencing a <code>disabled</code> role fail hard validation. Agents referencing a <code>deprecated</code> role receive a lint warning.</p>
 <hr />
-<h3 id="meta-descriptive-metadata-required"><code>meta</code> — descriptive metadata (required)<a class="headerlink" href="#meta-descriptive-metadata-required" title="Permanent link">&para;</a></h3>
+<h3 id="meta-required"><code>meta</code> (required)<a class="headerlink" href="#meta-required" title="Permanent link">&para;</a></h3>
+<p>Descriptive metadata of the IAM role.</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nt">meta</span><span class="p">:</span>
 </span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Support</span><span class="nv"> </span><span class="s">Agent</span><span class="nv"> </span><span class="s">Role&quot;</span><span class="w">            </span><span class="c1"># Human-readable display name (required)</span>
 </span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">&gt;</span><span class="w">                         </span><span class="c1"># Two to four sentences (required)</span>
@@ -1852,7 +1881,7 @@ Lifecycle state. Enum: <code>draft</code> | <code>active</code> | <code>deprecat
 </span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="w">  </span><span class="nt">last_updated</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;2025-04-01&quot;</span><span class="w">           </span><span class="c1"># ISO 8601 date (recommended)</span>
 </span></code></pre></div>
 <hr />
-<h3 id="cloud-cloud-role-binding-optional-recommended"><code>cloud</code> — cloud role binding (optional, recommended)<a class="headerlink" href="#cloud-cloud-role-binding-optional-recommended" title="Permanent link">&para;</a></h3>
+<h3 id="cloud-recommended"><code>cloud</code> (recommended)<a class="headerlink" href="#cloud-recommended" title="Permanent link">&para;</a></h3>
 <p>Links this AML role to its actual execution identity in the cloud provider. The structure varies by provider.</p>
 <p><strong>AWS</strong> — reference an IAM role by ARN:</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nt">cloud</span><span class="p">:</span>
@@ -1871,7 +1900,7 @@ Lifecycle state. Enum: <code>draft</code> | <code>active</code> | <code>deprecat
 </span></code></pre></div>
 <p><code>provider</code> is an enum: <code>aws</code> | <code>azure</code> | <code>gcp</code>. When <code>cloud</code> is present, the provider-specific identifier field is required (<code>role_arn</code> for AWS, <code>client_id</code> for Azure, <code>service_account</code> for GCP). Omitting <code>cloud</code> is permitted but produces a lint warning.</p>
 <hr />
-<h3 id="tools-tool-grants-optional"><code>tools</code> — tool grants (optional)<a class="headerlink" href="#tools-tool-grants-optional" title="Permanent link">&para;</a></h3>
+<h3 id="tools-optional"><code>tools</code> (optional)<a class="headerlink" href="#tools-optional" title="Permanent link">&para;</a></h3>
 <p>Declares the set of tools this role permits an agent to use. An agent referencing this role may only call tools listed here. References to tools outside this set are hard validation errors.</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="nt">tools</span><span class="p">:</span>
 </span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">ref</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;search-product-kb&quot;</span>
@@ -1880,7 +1909,7 @@ Lifecycle state. Enum: <code>draft</code> | <code>active</code> | <code>deprecat
 </span></code></pre></div>
 <p><code>ref</code> must resolve to a registered <code>.tool.md</code> file with <code>status: active</code> or <code>status: deprecated</code>. References to <code>disabled</code> tools are hard validation errors.</p>
 <hr />
-<h3 id="knowledge_bases-kb-access-grants-optional"><code>knowledge_bases</code> — KB access grants (optional)<a class="headerlink" href="#knowledge_bases-kb-access-grants-optional" title="Permanent link">&para;</a></h3>
+<h3 id="knowledge_bases-optional"><code>knowledge_bases</code> (optional)<a class="headerlink" href="#knowledge_bases-optional" title="Permanent link">&para;</a></h3>
 <p>Declares the set of knowledge bases this role permits an agent to query. An agent referencing this role may only retrieve from knowledge bases listed here. References to KBs outside this set are hard validation errors.</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="nt">knowledge_bases</span><span class="p">:</span>
 </span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">ref</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;product-docs&quot;</span>
@@ -1889,7 +1918,7 @@ Lifecycle state. Enum: <code>draft</code> | <code>active</code> | <code>deprecat
 <p><code>ref</code> must resolve to a registered <code>.kb.md</code> file with <code>status: active</code> or <code>status: deprecated</code>. References to <code>disabled</code> KBs are hard validation errors.</p>
 <p>If <code>knowledge_bases</code> is omitted, the agent has no KB access by default.</p>
 <hr />
-<h3 id="collections-memory-collection-grants-optional"><code>collections</code> — memory collection grants (optional)<a class="headerlink" href="#collections-memory-collection-grants-optional" title="Permanent link">&para;</a></h3>
+<h3 id="collections-optional"><code>collections</code> (optional)<a class="headerlink" href="#collections-optional" title="Permanent link">&para;</a></h3>
 <p>Declares the set of memory collections this role permits an agent to access. An agent referencing this role may only access collections listed here. References to collections outside this set are hard validation errors.</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="nt">collections</span><span class="p">:</span>
 </span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">ref</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;customer-preferences&quot;</span>
@@ -1908,7 +1937,7 @@ Lifecycle state. Enum: <code>draft</code> | <code>active</code> | <code>deprecat
 </ul>
 <p>None of these should appear in an AML file.</p>
 <hr />
-<h2 id="example-complete-iam-role-file">Example — complete IAM role file<a class="headerlink" href="#example-complete-iam-role-file" title="Permanent link">&para;</a></h2>
+<h2 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h2>
 <div class="language-markdown highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>---
 </span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>spec_version: &quot;1.2&quot;
 </span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>iam_id: &quot;support-agent-role&quot;
