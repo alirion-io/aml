@@ -352,11 +352,11 @@
         "source": {
           "title": "Source",
           "type": "string",
-          "description": "iam_role=AWS IAM role, no extra fields required; env=single environment variable; env_aws=two AWS credential env vars (key ID + secret access key); aws_secrets_manager=AWS Secrets Manager; gcp_secret_manager=GCP Secret Manager; azure_key_vault=Azure Key Vault.",
+          "description": "iam_role=AWS IAM role, no extra fields required; env=single environment variable; service-account=JSON secret containing AWS credentials (access_key_id + secret_access_key); aws_secrets_manager=AWS Secrets Manager; gcp_secret_manager=GCP Secret Manager; azure_key_vault=Azure Key Vault.",
           "enum": [
             "iam_role",
             "env",
-            "env_aws",
+            "service-account",
             "aws_secrets_manager",
             "gcp_secret_manager",
             "azure_key_vault"
@@ -367,22 +367,10 @@
           "type": "string",
           "description": "Environment variable name. Required when source=env."
         },
-        "access_key_id": {
-          "title": "Access Key ID",
-          "type": "string",
-          "minLength": 1,
-          "description": "Name of the env var holding the AWS access key ID. Required when source=env_aws."
-        },
-        "secret_access_key": {
-          "title": "Secret Access Key",
-          "type": "string",
-          "minLength": 1,
-          "description": "Name of the env var holding the AWS secret access key. Required when source=env_aws."
-        },
         "secret_id": {
           "title": "Secret ID",
           "type": "string",
-          "description": "AWS Secrets Manager secret ID. Required when source=aws_secrets_manager."
+          "description": "Secret identifier in the backend store. Required when source=aws_secrets_manager or source=service-account. For service-account, the resolved secret must be a JSON object containing access_key_id and secret_access_key."
         },
         "region": {
           "title": "Region",
@@ -442,14 +430,13 @@
             "properties": {
               "source": {
                 "title": "Source",
-                "const": "env_aws"
+                "const": "service-account"
               }
             }
           },
           "then": {
             "required": [
-              "access_key_id",
-              "secret_access_key"
+              "secret_id"
             ]
           }
         },
@@ -553,7 +540,7 @@
         "credentials": {
           "title": "Credentials",
           "$ref": "#/$defs/secret_ref",
-          "description": "AWS credentials strategy. Use source=iam_role (default) or source=env_aws with named env vars."
+          "description": "AWS credentials strategy. Use source=iam_role (default, recommended for production) or source=service-account with a secret_id pointing to a JSON object containing access_key_id and secret_access_key."
         }
       }
     },

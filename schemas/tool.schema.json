@@ -377,278 +377,172 @@
         }
       }
     },
-    "secret_ref": {
-      "title": "Secret Reference",
+    "cred_none": {
+      "title": "Credential — none",
       "type": "object",
-      "description": "Reference to a secret stored in an external secrets manager or environment variable.",
-      "required": [
-        "source"
-      ],
+      "description": "No authentication. Only valid for internal services on a fully trusted network boundary.",
+      "required": ["scheme"],
       "additionalProperties": false,
       "properties": {
-        "source": {
-          "title": "Source",
-          "type": "string",
-          "description": "iam_role=AWS IAM role, no extra fields required; env=single environment variable; env_aws=two AWS credential env vars (key ID + secret access key); aws_secrets_manager=AWS Secrets Manager; gcp_secret_manager=GCP Secret Manager; azure_key_vault=Azure Key Vault.",
-          "enum": [
-            "iam_role",
-            "env",
-            "env_aws",
-            "aws_secrets_manager",
-            "gcp_secret_manager",
-            "azure_key_vault"
-          ]
-        },
-        "name": {
-          "title": "Name",
-          "type": "string",
-          "description": "Environment variable name. Required when source=env."
-        },
-        "access_key_id": {
-          "title": "Access Key ID",
-          "type": "string",
-          "minLength": 1,
-          "description": "Name of the env var holding the AWS access key ID. Required when source=env_aws."
-        },
-        "secret_access_key": {
-          "title": "Secret Access Key",
-          "type": "string",
-          "minLength": 1,
-          "description": "Name of the env var holding the AWS secret access key. Required when source=env_aws."
-        },
-        "secret_id": {
-          "title": "Secret ID",
-          "type": "string",
-          "description": "AWS Secrets Manager secret ID. Required when source=aws_secrets_manager."
-        },
-        "region": {
-          "title": "Region",
-          "type": "string",
-          "description": "AWS region for this secret."
-        },
-        "key": {
-          "title": "Key",
-          "type": "string",
-          "description": "Key within the secret JSON object, if the secret is a JSON map."
-        },
-        "project": {
-          "title": "Project",
-          "type": "string",
-          "description": "GCP project ID. Required when source=gcp_secret_manager."
-        },
-        "secret": {
-          "title": "Secret",
-          "type": "string",
-          "description": "GCP secret name. Required when source=gcp_secret_manager."
-        },
-        "version": {
-          "title": "Version",
-          "type": "string",
-          "description": "GCP secret version (default: latest)."
-        },
-        "vault_url": {
-          "title": "Vault URL",
-          "type": "string",
-          "format": "uri",
-          "description": "Azure Key Vault URL. Required when source=azure_key_vault."
-        },
-        "secret_name": {
-          "title": "Secret Name",
-          "type": "string",
-          "description": "Azure Key Vault secret name. Required when source=azure_key_vault."
-        }
-      },
-      "allOf": [
-        {
-          "if": { "properties": { "source": { "const": "env" } } },
-          "then": { "required": ["name"] }
-        },
-        {
-          "if": { "properties": { "source": { "const": "env_aws" } } },
-          "then": { "required": ["access_key_id", "secret_access_key"] }
-        },
-        {
-          "if": { "properties": { "source": { "const": "aws_secrets_manager" } } },
-          "then": { "required": ["secret_id"] }
-        },
-        {
-          "if": { "properties": { "source": { "const": "gcp_secret_manager" } } },
-          "then": { "required": ["project", "secret"] }
-        },
-        {
-          "if": { "properties": { "source": { "const": "azure_key_vault" } } },
-          "then": { "required": ["vault_url", "secret_name"] }
-        }
-      ]
+        "scheme": { "title": "Scheme", "type": "string", "const": "none" }
+      }
     },
-    "transport_credentials": {
-      "title": "Transport Credentials",
+
+    "cred_iam_role": {
+      "title": "Credential — iam-role",
       "type": "object",
-      "description": "Credentials configuration for this transport. The scheme field selects the authentication method; the remaining fields follow the same secret_ref resolution pattern used by model provider credentials.",
-      "required": [
-        "scheme"
-      ],
+      "description": "Cloud-platform identity. The runtime uses the execution environment's attached identity (AWS IAM Role, GCP Workload Identity, Azure Managed Identity). No credential is stored or provisioned.",
+      "required": ["scheme"],
       "additionalProperties": false,
       "properties": {
-        "scheme": {
-          "title": "Scheme",
-          "type": "string",
-          "description": "Authentication scheme: none=no auth; api-key=static API key; bearer-token=Bearer token; oauth2=OAuth 2.0 client credentials; service-account=named service identity; iam-role=cloud platform identity.",
-          "enum": [
-            "none",
-            "api-key",
-            "bearer-token",
-            "oauth2",
-            "service-account",
-            "iam-role"
-          ]
-        },
-        "source": {
-          "title": "Source",
-          "type": "string",
-          "description": "Secret backend. env=environment variable (requires name); aws_secrets_manager=AWS Secrets Manager (requires secret_id); gcp_secret_manager=GCP Secret Manager (requires project+secret); azure_key_vault=Azure Key Vault (requires vault_url+secret_name).",
-          "enum": [
-            "env",
-            "env_aws",
-            "aws_secrets_manager",
-            "gcp_secret_manager",
-            "azure_key_vault"
-          ]
-        },
-        "name": {
-          "title": "Name",
-          "type": "string",
-          "description": "Environment variable name. Required when source=env."
-        },
-        "access_key_id": {
-          "title": "Access Key ID",
-          "type": "string",
-          "description": "Name of the env var holding the AWS access key ID. Required when source=env_aws."
-        },
-        "secret_access_key": {
-          "title": "Secret Access Key",
-          "type": "string",
-          "description": "Name of the env var holding the AWS secret access key. Required when source=env_aws."
-        },
-        "secret_id": {
-          "title": "Secret ID",
-          "type": "string",
-          "description": "AWS Secrets Manager secret ID. Required when source=aws_secrets_manager."
-        },
-        "region": {
-          "title": "Region",
-          "type": "string",
-          "description": "AWS region for the secret."
-        },
-        "key": {
-          "title": "Key",
-          "type": "string",
-          "description": "Key within the secret JSON object, if the secret value is a JSON map."
-        },
-        "project": {
-          "title": "Project",
-          "type": "string",
-          "description": "GCP project ID. Required when source=gcp_secret_manager."
-        },
-        "secret": {
-          "title": "Secret",
-          "type": "string",
-          "description": "GCP secret name. Required when source=gcp_secret_manager."
-        },
-        "version": {
-          "title": "Version",
-          "type": "string",
-          "description": "GCP secret version (default: latest)."
-        },
-        "vault_url": {
-          "title": "Vault URL",
-          "type": "string",
-          "format": "uri",
-          "description": "Azure Key Vault URL. Required when source=azure_key_vault."
-        },
-        "secret_name": {
-          "title": "Secret Name",
-          "type": "string",
-          "description": "Azure Key Vault secret name. Required when source=azure_key_vault."
-        },
-        "header": {
-          "title": "Header",
-          "type": "string",
-          "description": "HTTP header name to send the token in (e.g., 'X-Api-Key'). Defaults to 'Authorization'. Used with scheme=api-key."
-        },
-        "token_url": {
-          "title": "Token URL",
-          "type": "string",
-          "format": "uri",
-          "description": "OAuth 2.0 token endpoint URL. Required when scheme=oauth2."
-        },
-        "client_id": {
-          "title": "Client ID",
-          "$ref": "#/$defs/secret_ref",
-          "description": "Where to resolve the OAuth 2.0 client ID. Required when scheme=oauth2."
-        },
-        "client_secret": {
-          "title": "Client Secret",
-          "$ref": "#/$defs/secret_ref",
-          "description": "Where to resolve the OAuth 2.0 client secret. Required when scheme=oauth2."
-        },
-        "scopes": {
-          "title": "Scopes",
-          "type": "array",
-          "description": "OAuth 2.0 scopes to request.",
-          "items": {
-            "type": "string"
-          }
-        },
-        "grant_type": {
-          "title": "Grant Type",
-          "type": "string",
-          "description": "OAuth 2.0 grant type (e.g., 'client_credentials')."
-        },
-        "username_key": {
-          "title": "Username Key",
-          "type": "string",
-          "description": "Key name for the username within the resolved JSON credentials object. Only relevant when scheme=service-account and transport.type=database. Defaults to 'username'.",
-          "default": "username"
-        },
-        "password_key": {
-          "title": "Password Key",
-          "type": "string",
-          "description": "Key name for the password within the resolved JSON credentials object. Only relevant when scheme=service-account and transport.type=database. Defaults to 'password'.",
-          "default": "password"
-        }
+        "scheme": { "title": "Scheme", "type": "string", "const": "iam-role" }
+      }
+    },
+
+    "cred_api_key": {
+      "title": "Credential — api-key",
+      "type": "object",
+      "description": "Static API key sent in an HTTP header. Valid for HTTP transports only (rest-api, mcp). Requires source and header; header is required with no default to avoid silent misconfiguration.",
+      "required": ["scheme", "source", "header"],
+      "additionalProperties": false,
+      "properties": {
+        "scheme":      { "title": "Scheme",      "type": "string", "const": "api-key" },
+        "header":      { "title": "Header",      "type": "string", "description": "HTTP header name to send the key in (e.g. X-Api-Key, Authorization)." },
+        "source":      { "title": "Source",      "type": "string", "enum": ["env", "aws_secrets_manager", "gcp_secret_manager", "azure_key_vault"], "description": "Secret backend." },
+        "name":        { "title": "Name",        "type": "string", "description": "Env var name. Required when source=env." },
+        "secret_id":   { "title": "Secret ID",   "type": "string", "description": "AWS Secrets Manager secret ID. Required when source=aws_secrets_manager." },
+        "region":      { "title": "Region",      "type": "string", "description": "AWS region. Applicable for aws_secrets_manager." },
+        "key":         { "title": "Key",         "type": "string", "description": "Key within the secret JSON object if the secret is a JSON map." },
+        "project":     { "title": "Project",     "type": "string", "description": "GCP project ID. Required when source=gcp_secret_manager." },
+        "secret":      { "title": "Secret",      "type": "string", "description": "GCP secret name. Required when source=gcp_secret_manager." },
+        "version":     { "title": "Version",     "type": "string", "description": "GCP secret version. Default: latest." },
+        "vault_url":   { "title": "Vault URL",   "type": "string", "format": "uri", "description": "Azure Key Vault URL. Required when source=azure_key_vault." },
+        "secret_name": { "title": "Secret Name", "type": "string", "description": "Azure Key Vault secret name. Required when source=azure_key_vault." }
       },
       "allOf": [
-        {
-          "if": { "properties": { "source": { "const": "env" } }, "required": ["source"] },
-          "then": { "required": ["name"] }
-        },
-        {
-          "if": { "properties": { "source": { "const": "env_aws" } }, "required": ["source"] },
-          "then": { "required": ["access_key_id", "secret_access_key"] }
-        },
-        {
-          "if": { "properties": { "source": { "const": "aws_secrets_manager" } }, "required": ["source"] },
-          "then": { "required": ["secret_id"] }
-        },
-        {
-          "if": { "properties": { "source": { "const": "gcp_secret_manager" } }, "required": ["source"] },
-          "then": { "required": ["project", "secret"] }
-        },
-        {
-          "if": { "properties": { "source": { "const": "azure_key_vault" } }, "required": ["source"] },
-          "then": { "required": ["vault_url", "secret_name"] }
-        },
-        {
-          "if": { "properties": { "scheme": { "const": "oauth2" } } },
-          "then": { "required": ["token_url", "client_id", "client_secret"] }
-        },
-        {
-          "if": { "properties": { "scheme": { "enum": ["api-key", "bearer-token", "service-account"] } } },
-          "then": { "required": ["source"] }
-        }
+        { "if": { "properties": { "source": { "const": "env" } } },                 "then": { "required": ["name"] } },
+        { "if": { "properties": { "source": { "const": "aws_secrets_manager" } } }, "then": { "required": ["secret_id"] } },
+        { "if": { "properties": { "source": { "const": "gcp_secret_manager" } } },  "then": { "required": ["project", "secret"] } },
+        { "if": { "properties": { "source": { "const": "azure_key_vault" } } },     "then": { "required": ["vault_url", "secret_name"] } }
       ]
     },
+
+    "cred_bearer_token": {
+      "title": "Credential — bearer-token",
+      "type": "object",
+      "description": "Bearer token sent in the Authorization: Bearer <token> header. Valid for HTTP transports only (rest-api, mcp). Requires source.",
+      "required": ["scheme", "source"],
+      "additionalProperties": false,
+      "properties": {
+        "scheme":      { "title": "Scheme",      "type": "string", "const": "bearer-token" },
+        "source":      { "title": "Source",      "type": "string", "enum": ["env", "aws_secrets_manager", "gcp_secret_manager", "azure_key_vault"], "description": "Secret backend." },
+        "name":        { "title": "Name",        "type": "string", "description": "Env var name. Required when source=env." },
+        "secret_id":   { "title": "Secret ID",   "type": "string", "description": "AWS Secrets Manager secret ID. Required when source=aws_secrets_manager." },
+        "region":      { "title": "Region",      "type": "string", "description": "AWS region. Applicable for aws_secrets_manager." },
+        "key":         { "title": "Key",         "type": "string", "description": "Key within the secret JSON object if the secret is a JSON map." },
+        "project":     { "title": "Project",     "type": "string", "description": "GCP project ID. Required when source=gcp_secret_manager." },
+        "secret":      { "title": "Secret",      "type": "string", "description": "GCP secret name. Required when source=gcp_secret_manager." },
+        "version":     { "title": "Version",     "type": "string", "description": "GCP secret version. Default: latest." },
+        "vault_url":   { "title": "Vault URL",   "type": "string", "format": "uri", "description": "Azure Key Vault URL. Required when source=azure_key_vault." },
+        "secret_name": { "title": "Secret Name", "type": "string", "description": "Azure Key Vault secret name. Required when source=azure_key_vault." }
+      },
+      "allOf": [
+        { "if": { "properties": { "source": { "const": "env" } } },                 "then": { "required": ["name"] } },
+        { "if": { "properties": { "source": { "const": "aws_secrets_manager" } } }, "then": { "required": ["secret_id"] } },
+        { "if": { "properties": { "source": { "const": "gcp_secret_manager" } } },  "then": { "required": ["project", "secret"] } },
+        { "if": { "properties": { "source": { "const": "azure_key_vault" } } },     "then": { "required": ["vault_url", "secret_name"] } }
+      ]
+    },
+
+    "cred_oauth2": {
+      "title": "Credential — oauth2",
+      "type": "object",
+      "description": "OAuth 2.0 dynamic token via a token broker lambda on the same cloud platform. The AML runtime invokes the lambda via iam-role (no additional credential required) to obtain a fresh bearer token before each API or MCP call. The lambda owns all token lifecycle concerns: acquisition, caching, refresh, and user-delegated lookup. The runtime sends the returned access_token as Authorization: Bearer. This keeps all OAuth business logic outside AML.",
+      "required": ["scheme", "provider", "function_id"],
+      "additionalProperties": false,
+      "properties": {
+        "scheme":       { "title": "Scheme",       "type": "string", "const": "oauth2" },
+        "provider":     { "title": "Provider",     "type": "string", "enum": ["aws", "gcp", "azure"], "description": "Cloud provider hosting the token broker lambda. Must be the same provider as the AML runtime — invoked via iam-role with no extra credential." },
+        "function_id":  { "title": "Function ID",  "type": "string", "minLength": 1, "description": "Provider-specific identifier of the token broker function. AWS: full ARN (arn:aws:lambda:\u2026). GCP: resource name (projects/\u2026/functions/\u2026). Azure: resource path or function URL." },
+        "scopes":       { "title": "Scopes",       "type": "array", "items": { "type": "string" }, "description": "OAuth 2.0 scopes to pass as context to the token broker lambda. Optional." }
+      }
+    },
+
+    "cred_service_account": {
+      "title": "Credential — service-account",
+      "type": "object",
+      "description": "Explicit service identity credential stored in a secret backend and resolved at runtime. Valid for cloud transports (lambda, message-queue, database). The resolved secret must be a JSON object containing provider-specific or engine-specific connection parameters (see docs for connection objects by provider/engine). For source=env the variable value must be a stringified JSON object. Use the key field to read a sub-object within a larger secret. Contrast with iam-role: service-account means you own and store the credential; iam-role means the platform manages it.",
+      "required": ["scheme", "source"],
+      "additionalProperties": false,
+      "properties": {
+        "scheme":      { "title": "Scheme",      "type": "string", "const": "service-account" },
+        "source":      { "title": "Source",      "type": "string", "enum": ["env", "aws_secrets_manager", "gcp_secret_manager", "azure_key_vault"], "description": "Secret backend." },
+        "name":        { "title": "Name",        "type": "string", "description": "Env var name. Required when source=env. The variable value must be a stringified JSON object with provider-specific or engine-specific connection fields." },
+        "secret_id":   { "title": "Secret ID",   "type": "string", "description": "AWS Secrets Manager secret ID. Required when source=aws_secrets_manager." },
+        "region":      { "title": "Region",      "type": "string", "description": "AWS region. Applicable for aws_secrets_manager." },
+        "key":         { "title": "Key",         "type": "string", "description": "Key within the secret JSON object if the secret is a JSON map." },
+        "project":     { "title": "Project",     "type": "string", "description": "GCP project ID. Required when source=gcp_secret_manager." },
+        "secret":      { "title": "Secret",      "type": "string", "description": "GCP secret name. Required when source=gcp_secret_manager." },
+        "version":     { "title": "Version",     "type": "string", "description": "GCP secret version. Default: latest." },
+        "vault_url":   { "title": "Vault URL",   "type": "string", "format": "uri", "description": "Azure Key Vault URL. Required when source=azure_key_vault." },
+        "secret_name": { "title": "Secret Name", "type": "string", "description": "Azure Key Vault secret name. Required when source=azure_key_vault." }
+      },
+      "allOf": [
+        { "if": { "properties": { "source": { "const": "env" } } },                 "then": { "required": ["name"] } },
+        { "if": { "properties": { "source": { "const": "aws_secrets_manager" } } }, "then": { "required": ["secret_id"] } },
+        { "if": { "properties": { "source": { "const": "gcp_secret_manager" } } },  "then": { "required": ["project", "secret"] } },
+        { "if": { "properties": { "source": { "const": "azure_key_vault" } } },     "then": { "required": ["vault_url", "secret_name"] } }
+      ]
+    },
+
+    "cred_iam_role_db": {
+      "title": "Credential — iam-role (database)",
+      "type": "object",
+      "description": "Cloud-platform identity for database transport. The runtime uses the execution environment's attached identity — no secret is stored. Connection parameters are specified directly in this object. Required fields depend on the engine: host+port+database+username for postgresql/mysql/mssql; cluster_arn+database for rds-data-api; project for bigquery.",
+      "required": ["scheme"],
+      "additionalProperties": false,
+      "properties": {
+        "scheme":      { "title": "Scheme",      "type": "string", "const": "iam-role" },
+        "host":        { "title": "Host",        "type": "string", "description": "Database host. Required for postgresql, mysql, mssql." },
+        "port":        { "title": "Port",        "type": "integer", "description": "Database port. Required for postgresql, mysql, mssql." },
+        "database":    { "title": "Database",    "type": "string", "description": "Database name. Required for postgresql, mysql, mssql, rds-data-api." },
+        "username":    { "title": "Username",    "type": "string", "description": "Database user configured for IAM authentication. Required for postgresql, mysql, mssql with RDS IAM token auth." },
+        "region":      { "title": "Region",      "type": "string", "description": "AWS region. Required for RDS IAM token generation (postgresql, mysql, mssql on RDS)." },
+        "cluster_arn": { "title": "Cluster ARN", "type": "string", "description": "Aurora Serverless cluster ARN. Required for rds-data-api." },
+        "project":     { "title": "Project",     "type": "string", "description": "GCP project ID. Required for bigquery and Cloud SQL." },
+        "dataset":     { "title": "Dataset",     "type": "string", "description": "BigQuery dataset name. Optional for bigquery." }
+      }
+    },
+
+    "credentials_http": {
+      "title": "Credentials (HTTP transports)",
+      "description": "Credential schemes for HTTP-based transports (rest-api, mcp): none, api-key, bearer-token, oauth2. Cloud auth (iam-role, service-account) does not apply to HTTP transports.",
+      "oneOf": [
+        { "$ref": "#/$defs/cred_none" },
+        { "$ref": "#/$defs/cred_api_key" },
+        { "$ref": "#/$defs/cred_bearer_token" },
+        { "$ref": "#/$defs/cred_oauth2" }
+      ]
+    },
+
+    "credentials_cloud": {
+      "title": "Credentials (cloud transports)",
+      "description": "Credential schemes for cloud-native transports (lambda, message-queue): iam-role or service-account. HTTP-style auth does not apply to these transports.",
+      "oneOf": [
+        { "$ref": "#/$defs/cred_iam_role" },
+        { "$ref": "#/$defs/cred_service_account" }
+      ]
+    },
+
+    "credentials_database": {
+      "title": "Credentials (database transport)",
+      "description": "Credential schemes for database transport: iam-role (connection parameters embedded in the credential) or service-account (all connection parameters in the resolved secret JSON).",
+      "oneOf": [
+        { "$ref": "#/$defs/cred_iam_role_db" },
+        { "$ref": "#/$defs/cred_service_account" }
+      ]
+    },
+
     "transport_retry_policy": {
       "title": "Transport Retry Policy",
       "type": "object",
@@ -659,7 +553,7 @@
           "title": "Max Attempts",
           "type": "integer",
           "minimum": 1,
-          "description": "Maximum number of retry attempts including the initial call."
+          "description": "Maximum number of attempts including the initial call."
         },
         "on_status": {
           "title": "On Status",
@@ -668,13 +562,20 @@
           "items": {
             "type": "integer"
           }
+        },
+        "backoff_ms": {
+          "title": "Backoff Ms",
+          "type": "integer",
+          "minimum": 0,
+          "description": "Initial backoff in milliseconds between retries (exponential)."
         }
       }
     },
+
     "transport_rest_api": {
-      "title": "Transport REST API",
+      "title": "Transport — rest-api",
       "type": "object",
-      "description": "REST API transport. Invokes the tool via an HTTP/HTTPS endpoint.",
+      "description": "REST API transport. Invokes the tool via an HTTP/HTTPS endpoint. All credential schemes are supported.",
       "required": [
         "type",
         "base_url",
@@ -713,18 +614,20 @@
         },
         "credentials": {
           "title": "Credentials",
-          "$ref": "#/$defs/transport_credentials",
-          "description": "Credentials configuration for this endpoint."
+          "$ref": "#/$defs/credentials_http",
+          "description": "Authentication for this endpoint. HTTP schemes only: none, api-key, bearer-token, oauth2."
         }
       }
     },
+
     "transport_lambda": {
-      "title": "Transport Lambda",
+      "title": "Transport — lambda",
       "type": "object",
-      "description": "AWS Lambda transport. Invokes the tool via a Lambda function.",
+      "description": "Serverless cloud function transport (AWS Lambda, Azure Functions, GCP Cloud Functions, etc.). Cloud credential schemes only.",
       "required": [
         "type",
-        "function_arn",
+        "provider",
+        "function_id",
         "invocation_type",
         "credentials"
       ],
@@ -735,11 +638,17 @@
           "type": "string",
           "const": "lambda"
         },
-        "function_arn": {
-          "title": "Function ARN",
+        "provider": {
+          "title": "Provider",
           "type": "string",
-          "description": "Full ARN of the Lambda function to invoke.",
-          "pattern": "^arn:aws:lambda:[a-z0-9-]+:[0-9]{12}:function:.+$"
+          "description": "Cloud provider running the function. aws=AWS Lambda; gcp=GCP Cloud Functions; azure=Azure Functions.",
+          "enum": ["aws", "gcp", "azure"]
+        },
+        "function_id": {
+          "title": "Function ID",
+          "type": "string",
+          "minLength": 1,
+          "description": "Provider-specific identifier of the function. AWS: full ARN (arn:aws:lambda:…). Azure: resource path or function URL. GCP: resource name (projects/…/functions/…)."
         },
         "invocation_type": {
           "title": "Invocation Type",
@@ -753,7 +662,7 @@
         "payload_format": {
           "title": "Payload Format",
           "type": "string",
-          "description": "Format of the payload sent to and received from the Lambda function.",
+          "description": "Format of the payload sent to and received from the function.",
           "enum": [
             "json",
             "raw"
@@ -761,15 +670,16 @@
         },
         "credentials": {
           "title": "Credentials",
-          "$ref": "#/$defs/transport_credentials",
-          "description": "Credentials configuration (typically scheme=iam-role)."
+          "$ref": "#/$defs/credentials_cloud",
+          "description": "Authentication for the cloud function: iam-role or service-account."
         }
       }
     },
+
     "transport_mcp": {
-      "title": "Transport MCP",
+      "title": "Transport — mcp",
       "type": "object",
-      "description": "Model Context Protocol (MCP) transport. Invokes the tool via an MCP server.",
+      "description": "Model Context Protocol (MCP) transport. Invokes the tool via an MCP server. All credential schemes are supported.",
       "required": [
         "type",
         "url",
@@ -802,15 +712,16 @@
         },
         "credentials": {
           "title": "Credentials",
-          "$ref": "#/$defs/transport_credentials",
-          "description": "Credentials configuration for the MCP server."
+          "$ref": "#/$defs/credentials_http",
+          "description": "Authentication for the MCP server. HTTP schemes only: none, api-key, bearer-token, oauth2."
         }
       }
     },
+
     "transport_message_queue": {
-      "title": "Transport Message Queue",
+      "title": "Transport — message-queue",
       "type": "object",
-      "description": "Message queue transport. Sends the tool call as a message to an async queue.",
+      "description": "Message queue transport. Sends the tool call as a message to an async queue. All credential schemes are supported.",
       "required": [
         "type",
         "provider",
@@ -829,9 +740,9 @@
           "type": "string",
           "description": "Message queue provider.",
           "enum": [
-            "aws-sqs",
-            "gcp-pubsub",
-            "azure-servicebus",
+            "aws",
+            "gcp",
+            "azure",
             "kafka"
           ]
         },
@@ -857,19 +768,19 @@
         },
         "credentials": {
           "title": "Credentials",
-          "$ref": "#/$defs/transport_credentials",
-          "description": "Credentials configuration for the queue provider."
+          "$ref": "#/$defs/credentials_cloud",
+          "description": "Authentication for the queue provider: iam-role or service-account."
         }
       }
     },
+
     "transport_database": {
-      "title": "Transport Database",
+      "title": "Transport — database",
       "type": "object",
-      "description": "Database transport. Executes a parameterized query against a relational database.",
+      "description": "Relational database transport. All connection parameters live in the credentials: for service-account, the resolved secret is a JSON object with all engine-specific connection fields; for iam-role, connection parameters are specified directly in the credential object.",
       "required": [
         "type",
         "engine",
-        "connection_source",
         "query_method",
         "credentials"
       ],
@@ -883,25 +794,20 @@
         "engine": {
           "title": "Engine",
           "type": "string",
-          "description": "Database engine type.",
+          "description": "Database engine. rds-data-api is the AWS RDS Data API (Aurora Serverless v2).",
           "enum": [
             "postgresql",
             "mysql",
             "mssql",
             "bigquery",
-            "snowflake"
+            "snowflake",
+            "rds-data-api"
           ]
-        },
-        "connection_source": {
-          "title": "Connection Source",
-          "type": "string",
-          "description": "Reference to the connection string in env:VAR_NAME or secrets:SECRET_NAME format.",
-          "pattern": "^(env|secrets):.+$"
         },
         "query_method": {
           "title": "Query Method",
           "type": "string",
-          "description": "parameterised-sql=safe parameterized SQL query; orm=platform ORM layer.",
+          "description": "parameterised-sql (recommended, safe) or orm. Never use string interpolation.",
           "enum": [
             "parameterised-sql",
             "orm"
@@ -909,8 +815,8 @@
         },
         "credentials": {
           "title": "Credentials",
-          "$ref": "#/$defs/transport_credentials",
-          "description": "Credentials configuration for the database."
+          "$ref": "#/$defs/credentials_database",
+          "description": "iam-role (connection fields in credential object) or service-account (all fields in resolved secret JSON)."
         }
       }
     }

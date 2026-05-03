@@ -35,7 +35,7 @@ The Markdown body is entirely editorial. The compiler ignores it.
 
 ---
 
-## YAML front matter — complete field reference
+## YAML front matter
 
 ### Top-level required fields
 
@@ -60,7 +60,9 @@ Lifecycle state. Enum: `draft` | `active` | `deprecated` | `disabled`. Agents re
 
 ---
 
-### `meta` — descriptive metadata (required)
+### `meta` (required)
+
+Descriptive metadata of the IAM role.
 
 ```yaml
 meta:
@@ -77,7 +79,7 @@ meta:
 
 ---
 
-### `cloud` — cloud role binding (optional, recommended)
+### `cloud` (recommended)
 
 Links this AML role to its actual execution identity in the cloud provider. The structure varies by provider.
 
@@ -109,7 +111,7 @@ cloud:
 
 ---
 
-### `tools` — tool grants (optional)
+### `tools` (optional)
 
 Declares the set of tools this role permits an agent to use. An agent referencing this role may only call tools listed here. References to tools outside this set are hard validation errors.
 
@@ -124,7 +126,7 @@ tools:
 
 ---
 
-### `knowledge_bases` — KB access grants (optional)
+### `knowledge_bases` (optional)
 
 Declares the set of knowledge bases this role permits an agent to query. An agent referencing this role may only retrieve from knowledge bases listed here. References to KBs outside this set are hard validation errors.
 
@@ -140,7 +142,7 @@ If `knowledge_bases` is omitted, the agent has no KB access by default.
 
 ---
 
-### `collections` — memory collection grants (optional)
+### `collections` (optional)
 
 Declares the set of memory collections this role permits an agent to access. An agent referencing this role may only access collections listed here. References to collections outside this set are hard validation errors.
 
@@ -169,7 +171,7 @@ None of these should appear in an AML file.
 
 ---
 
-## Example — complete IAM role file
+## Example
 
 ```markdown
 ---

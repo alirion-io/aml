@@ -22,23 +22,16 @@ backend:
   type: "agentcore_memory"
   memory_id_secret: "secrets/agentcore/customer-preferences-memory-id"
   region: "us-east-1"
-  strategies:
-    - type: "userPreferenceMemoryStrategy"
-      name: "PreferenceLearner"
-      namespace: "/preferences/{actorId}"
-      retrieval:
-        top_k: 5
-        relevance_score: 0.7
-    - type: "semanticMemoryStrategy"
-      name: "FactExtractor"
-      namespace: "/facts/{actorId}"
-      retrieval:
-        top_k: 5
-        relevance_score: 0.6
+  retrieval_config:
+    "/preferences/{actorId}":
+      top_k: 5
+      relevance_score: 0.7
+    "/facts/{actorId}":
+      top_k: 5
+      relevance_score: 0.6
 
 writeback:
   enabled: true
-  strategy: "user-preference"
 ---
 
 # Purpose

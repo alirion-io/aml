@@ -208,7 +208,8 @@ transport:
 ```yaml
 transport:
   type: "lambda"
-  function_arn: "arn:aws:lambda:eu-west-1:123456789:function:send-email-v2"
+  provider: "aws"
+  function_id: "arn:aws:lambda:eu-west-1:123456789:function:send-email-v2"
   invocation_type: "RequestResponse"
   payload_format: "json"
   credentials:
@@ -217,7 +218,8 @@ transport:
 
 | Field | Required | Description |
 |---|---|---|
-| `function_arn` | yes | Fully qualified ARN of the Lambda function. |
+| `provider` | yes | Cloud provider: `aws` \| `gcp` \| `azure`. |
+| `function_id` | yes | Provider-specific function identifier. AWS: full ARN (`arn:aws:lambda:…`). GCP: resource name (`projects/…/functions/…`). Azure: resource path or function URL. |
 | `invocation_type` | yes | `RequestResponse` (synchronous) or `Event` (fire-and-forget). |
 | `payload_format` | no | Serialisation format for the input payload. `json` (default) or `raw`. |
 
@@ -250,7 +252,7 @@ transport:
 ```yaml
 transport:
   type: "message-queue"
-  provider: "aws-sqs"
+  provider: "aws"
   queue_url: "https://sqs.eu-west-1.amazonaws.com/123456789/email-outbox"
   message_format: "json"
   response_queue_url: "https://sqs.eu-west-1.amazonaws.com/123456789/email-results"
@@ -260,7 +262,7 @@ transport:
 
 | Field | Required | Description |
 |---|---|---|
-| `provider` | yes | Queue provider. Enum: `aws-sqs` \| `gcp-pubsub` \| `azure-servicebus` \| `kafka`. |
+| `provider` | yes | Queue provider. Enum: `aws` \| `gcp` \| `azure` \| `kafka`. |
 | `queue_url` | yes | Full URL or topic path of the target queue. |
 | `message_format` | no | Message serialisation format. `json` (default) or `avro`. |
 | `response_queue_url` | no | Queue from which to read the async response. Omit for fire-and-forget. |
@@ -273,196 +275,25 @@ transport:
 transport:
   type: "database"
   engine: "postgresql"
-  connection_source: "secrets:prod/db/connection"
   query_method: "parameterised-sql"
   credentials:
     scheme: "service-account"
     source: "aws_secrets_manager"
-    secret_id: "prod/db/credentials"
+    secret_id: "prod/db/connection"
 ```
 
 | Field | Required | Description |
 |---|---|---|
-| `engine` | yes | Database engine. Enum: `postgresql` \| `mysql` \| `mssql` \| `bigquery` \| `snowflake`. |
-| `connection_source` | yes | Where the runtime fetches the connection details. Format: `env:<VAR>` or `secrets:<path>`. The referenced value must be a JSON object — see secret format below. |
+| `engine` | yes | Database engine. Enum: `postgresql` \| `mysql` \| `mssql` \| `bigquery` \| `snowflake` \| `rds-data-api`. |
 | `query_method` | yes | How queries are issued. `parameterised-sql` (recommended) or `orm`. Never use string interpolation. |
 
-**`connection_source` secret format** — a JSON object with the following fields:
-
-```json
-{
-  "host": "db.internal.example.com",
-  "port": 5432,
-  "database": "mydb"
-}
-```
-
-Credentials (`username` / `password`) are intentionally kept separate in `transport.credentials` so they can rotate independently of the connection details.
-
-**`transport.credentials` secret format** (when `credentials.scheme` is `service-account` for a database) — a JSON object:
-
-```json
-{
-  "username": "agent_read_user",
-  "password": "s3cr3t"
-}
-```
-
-If the secret uses different key names, override them with `username_key` and `password_key`:
-
-```yaml
-credentials:
-  scheme: "service-account"
-  source: "aws_secrets_manager"
-  secret_id: "prod/db/credentials"
-  username_key: "user"
-  password_key: "pass"
-```
-
-| Field | Required | Description |
-|---|---|---|
-| `username_key` | no | Key name for the username in the resolved JSON object. Default: `username`. |
-| `password_key` | no | Key name for the password in the resolved JSON object. Default: `password`. |
+All connection parameters live inside `credentials`. With `service-account`, the resolved secret must be a JSON object with engine-specific connection fields. With `iam-role`, those parameters are placed directly in the credential object.
 
 ---
 
 #### `transport.credentials` — authentication
 
-`credentials` is a required sub-block of every transport type except `function`. It declares how the runtime obtains and presents credentials to the remote system.
-
-The `credentials` block follows the same structure as model provider credentials: `scheme` selects the authentication method, and `source` (plus its associated fields) specifies how the runtime resolves the secret value. This pattern is consistent across all AML definitions.
-
-**`credentials.scheme` values:**
-
-| Value | Description |
-|---|---|
-| `none` | No authentication. Internal trusted-network services only. |
-| `api-key` | Static API key sent in an HTTP header. Requires `source` + `header`. |
-| `bearer-token` | Bearer token sent in the `Authorization` header. Requires `source`. |
-| `oauth2` | OAuth 2.0 client credentials flow. Requires `token_url` + `client_id` + `client_secret`. |
-| `service-account` | Named service identity whose credential lives in the secrets manager. Requires `source`. |
-| `iam-role` | Cloud platform identity (AWS IAM Role, GCP Workload Identity, Azure Managed Identity). No extra fields needed. |
-
-**`credentials.source` values** (same as model provider credentials):
-
-| Value | Description |
-|---|---|
-| `env` | Environment variable named in `name`. |
-| `env_aws` | Two AWS credential env vars: `access_key_id` and `secret_access_key`. |
-| `aws_secrets_manager` | AWS Secrets Manager; requires `secret_id`. |
-| `gcp_secret_manager` | GCP Secret Manager; requires `project` and `secret`. |
-| `azure_key_vault` | Azure Key Vault; requires `vault_url` and `secret_name`. |
-
-When `scheme` is `iam-role`, `source` is not required — the runtime uses the attached identity automatically.
-
-**Secret value shapes** — what the runtime expects to find at the resolved path:
-
-| Scheme | Expected secret value |
-|---|---|
-| `api-key` | Plain string — the key value. |
-| `bearer-token` | Plain string — the token value. |
-| `oauth2` | Client ID and client secret resolved separately via `client_id` and `client_secret` (each a `secret_ref`). |
-| `service-account` (non-database) | Plain string — the service account token. |
-| `service-account` (database) | JSON object — `{ "username": "...", "password": "..." }`. |
-
-##### `scheme: "none"`
-
-No authentication. Only valid for internal services operating inside a trusted network boundary.
-
-```yaml
-credentials:
-  scheme: "none"
-```
-
-##### `scheme: "api-key"`
-
-```yaml
-credentials:
-  scheme: "api-key"
-  source: "env"
-  name: "SERVICE_API_KEY"
-  header: "X-Api-Key"          # Header name to send the key in. Default: X-Api-Key.
-```
-
-| Field | Required | Description |
-|---|---|---|
-| `source` / `name` | yes | Where to resolve the key at runtime. |
-| `header` | yes | HTTP header name. Default: `X-Api-Key`. |
-
-##### `scheme: "bearer-token"`
-
-```yaml
-credentials:
-  scheme: "bearer-token"
-  source: "aws_secrets_manager"
-  secret_id: "prod/service/token"
-```
-
-| Field | Required | Description |
-|---|---|---|
-| `source` / … | yes | Where to resolve the token at runtime. |
-
-##### `scheme: "oauth2"`
-
-```yaml
-credentials:
-  scheme: "oauth2"
-  token_url: "https://auth.example.com/oauth/token"
-  client_id:
-    source: "env"
-    name: "OAUTH_CLIENT_ID"
-  client_secret:
-    source: "aws_secrets_manager"
-    secret_id: "prod/oauth/client-secret"
-  scopes: ["mail:send", "audit:write"]
-  grant_type: "client_credentials"
-```
-
-| Field | Required | Description |
-|---|---|---|
-| `token_url` | yes | OAuth 2.0 token endpoint. |
-| `client_id` | yes | Where to resolve the client ID (a `secret_ref` object). |
-| `client_secret` | yes | Where to resolve the client secret (a `secret_ref` object). |
-| `scopes` | no | List of OAuth scopes to request. |
-| `grant_type` | no | OAuth grant type. Default: `client_credentials`. |
-
-##### `scheme: "service-account"`
-
-A named identity created explicitly for a non-human caller. Its credential (token, key, or username/password) is stored in the secrets manager, provisioned manually, and must be rotated by the owning team or a secrets manager policy.
-
-Use this when the target system does not participate in cloud IAM — a Postgres database, an internal REST API with its own auth, a third-party SaaS service, etc.
-
-The expected secret value shape depends on the transport: a plain string token for HTTP-based transports, a JSON credentials object for `database` transport (see the secret value shapes table above).
-
-```yaml
-credentials:
-  scheme: "service-account"
-  source: "aws_secrets_manager"
-  secret_id: "prod/agent/service-token"
-```
-
-| Field | Required | Description |
-|---|---|---|
-| `source` / … | yes | Where to resolve the service account token or credentials. |
-
-##### `scheme: "iam-role"`
-
-The cloud platform assigns an identity to the execution environment automatically (AWS IAM Role, GCP Workload Identity, Azure Managed Identity). The runtime obtains a short-lived token from the local cloud metadata service at call time — no credential is stored or provisioned.
-
-Use this when both the agent runtime and the target service are within the same cloud ecosystem (e.g. a Lambda calling an S3 bucket, or a Cloud Run service calling a Cloud SQL instance with IAM authentication enabled). It cannot be used for systems outside the cloud provider's identity boundary.
-
-| | `service-account` | `iam-role` |
-|---|---|---|
-| Credential stored in secrets manager? | Yes | No |
-| Rotation managed by? | Owning team or policy | Cloud platform, automatically |
-| Works with | Any system that accepts a token, key, or password | Cloud-native services in the same provider ecosystem |
-
-```yaml
-credentials:
-  scheme: "iam-role"
-```
-
-No additional fields are required.
+See [Transport & Credentials](09-transport-credentials.md) for the full `credentials` block reference, including all credential schemes (`none`, `iam-role`, `api-key`, `bearer-token`, `oauth2`, `service-account`), secret sources (`env`, `aws_secrets_manager`, `gcp_secret_manager`, `azure_key_vault`), and connection objects for database and cloud transports.
 
 ---
 
@@ -502,7 +333,7 @@ use_guidance:
 - `transport.credentials` missing when `transport` is present.
 - `transport.credentials.scheme` is an unknown value.
 - `transport.credentials.source` missing when `scheme` requires it (`api-key`, `bearer-token`, `service-account`).
-- `transport.credentials.client_id` or `transport.credentials.client_secret` missing when `scheme` is `oauth2`.
+- `transport.credentials.provider` or `transport.credentials.function_id` missing when `scheme` is `oauth2`.
 
 ### Recommended lint rules
 

@@ -175,7 +175,7 @@ The `transport` block defines how the guardrail is called. Two transport types a
 | `rest-api` | HTTP/REST endpoint |
 | `lambda` | AWS Lambda function |
 
-Refer to the [tool transport documentation](02-tool-definition.md#transport----invocation-details-required-unless-type-is-function) for the full field reference and `credentials` block — the definition is identical.
+Refer to [Transport & Credentials](09-transport-credentials.md) for the full field reference, credential schemes, and secret sources.
 
 **Provider-specific backends** (AWS Bedrock Guardrails, Azure AI Content Safety, GCP Natural Language, etc.) are not directly supported as transport types. Wrap them in a Lambda function or REST API that calls the provider and returns a response conforming to the [standard output format](#standard-guardrail-output-format). This keeps the AML runtime agnostic to provider-specific response envelopes and normalisation logic.
 

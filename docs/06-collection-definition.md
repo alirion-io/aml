@@ -207,7 +207,7 @@ backend:
 
 A `custom` backend delegates all memory management to an external endpoint you own and operate. The runtime calls it using the same `transport` model as tools and guardrails — either a REST API or a Lambda function. Your endpoint must implement the **Strands `SnapshotStorage` interface** to be compatible with AML runtime: the runtime will call it for every snapshot read, write, list, and delete operation, using a fixed JSON contract for each operation type.
 
-Two transport types are supported, identical in definition to their [tool transport](02-tool-definition.md#transport----invocation-details-required-unless-type-is-function) and [guardrail transport](07-guardrail-definition.md#transport----invocation-details-required-for-external-guardrails) counterparts:
+Two transport types are supported. Both follow the definitions in [Transport & Credentials](09-transport-credentials.md):
 
 | Transport | Description |
 |---|---|
@@ -245,7 +245,7 @@ backend:
       scheme: "iam-role"
 ```
 
-Refer to the [tool transport documentation](02-tool-definition.md#transport----invocation-details-required-unless-type-is-function) for the full `credentials` block field reference — the definition is identical.
+Refer to [Transport & Credentials](09-transport-credentials.md) for the full `credentials` block field reference.
 
 ---
 

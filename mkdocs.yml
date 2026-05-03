@@ -78,6 +78,7 @@ nav:
     - Model Definition: 05-model-definition.md
     - Memory Collection: 06-collection-definition.md
     - Guardrail Definition: 07-guardrail-definition.md
+    - Transport & Credentials: 09-transport-credentials.md
     - JSON Schema in YAML: 08-json-schema.md
   - Examples:
     - Agents:

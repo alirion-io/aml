@@ -120,10 +120,10 @@ provider:
     model_id: "us.anthropic.claude-sonnet-4-20250514-v1:0"   # Required — Bedrock model ID
     region: "us-east-1"                                       # Required — AWS region
     credentials:
-      source: "iam_role"    # iam_role | env_aws (default: iam_role)
+      source: "iam_role"    # iam_role | service-account (default: iam_role)
 ```
 
-Or with explicit environment variables:
+Or with a service account stored in a secret manager:
 
 ```yaml
 provider:
@@ -132,12 +132,11 @@ provider:
     model_id: "us.anthropic.claude-sonnet-4-20250514-v1:0"
     region: "us-east-1"
     credentials:
-      source: "env_aws"
-      access_key_id: "MY_AWS_KEY_ID"         # Name of the env var holding the access key ID
-      secret_access_key: "MY_AWS_SECRET_KEY" # Name of the env var holding the secret access key
+      source: "service-account"
+      secret_id: "prod/aws/bedrock-credentials"  # Secret containing the AWS credentials JSON
 ```
 
-`credentials.source: "iam_role"` is the recommended production setting — the runtime assumes the IAM role declared in the agent definition and requires no extra fields. `env_aws` reads credentials from the environment variables named in `access_key_id` and `secret_access_key`. These are env var *names*, not the values themselves — the runtime resolves them at startup.
+`credentials.source: "iam_role"` is the recommended production setting — the runtime assumes the IAM role declared in the agent definition and requires no extra fields. `service-account` reads AWS credentials from a JSON object stored in a secret manager. The resolved secret must contain `access_key_id` and `secret_access_key` fields. See the [Transport & Credentials reference](09-transport-credentials.md#service-account) for the full structure and supported backends.
 
 Model access must be enabled in Amazon Bedrock for the specified `model_id` and region. See the [AWS documentation](https://docs.aws.amazon.com/bedrock/latest/userguide/model-access-modify.html).
 
@@ -283,11 +282,12 @@ Every `credentials` field across all providers uses the same structure: a `sourc
 credentials:
   source: "iam_role"
 
-# Two AWS credential env vars (Bedrock with explicit keys)
+# Service account JSON secret (Bedrock with explicit keys)
 credentials:
-  source: "env_aws"
-  access_key_id: "MY_AWS_KEY_ID"          # Name of the env var holding the access key ID
-  secret_access_key: "MY_AWS_SECRET_KEY" # Name of the env var holding the secret access key
+  source: "service-account"
+  secret_id: "prod/aws/bedrock-credentials"   # Secret containing the AWS credentials JSON
+# The resolved secret must be a JSON object: { "access_key_id": "...", "secret_access_key": "..." }
+# See the Transport & Credentials reference for the full structure and supported backends.
 
 # Single environment variable (API key providers)
 credentials:
@@ -316,7 +316,7 @@ credentials:
   version: ""                        # Optional — omit or leave empty for latest
 ```
 
-`source` enum: `iam_role` | `env_aws` | `env` | `aws_secrets_manager` | `gcp_secret_manager` | `azure_key_vault`.
+`source` enum: `iam_role` | `service-account` | `env` | `aws_secrets_manager` | `gcp_secret_manager` | `azure_key_vault`.
 
 The runtime resolves `credentials` once at agent startup and caches the value for the duration of the run. The resolved value is never written to logs or persisted. A `credentials` block that fails to resolve at startup is a hard runtime error — the agent will not start.
 
@@ -388,13 +388,13 @@ An unresolvable `model_id` (no matching `.model.md` file with `status: active`) 
 | `credentials` for `gcp_secret_manager` is missing `project` or `secret` | Hard error |
 | `credentials` for `azure_key_vault` is missing `vault_url` or `secret_name` | Hard error |
 | `credentials` for `env` is missing `name` | Hard error |
-| `credentials` for `env_aws` is missing `access_key_id` or `secret_access_key` | Hard error |
+| `credentials` for `service-account` is missing `secret_id` | Hard error |
 | `status: disabled` and the model is referenced by a compiled agent | Hard error |
 | `capabilities.supports_tools: false` and the referencing agent has tools | Hard error |
 | `status: deprecated` and the model is referenced by an active agent | Lint warning |
 | `provider: ollama` used in an agent with `status: active` in production | Lint warning |
 | `credentials.source` is not `iam_role` in a production-targeted Bedrock definition | Lint warning |
-| `credentials.source: env` or `credentials.source: env_aws` used in a production-targeted definition (prefer a secret manager) | Lint warning |
+| `credentials.source: env` used in a production-targeted definition (prefer a secret manager) | Lint warning |
 | `capabilities` block is absent | Lint warning |
 | `last_updated` is more than 180 days ago | Lint warning |
 
@@ -440,4 +440,4 @@ Claude 4 Sonnet is Anthropic's balanced model for intelligence and speed, access
 
 Use this model for general-purpose agent workloads that require strong reasoning, tool orchestration, or document understanding without the latency or cost of a larger frontier model. Prefer `claude-4-opus` when maximum reasoning depth matters more than throughput.
 
-Credentials use `source: "iam_role"` — the runtime assumes the IAM role declared in the agent definition and requires no extra secret configuration. For local development, set `source: "env_aws"` and export `AWS_ACCESS_KEY_ID` / `AWS_SECRET_ACCESS_KEY`.
+Credentials use `source: "iam_role"` — the runtime assumes the IAM role declared in the agent definition and requires no extra secret configuration. For local development, set `source: "service-account"` and store a JSON object with `access_key_id` and `secret_access_key` in a secret manager or local secret source — see the [Transport & Credentials reference](09-transport-credentials.md#service-account).

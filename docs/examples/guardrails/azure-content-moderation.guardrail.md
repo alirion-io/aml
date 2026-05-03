@@ -21,7 +21,8 @@ meta:
 
 transport:
   type: "lambda"
-  function_arn: "arn:aws:lambda:eu-west-1:123456789:function:content-mod-azure-v2"
+  provider: "aws"
+  function_id: "arn:aws:lambda:eu-west-1:123456789:function:content-mod-azure-v2"
   invocation_type: "RequestResponse"
   payload_format: "json"
   credentials:
