@@ -1,11 +1,5 @@
 # Guardrail Definition Specification
 
-> **File naming**: `guardrails/<guardrail_id>.guardrail.md`
-
-> **Audience**: Platform engineers, AI safety teams, product owners
-
----
-
 ## Overview
 
 > **A note on naming**: The term *guardrail* is borrowed from the AI safety world, where it primarily connotes blocking and filtering. In AML, the term is intentionally broader: a guardrail is any runtime-invoked backend that inspects, transforms, tags, or enriches agent data. Use cases range from PII redaction and content moderation to topic classification, sentiment scoring, and metadata injection. If the name feels too narrow for your use case, the underlying concept is simply a *runtime pipeline hook*.
@@ -23,7 +17,7 @@ A guardrail definition file maps a stable identifier (e.g., `pii-scan`) to a tra
 
 ---
 
-## How guardrails are invoked
+## Invoking guardrails
 
 When the agent runtime reaches a guardrail-instrumented pipeline position (defined in the agent's `guardrails` section), it passes the relevant content as the guardrail's input payload. Four positions are supported:
 
@@ -63,7 +57,9 @@ The guardrail response follows the [standard output format](#standard-guardrail-
 
 AML's guardrail spec makes two deliberate choices that diverge from how managed AI platforms typically expose guardrails. This section explains the reasoning so the constraints are understood rather than just followed.
 
-### Only `rest-api` and `lambda` are supported transport types
+### Only `rest-api` and `lambda`
+
+Only `rest-api` and `lambda` are supported transport types. 
 
 Platforms such as AWS Bedrock, Azure AI Content Safety, and GCP Natural Language API offer native guardrail or moderation endpoints with their own request/response shapes, versioning schemes, and severity scales. Supporting them as first-class transport types would require the AML runtime to understand each provider's response envelope — and update that logic every time a provider changes their API.
 
@@ -74,7 +70,7 @@ This makes the runtime simple and stable. It also makes the normalisation logic 
 !!! tip "Using AWS Bedrock, Azure or GCP?"
     Write a Lambda that calls the provider API, maps the response to the AML output format, and configure this guardrail to call that Lambda. The Lambda's IAM role can hold the provider credentials. The Lambda ARN is pinned in the guardrail definition — versioning and rollback are handled via Lambda aliases or versions.
 
-### Built-in guardrails omit `transport` — no special type needed
+### No `transport` for built-in guardrails
 
 Platform-built checks (jailbreak detection, token budget enforcement, etc.) follow the same pattern as tool `type: "function"`: they are in-process by definition and do not need an external call. Declaring their absence via a `transport: { type: "platform-native" }` block would be noise — it adds syntax to say "no transport".
 
@@ -94,9 +90,23 @@ The rule is simple: if `transport` is present, the guardrail makes an external c
 
 The Markdown body is optional and intended for the guardrail registry documentation UI. It does not affect runtime behavior.
 
+### Top-level fields at a glance
+
+| Field | Required | Description |
+|---|---|---|
+| `spec_version` | Required | AML version string. Must match a platform-approved value. |
+| `guardrail_id` | Required | Stable, immutable identifier. Lowercase kebab-case. |
+| `version` | Required | Semantic version of this guardrail definition. |
+| `status` | Required | Lifecycle state: `active` \| `deprecated` \| `disabled`. |
+| `meta` | Required | Descriptive metadata. `name` is required inside. |
+| `behaviour` | Required | Result type and content modalities this guardrail processes. |
+| `transport` | Conditional | Invocation details. Required for external guardrails; omit for platform-built checks. |
+| `invocation` | Conditional | Execution settings (timeout, error policy). Required when `transport` is present. |
+| `fallback` | Recommended | Degraded-mode behavior when the primary transport is unavailable. |
+
 ---
 
-## YAML front matter — complete field reference
+## YAML front matter
 
 ### Top-level required fields
 
@@ -122,7 +132,9 @@ Lifecycle state. Enum: `active` | `deprecated` | `disabled`. A `deprecated` guar
 
 ---
 
-### `meta` — descriptive metadata (required)
+### `meta`
+
+Descriptive metadata (required).
 
 ```yaml
 meta:
@@ -141,7 +153,9 @@ meta:
 
 ---
 
-### `behaviour` — guardrail contract (required)
+### `behaviour`
+
+Describes the guardrail contract (required).
 
 ```yaml
 behaviour:
@@ -166,7 +180,9 @@ The runtime uses this to match the guardrail against agent interface parameters.
 
 ---
 
-### `transport` — invocation details (required for external guardrails)
+### `transport`
+
+Invocation details of the guardrails (required for external guardrails).
 
 The `transport` block defines how the guardrail is called. Two transport types are supported, both identical in definition to their [tool transport](02-tool-definition.md#transport----invocation-details-required-unless-type-is-function) counterparts:
 
@@ -183,7 +199,9 @@ Refer to [Transport & Credentials](09-transport-credentials.md) for the full fie
 
 ---
 
-### `invocation` — execution settings (required when `transport` is present)
+### `invocation`
+
+Execution settings (required when `transport` is present).
 
 ```yaml
 invocation:
@@ -221,7 +239,9 @@ For security-critical guardrails (PII, prompt injection, unsafe content) set bot
 
 ---
 
-### `fallback` — degraded-mode behavior (recommended for external transports)
+### `fallback`
+
+Degraded-mode behavior (recommended for external transports).
 
 ```yaml
 fallback:
@@ -357,7 +377,7 @@ guardrails:
 
 ---
 
-## Full example
+## Example
 
 ```yaml
 ---

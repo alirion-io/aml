@@ -1,10 +1,5 @@
 # Knowledge Base Definition Specification
 
-> **File naming**: `knowledge/<kb_id>.kb.md`
-
-> **Audience**: AI ops
-
----
 
 ## Overview
 
@@ -52,9 +47,25 @@ This distinction also means a KB cannot be used as a tool, and a tool cannot sub
 
 The Markdown body is entirely editorial. The compiler ignores it.
 
+### Top-level fields at a glance
+
+| Field | Required | Description |
+|---|---|---|
+| `spec_version` | Required | AML version string. Must match a platform-approved value. |
+| `kb_id` | Required | Stable, immutable identifier. Lowercase kebab-case. |
+| `version` | Required | Semantic version of this KB definition. |
+| `status` | Required | Lifecycle state: `draft` \| `active` \| `deprecated` \| `disabled`. |
+| `meta` | Required | Descriptive metadata. `name`, `description`, and `owner` are required inside. |
+| `source` | Required | Storage type, URI, and freshness settings. |
+| `scope` | Required | Content boundaries (domains, include/exclude, languages). |
+| `classification` | Required | Trust level and data sensitivity properties. |
+| `retrieval_defaults` | Required | Default retrieval parameters inherited by agents. |
+| `retrieval` | Required | `use_when` and `avoid_when` hints for the model. |
+| `freshness` | Optional | Staleness policy and fallback behavior. |
+
 ---
 
-## YAML front matter — complete field reference
+## YAML front matter
 
 ### Top-level required fields
 
@@ -79,7 +90,9 @@ Enum: `draft` | `active` | `deprecated` | `disabled`. Agents referencing a `disa
 
 ---
 
-### `meta` — descriptive metadata (required)
+### `meta`
+
+Descriptive metadata (required)
 
 ```yaml
 meta:
@@ -96,7 +109,9 @@ meta:
 
 ---
 
-### `source` — storage and location (required)
+### `source`
+
+Storage and location (required).
 
 ```yaml
 source:
@@ -126,7 +141,9 @@ How content is ingested and indexed into the KB (connectors, crawlers, pipelines
 
 ---
 
-### `scope` — content boundaries (required)
+### `scope`
+
+Content boundaries (required).
 
 ```yaml
 scope:
@@ -153,7 +170,9 @@ scope:
 
 ---
 
-### `classification` — content trust and data properties (required)
+### `classification`
+
+Content trust and data properties (required).
 
 Access control — which agents may query this KB — is declared in IAM role definitions, not here. This section captures the trustworthiness of the content and its data sensitivity properties.
 
@@ -176,7 +195,9 @@ classification:
 
 ---
 
-### `retrieval_defaults` — retrieval policy (required)
+### `retrieval_defaults`
+
+Retrieval policy (required).
 
 ```yaml
 retrieval_defaults:
@@ -199,7 +220,9 @@ These are the defaults an agent inherits when it references this KB. An agent ma
 
 ---
 
-### `retrieval` — when to use (required)
+### `retrieval`
+
+When to use (required).
 
 ```yaml
 retrieval:
@@ -219,7 +242,9 @@ retrieval:
 
 ---
 
-### `freshness` — staleness policy (optional)
+### `freshness`
+
+Staleness policy (optional)
 
 ```yaml
 freshness:
@@ -254,7 +279,7 @@ freshness:
 
 ---
 
-## Minimal complete example — product documentation KB
+## Example
 
 ```markdown
 ---

@@ -1,11 +1,5 @@
 # Agent Definition Specification
 
-> **File naming**: `agents/<agent_id>.agent.md`
-
-> **Audience**: Product owners
-
----
-
 ## Overview
 
 An agent definition file is one Markdown file that fully describes a single agent. It has two parts: a YAML front matter block (between `---` delimiters) that carries all machine-readable structured fields, and a Markdown body that carries the prose behavioral instructions the model will follow.
@@ -38,7 +32,31 @@ The compiler reads both parts, validates them, resolves all external references 
 
 ---
 
-## YAML front matter — complete field reference
+## YAML front matter
+
+### Top-level fields at a glance
+
+| Field | Required | Description |
+|---|---|---|
+| `spec_version` | Required | AML version string. Must match a platform-approved value. |
+| `agent_id` | Required | Stable, immutable identifier. Lowercase kebab-case. |
+| `version` | Required | Semantic version of this agent definition. |
+| `status` | Required | Lifecycle state: `draft` \| `active` \| `deprecated` \| `disabled`. |
+| `meta` | Required | Business metadata. `name` is required inside. |
+| `runtime` | Required | Model and execution settings. `model` is required inside. |
+| `interface` | Required | Input and output contract. Both `input.schema` and `output.schema` are required. |
+| `tools` | Required | Tool access grants. |
+| `role` | Required | IAM execution role reference. |
+| `artifacts` | Required | Storage and retention policy for run artifacts. |
+| `knowledge` | Recommended | Knowledge base access and retrieval policy. |
+| `policies` | Recommended | Governance rules applied at runtime. |
+| `guardrails` | Recommended | Runtime validation pipeline hooks. |
+| `ui` | Recommended | Product presentation and form rendering hints. |
+| `memory` | Optional | Longer-lived memory collection access. |
+| `state` | Optional | Session-local working state configuration. |
+| `orchestration` | Optional | Delegation, handoff, and multi-agent pattern configuration. |
+
+---
 
 ### Top-level required fields
 
@@ -64,7 +82,9 @@ Lifecycle state. Enum: `draft` | `active` | `deprecated` | `disabled`. Draft def
 
 ---
 
-### `meta` — business metadata (required)
+### `meta`
+
+Descriptive metadata (required).
 
 ```yaml
 meta:
@@ -80,7 +100,9 @@ The `category` field should come from a controlled vocabulary maintained by the 
 
 ---
 
-### `runtime` — model and execution settings (required)
+### `runtime`
+
+Model and execution settings (required).
 
 ```yaml
 runtime:
@@ -108,7 +130,9 @@ High temperature (above 0.7) for business-critical deterministic workflows is a 
 
 ---
 
-### `interface` — input and output contract (required)
+### `interface`
+
+Input and output contract (required). 
 
 ```yaml
 interface:
@@ -155,7 +179,9 @@ Per-field rendering hints are declared in the `ui.ui_hints` section rather than 
 
 ---
 
-### `tools` — tool access (required)
+### `tools`
+
+Tool access (required). Must be a subset of the tools authorised by the IAM role.
 
 ```yaml
 tools:
@@ -184,7 +210,9 @@ Agent-level overrides can only make constraints stricter than the registry defau
 
 ---
 
-### `knowledge` — knowledge source access (recommended)
+### `knowledge`
+
+Knowledge source access (recommended). Must be a subset of the knowledge bases authorised by the IAM role.
 
 ```yaml
 knowledge:
@@ -209,7 +237,9 @@ If `required: true` then the `retrieval` section of the KB definition will not b
 
 ---
 
-### `memory` — longer-lived memory policy (optional)
+### `memory`
+
+Longer-lived memory policy (optional). Must be a subset of the collections authorised by the IAM role.
 
 ```yaml
 memory:
@@ -237,7 +267,9 @@ memory:
 
 ---
 
-### `state` — session-local working state (optional)
+### `state`
+
+Session-local working state (optional).
 
 ```yaml
 state:
@@ -282,7 +314,9 @@ Both can be scoped to a session, which is a source of confusion. The key distinc
 
 ---
 
-### `artifacts` — storage and retention (required)
+### `artifacts`
+
+Storage and retention (required).
 
 ```yaml
 artifacts:
@@ -357,7 +391,9 @@ If a tenant needs to route artifacts from specific agents to a different storage
 
 ---
 
-### `policies` — governance rules (recommended)
+### `policies`
+
+Governance rules (recommended).
 
 ```yaml
 policies:
@@ -496,7 +532,9 @@ Even at `audit_level: "full"`, if `pii_redaction: true` is set, all logged conte
 
 ---
 
-### `role` — IAM execution role (required)
+### `role`
+
+IAM execution role (required).
 
 ```yaml
 role: "support-agent-role"
@@ -512,7 +550,9 @@ Who can *call* this agent is not declared in AML. Caller access is managed at th
 
 ---
 
-### `guardrails` — runtime validation (recommended)
+### `guardrails`
+
+Runtime validation (recommended).
 
 ```yaml
 guardrails:
@@ -682,7 +722,9 @@ For any tool that writes, deletes, or sends external communications, `tool_calls
 
 ---
 
-### `ui` — product presentation (recommended)
+### `ui`
+
+Product presentation (optional)
 
 ```yaml
 ui:
@@ -795,9 +837,9 @@ Localization applies to **UI labels only**. It does not change the agent's syste
 
 ---
 
-### `orchestration` — delegation and handoff (optional)
+### `orchestration`
 
-The `orchestration` block governs how this agent drives multi-agent systems — whether it may hand work to other agents or humans, whether it can be called as a tool by other agents, and whether it owns and runs a multi-agent pattern (Graph, Swarm, or Workflow).
+The `orchestration` block governs how this agent drives multi-agent systems — whether it may hand work to other agents or humans, whether it can be called as a tool by other agents, and whether it owns and runs a multi-agent pattern (Graph, Swarm, or Workflow). It is optional.
 
 This section has two distinct concerns:
 
@@ -1168,7 +1210,9 @@ The executing agent can manage lifecycle through the following actions:
 
 ---
 
-### `observability` — tracing, metrics, and logs (recommended)
+### `observability`
+
+Tracing, metrics, and logs (recommended)
 
 ```yaml
 observability:
@@ -1417,7 +1461,7 @@ Observability settings must respect the `data_residency` and `pii_redaction` pol
 
 ---
 
-### `evaluation` — quality criteria (optional)
+### `evaluation`
 
 The `evaluation` field is **advisory metadata only**. The platform does not enforce it, gate deployment on it, or trigger alerts from it. Its purpose is to record, alongside the agent definition, what quality criteria the team considers meaningful — so that reviewers, auditors, and tooling can surface them without digging through separate documents.
 
@@ -1444,7 +1488,9 @@ evaluation:
 
 ---
 
-### `routing` — discovery and dispatch (optional)
+### `routing`
+
+Discovery and dispatch (optional).
 
 ```yaml
 routing:
@@ -1489,47 +1535,7 @@ Routing metadata must not silently change policy or runtime behavior. Fields in 
 
 ---
 
-### `release` — publishing metadata (optional)
-
-```yaml
-release:
-  channel: "stable"              # stable | beta | internal
-  replaces_version: "0.9.0"
-  approvals_required:
-    - "product-owner"
-    - "ai-safety"
-  changelog:
-    - version: "1.2.0"
-      date: "2026-03-10"
-      notes: >-
-        Added explicit rule prohibiting speculation about unreleased features
-        following a customer complaint. Expanded escalation conditions to
-        include repeated billing disputes.
-    - version: "1.1.0"
-      date: "2026-01-22"
-      notes: >-
-        Extended system behavior with classification logic (product / billing /
-        account). Added three new examples covering edge cases from production review.
-    - version: "1.0.0"
-      date: "2025-11-15"
-      notes: "Initial release."
-```
-
-Release metadata is used by publishing systems, not by the model. The whole section is informative and not enforced by the AML.
-
-`changelog` is a list of version entries in reverse chronological order. Each entry has three fields:
-
-| Field | Description |
-|---|---|
-| `version` | The semantic version this entry describes. Should match a previously published `version` value for this `agent_id`. |
-| `date` | ISO 8601 date of publication. |
-| `notes` | Free-text description of what changed. Record behavioral changes, prompt tuning decisions, and the reasoning behind rule additions or removals — this history is valuable for auditing agents that handle regulated content. |
-
-The changelog is preserved by the compiler for editorial tooling and stripped from compiled runtime payloads.
-
----
-
-### `notes` — editorial (optional)
+### `notes`
 
 ```yaml
 notes:
@@ -1797,7 +1803,7 @@ This section is consumed by the model, not the compiler. Keep it concise — the
 
 ---
 
-## Minimal complete example
+## Example
 
 ```markdown
 ---

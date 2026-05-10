@@ -1,11 +1,5 @@
 # IAM Role Definition Specification
 
-> **File naming**: `iam/<iam_id>.iam.md`
-
-> **Audience**: Security team
-
----
-
 ## Overview
 
 An IAM role definition file describes a named **execution role** that an agent assumes at runtime. It declares which tools the agent is permitted to call and which knowledge bases the agent may query, serving as the ceiling of the agent's tool and knowledge base access.
@@ -32,6 +26,20 @@ IAM role files are authored and owned by the platform security team and approved
 ```
 
 The Markdown body is entirely editorial. The compiler ignores it.
+
+### Top-level fields at a glance
+
+| Field | Required | Description |
+|---|---|---|
+| `spec_version` | Required | AML version string. Must match a platform-approved value. |
+| `iam_id` | Required | Stable, immutable identifier. Lowercase kebab-case. |
+| `version` | Required | Semantic version of this role definition. |
+| `status` | Required | Lifecycle state: `draft` \| `active` \| `deprecated` \| `disabled`. |
+| `meta` | Required | Descriptive metadata. `name`, `description`, and `owner` are required inside. |
+| `cloud` | Recommended | Cloud provider identity link (ARN, client ID, or service account). |
+| `tools` | Optional | Tools this role permits agents to use. |
+| `knowledge_bases` | Optional | Knowledge bases this role permits agents to query. |
+| `collections` | Optional | Memory collections this role permits agents to access. |
 
 ---
 
@@ -60,9 +68,9 @@ Lifecycle state. Enum: `draft` | `active` | `deprecated` | `disabled`. Agents re
 
 ---
 
-### `meta` (required)
+### `meta`
 
-Descriptive metadata of the IAM role.
+Descriptive metadata of the IAM role (required).
 
 ```yaml
 meta:
@@ -79,9 +87,9 @@ meta:
 
 ---
 
-### `cloud` (recommended)
+### `cloud`
 
-Links this AML role to its actual execution identity in the cloud provider. The structure varies by provider.
+Links this AML role to its actual execution identity in the cloud provider (recommended). The structure varies by provider.
 
 **AWS** — reference an IAM role by ARN:
 
@@ -111,7 +119,7 @@ cloud:
 
 ---
 
-### `tools` (optional)
+### `tools`
 
 Declares the set of tools this role permits an agent to use. An agent referencing this role may only call tools listed here. References to tools outside this set are hard validation errors.
 
@@ -126,7 +134,7 @@ tools:
 
 ---
 
-### `knowledge_bases` (optional)
+### `knowledge_bases`
 
 Declares the set of knowledge bases this role permits an agent to query. An agent referencing this role may only retrieve from knowledge bases listed here. References to KBs outside this set are hard validation errors.
 
@@ -142,7 +150,7 @@ If `knowledge_bases` is omitted, the agent has no KB access by default.
 
 ---
 
-### `collections` (optional)
+### `collections`
 
 Declares the set of memory collections this role permits an agent to access. An agent referencing this role may only access collections listed here. References to collections outside this set are hard validation errors.
 

@@ -1,10 +1,5 @@
 # Tool Definition Specification
 
-> **File naming**: `tools/<tool_id>.tool.md`
-
-> **Audience**: Infrastructure engineers
-
----
 
 ## Overview
 
@@ -32,9 +27,24 @@ Tool files are authored by engineers and approved by the platform team. Agent fi
 
 The Markdown body is entirely editorial. The compiler ignores it. Runtime behavior is determined solely by the YAML front matter.
 
+### Top-level fields at a glance
+
+| Field | Required | Description |
+|---|---|---|
+| `spec_version` | Required | AML version string. Must match a platform-approved value. |
+| `tool_id` | Required | Stable, immutable identifier. Lowercase kebab-case. |
+| `version` | Required | Semantic version of this tool definition. |
+| `status` | Required | Lifecycle state: `draft` \| `active` \| `deprecated` \| `disabled`. |
+| `meta` | Required | Descriptive metadata. `name`, `description`, and `owner` are required inside. |
+| `type` | Required | Behavioral contract: `retrieval` \| `action` \| `function` \| `human`. |
+| `interface` | Required | Input/output schema. Both `input` and `output` sub-fields are required. |
+| `transport` | Conditional | Invocation protocol and credentials. Required for all types except `function`. |
+| `error_codes` | Optional | Per-status-code handling hints for the model. |
+| `use_guidance` | Required | Behavioral hints (`use_when`, `avoid_when`, `side_effects`). |
+
 ---
 
-## YAML front matter — complete field reference
+## YAML front matter
 
 ### Top-level required fields
 
@@ -60,7 +70,9 @@ Lifecycle state. Enum: `draft` | `active` | `deprecated` | `disabled`. Agents re
 
 ---
 
-### `meta` — descriptive metadata (required)
+### `meta`
+
+Descriptive metadata of the tool (required)
 
 ```yaml
 meta:
@@ -76,7 +88,9 @@ meta:
 
 ---
 
-### `type` — behavioral contract (required)
+### `type`
+
+Behavioral contract of the tool (required).
 
 ```yaml
 type: "action"
@@ -96,11 +110,13 @@ type: "action"
 
 ---
 
-### `interface` — input and output contract (required)
+### `interface`
+
+Input and output contract (required).
 
 Both `interface.input` and `interface.output` are required. They follow JSON Schema syntax and are written from the model's perspective. `interface.input` is used by the compiler to validate agent configurations and by the model at runtime to construct correct tool calls. `interface.output` is required so the model can interpret responses without ambiguity — a missing output schema is a hard validation failure. See [JSON Schema in YAML](08-json-schema.md) for the full field reference, supported types, constraints, and worked examples.
 
-#### `interface.input` — input parameters (required)
+#### `interface.input`
 
 ```yaml
 interface:
@@ -127,7 +143,7 @@ interface:
     required: ["to", "subject", "body"]
 ```
 
-#### `interface.output` — expected output shape (required)
+#### `interface.output`
 
 ```yaml
 interface:
@@ -166,7 +182,9 @@ error_codes:
 
 ---
 
-### `transport` — invocation details (required unless `type` is `function`)
+### `transport`
+
+Required when `type` is not `function`.
 
 The transport block defines **how** the tool is called: the protocol, endpoint, call parameters, and authentication. It is orthogonal to `type`, which defines behavioral semantics. A `retrieval` tool and an `action` tool can share the same transport protocol.
 
@@ -297,7 +315,9 @@ See [Transport & Credentials](09-transport-credentials.md) for the full `credent
 
 ---
 
-### `use_guidance` — when to use (required)
+### `use_guidance`
+
+Explain to the agent when to use or when to avoid the tool (required).
 
 ```yaml
 use_guidance:
@@ -344,7 +364,9 @@ use_guidance:
 
 ---
 
-## Minimal complete example — read-only retrieval tool
+## Example
+
+A read-only retrieval tool.
 
 ```markdown
 ---

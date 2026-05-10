@@ -1,10 +1,5 @@
 # JSON Schema in YAML
 
-> **Audience**: Authors of agent, tool, and knowledge base definition files
-
-
----
-
 ## Overview
 
 Several fields across AML definition files — `interface.input`, `interface.output` (for both tools and agents) — accept a **JSON Schema** value written directly in YAML. This page is the single reference for how to write those schemas.
@@ -398,7 +393,7 @@ Descriptions in `input` and `output` schemas are read by the model at runtime. W
 
 ---
 
-## Complete example
+## Example
 
 ```yaml
 type: object

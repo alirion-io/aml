@@ -1,11 +1,5 @@
 # Memory Collection Specification
 
-> **File naming**: `collections/<collection_id>.collection.md`
-
-> **Audience**: Platform engineers
-
----
-
 ## Overview
 
 A memory collection definition file describes one registered memory collection that agents are permitted to read from and write to. It is the single authoritative source of truth for that collection's backing store, scope, retrieval configuration, and writeback rules.
@@ -51,10 +45,22 @@ A single agent may reference collections from multiple tiers simultaneously — 
 
 The Markdown body is entirely editorial. The compiler ignores it. Runtime behavior is determined solely by the YAML front matter.
 
+### Top-level fields at a glance
+
+| Field | Required | Description |
+|---|---|---|
+| `spec_version` | Required | AML version string. Must match a platform-approved value. |
+| `collection_id` | Required | Stable, immutable identifier. Lowercase kebab-case. |
+| `version` | Required | Semantic version of this collection definition. |
+| `status` | Required | Lifecycle state: `draft` \| `active` \| `deprecated` \| `disabled`. |
+| `meta` | Required | Descriptive metadata. `name`, `description`, and `owner` are required inside. |
+| `scope` | Required | Lifetime and sharing policy (`session`, `project`, or `user`). |
+| `backend` | Required | Storage configuration. `type` determines required sub-fields. |
+| `writeback` | Required | Write policy; controls whether agents may write to this collection. |
 
 ---
 
-## YAML front matter — complete field reference
+## YAML front matter
 
 ### Top-level required fields
 
@@ -80,7 +86,9 @@ Enum: `draft` | `active` | `deprecated` | `disabled`. Agents referencing a `disa
 
 ---
 
-### `meta` — descriptive metadata (required)
+### `meta`
+
+Descriptive metadata of a collection (required).
 
 ```yaml
 meta:
@@ -97,7 +105,9 @@ meta:
 
 ---
 
-### `scope` — lifetime and sharing (required)
+### `scope`
+
+Lifetime and sharing of a collection (required).
 
 ```yaml
 scope:
@@ -116,9 +126,9 @@ An agent referencing this collection must have `memory.mode` set to the same or 
 
 ---
 
-### `backend` — storage configuration (required)
+### `backend`
 
-The `backend` section declares the physical storage system and the credentials or resource identifiers needed to access it. The `type` field selects which sub-fields apply.
+The `backend` section declares the physical storage system and the credentials or resource identifiers needed to access it (required). The `type` field selects which sub-fields apply.
 
 **Backend type is constrained by `scope.lifetime`.** Not all backends are appropriate for all scopes. Using the wrong backend for a scope (e.g., a low-latency key store for user lifetime memory that needs semantic retrieval) is a hard validation error:
 
@@ -363,7 +373,9 @@ All `{actorId}`, `{projectId}`, and `{sessionId}` substitutions are performed by
 
 ---
 
-### `writeback` — write policy (required)
+### `writeback`
+
+Write policy (required).
 
 ```yaml
 writeback:
@@ -403,7 +415,7 @@ For `custom` backends, the endpoint receives the full conversation payload and i
 
 ---
 
-## Minimal complete example — AgentCore Memory backend
+## Example — AgentCore Memory backend
 
 ```markdown
 ---
@@ -449,7 +461,7 @@ This collection contains PII (actor identifiers mapped to preference data) and i
 
 ---
 
-## Minimal complete example — Valkey backend
+## Example — Valkey backend
 
 ```markdown
 ---

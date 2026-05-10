@@ -1,11 +1,5 @@
 # Model Definition Specification
 
-> **File naming**: `models/<model_id>.model.md`
-
-> **Audience**: Platform engineers, ML engineers, product owners
-
----
-
 ## Overview
 
 A model definition file declares one named model that agents can reference. It maps a stable, human-readable model identifier (e.g., `claude-4-sonnet`) to a specific provider, provider-level model name, and configuration. The compiler resolves model references from agent definitions and injects the correct provider configuration into the compiled payload. The runtime never reads raw model identifiers — it only executes compiled payloads.
@@ -29,9 +23,22 @@ Credentials are never stored in model definition files. Instead, each provider c
 
 The prose body is optional and intended for the model registry documentation UI. It does not affect runtime behavior.
 
+### Top-level fields at a glance
+
+| Field | Required | Description |
+|---|---|---|
+| `spec_version` | Required | AML version string. Must match a platform-approved value. |
+| `model_id` | Required | Stable, immutable identifier. Lowercase kebab-case. |
+| `version` | Required | Semantic version of this model definition. |
+| `status` | Required | Lifecycle state: `active` \| `deprecated` \| `disabled`. |
+| `meta` | Required | Descriptive metadata. `name` is required inside. |
+| `provider` | Required | Provider declaration and configuration. `type` and `config` are required inside. |
+| `capabilities` | Recommended | Model capability declarations used for compile-time validation. |
+| `defaults` | Optional | Default inference parameters; overridable by agent `runtime` fields. |
+
 ---
 
-## Description (prose body)
+## Description
 
 The `# Description` heading opens the optional Markdown body that follows the closing `---` of the YAML front matter. It has no effect on compilation or runtime behavior — it exists exclusively for human readers and the model registry documentation UI.
 
@@ -46,7 +53,7 @@ Keep the description focused and actionable. Aim for two to four short paragraph
 
 ---
 
-## YAML front matter — complete field reference
+## YAML front matter
 
 ### Top-level required fields
 
@@ -72,7 +79,9 @@ Lifecycle state. Enum: `active` | `deprecated` | `disabled`. A `deprecated` mode
 
 ---
 
-### `meta` — descriptive metadata (required)
+### `meta`
+
+ Descriptive metadata of the model (required).
 
 ```yaml
 meta:
@@ -87,7 +96,9 @@ meta:
 
 ---
 
-### `provider` — provider declaration (required)
+### `provider`
+
+The provider of the model (required).
 
 A single `provider` object with two required sub-fields: `type` selects the provider, `config` holds the provider-specific settings whose shape is validated against the declared `type`. Any secret values inside `config` (API keys, tokens, endpoint URLs) must use a `credentials` block — literal values are a hard validation error.
 
@@ -273,7 +284,7 @@ provider:
 
 Custom providers must implement the Strands `Model` interface. They are registered by platform engineers and are not available to self-service authors.
 
-#### `credentials` — authenticating to providers
+#### `credentials`
 
 Every `credentials` field across all providers uses the same structure: a `source` field selects the backend; all other fields depend on it. This applies uniformly whether the provider uses an API key, a cloud secret manager, or AWS identity-based auth.
 
@@ -322,7 +333,9 @@ The runtime resolves `credentials` once at agent startup and caches the value fo
 
 ---
 
-### `capabilities` — model capability declaration (recommended)
+### `capabilities` 
+
+Model capability declaration (recommended).
 
 ```yaml
 capabilities:
@@ -347,7 +360,7 @@ The compiler uses `capabilities` to validate agent definitions. For example, if 
 
 ---
 
-### `defaults` — default inference parameters (optional)
+### `defaults`
 
 ```yaml
 defaults:

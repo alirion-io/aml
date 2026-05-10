@@ -1,18 +1,12 @@
 # Introduction
 
-> **Current version**: 1.2
-
-> **Audience**: Product owners, non-developer agent authors, platform architects, AI governance teams
-
----
-
-## What is Agent Modeling Language?
+## What is AML?
 
 Agent Modeling Language (AML) is a file-based format for describing AI agents and their dependencies — tools, knowledge bases, memory collections, guardrails, and orchestration rules — in plain text that both humans and machines can read.
 
 An author writes one Markdown file per agent. A platform compiler reads that file, validates it against the spec, resolves all external references, and produces an immutable compiled payload that the runtime executes. Authors never write code; the runtime never executes raw authored text.
 
-The central design commitment is that **a non-developer product owner should be able to read an agent file, understand what the agent does, approve or reject its behavior, and request changes — without asking an engineer to explain it**.
+The central design commitment is that **a non-developer product owner should be able to read an agent file, understand what the agent does, approve or reject its behavior, and request changes — without asking an engineer to explain it**. See [AML studio](https://alirion-io.github.io/aml-studio/) for a simple user interface to generate, review and audit AML files.
 
 ---
 

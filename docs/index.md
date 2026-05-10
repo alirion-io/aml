@@ -4,6 +4,10 @@ AML was born out of a frustration: existing agent definition formats are tightly
 
 The idea is not to reinvent the wheel. AML extends what is already familiar — Markdown and YAML — and shapes it for cloud deployment, team ownership, and production governance.
 
+!!! note
+    To facilitate authoring and reviewing AML files, we have implemented an [AML studio](https://alirion-io.github.io/aml-studio/). It can run locally or in the cloud, connected or not to a Git system for full auditability of changes.
+
+
 ---
 
 ## What is AML?
