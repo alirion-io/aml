@@ -493,10 +493,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#what-is-agent-modeling-language" class="md-nav__link">
+  <a href="#what-is-aml" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What is Agent Modeling Language?
+        What is AML?
       
     </span>
   </a>
@@ -1792,15 +1792,10 @@
 
 
 <h1 id="introduction">Introduction<a class="headerlink" href="#introduction" title="Permanent link">&para;</a></h1>
-<blockquote>
-<p><strong>Current version</strong>: 1.2</p>
-<p><strong>Audience</strong>: Product owners, non-developer agent authors, platform architects, AI governance teams</p>
-</blockquote>
-<hr />
-<h2 id="what-is-agent-modeling-language">What is Agent Modeling Language?<a class="headerlink" href="#what-is-agent-modeling-language" title="Permanent link">&para;</a></h2>
+<h2 id="what-is-aml">What is AML?<a class="headerlink" href="#what-is-aml" title="Permanent link">&para;</a></h2>
 <p>Agent Modeling Language (AML) is a file-based format for describing AI agents and their dependencies — tools, knowledge bases, memory collections, guardrails, and orchestration rules — in plain text that both humans and machines can read.</p>
 <p>An author writes one Markdown file per agent. A platform compiler reads that file, validates it against the spec, resolves all external references, and produces an immutable compiled payload that the runtime executes. Authors never write code; the runtime never executes raw authored text.</p>
-<p>The central design commitment is that <strong>a non-developer product owner should be able to read an agent file, understand what the agent does, approve or reject its behavior, and request changes — without asking an engineer to explain it</strong>.</p>
+<p>The central design commitment is that <strong>a non-developer product owner should be able to read an agent file, understand what the agent does, approve or reject its behavior, and request changes — without asking an engineer to explain it</strong>. See <a href="https://alirion-io.github.io/aml-studio/">AML studio</a> for a simple user interface to generate, review and audit AML files.</p>
 <hr />
 <h2 id="why-a-markup-based-format">Why a markup-based format?<a class="headerlink" href="#why-a-markup-based-format" title="Permanent link">&para;</a></h2>
 <p>Most production agent frameworks today require engineers to write Python, TypeScript, or JSON configuration. This creates a hard dependency: every time a business stakeholder wants to change an agent's persona, restrict a tool, or update escalation rules, an engineer must be involved.</p>

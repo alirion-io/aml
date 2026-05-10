@@ -624,6 +624,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="File structure">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#top-level-fields-at-a-glance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Top-level fields at a glance
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -650,10 +667,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#meta-required" class="md-nav__link">
+  <a href="#meta" class="md-nav__link">
     <span class="md-ellipsis">
       
-        meta (required)
+        meta
       
     </span>
   </a>
@@ -661,10 +678,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#cloud-recommended" class="md-nav__link">
+  <a href="#cloud" class="md-nav__link">
     <span class="md-ellipsis">
       
-        cloud (recommended)
+        cloud
       
     </span>
   </a>
@@ -672,10 +689,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#tools-optional" class="md-nav__link">
+  <a href="#tools" class="md-nav__link">
     <span class="md-ellipsis">
       
-        tools (optional)
+        tools
       
     </span>
   </a>
@@ -683,10 +700,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#knowledge_bases-optional" class="md-nav__link">
+  <a href="#knowledge_bases" class="md-nav__link">
     <span class="md-ellipsis">
       
-        knowledge_bases (optional)
+        knowledge_bases
       
     </span>
   </a>
@@ -694,10 +711,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#collections-optional" class="md-nav__link">
+  <a href="#collections" class="md-nav__link">
     <span class="md-ellipsis">
       
-        collections (optional)
+        collections
       
     </span>
   </a>
@@ -1831,11 +1848,6 @@
 
 
 <h1 id="iam-role-definition-specification">IAM Role Definition Specification<a class="headerlink" href="#iam-role-definition-specification" title="Permanent link">&para;</a></h1>
-<blockquote>
-<p><strong>File naming</strong>: <code>iam/&lt;iam_id&gt;.iam.md</code></p>
-<p><strong>Audience</strong>: Security team</p>
-</blockquote>
-<hr />
 <h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
 <p>An IAM role definition file describes a named <strong>execution role</strong> that an agent assumes at runtime. It declares which tools the agent is permitted to call and which knowledge bases the agent may query, serving as the ceiling of the agent's tool and knowledge base access.</p>
 <p>The <code>cloud</code> block links an AML role to its counterpart in the cloud provider — an AWS IAM role ARN, an Azure managed-identity client ID, or a GCP service account. This lets the compiler resolve which actual execution identity an agent will assume at runtime and enables tooling to cross-reference the AML definition against the live cloud configuration.</p>
@@ -1852,6 +1864,63 @@
 </span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a># Notes             (optional editorial section)
 </span></code></pre></div>
 <p>The Markdown body is entirely editorial. The compiler ignores it.</p>
+<h3 id="top-level-fields-at-a-glance">Top-level fields at a glance<a class="headerlink" href="#top-level-fields-at-a-glance" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>spec_version</code></td>
+<td>Required</td>
+<td>AML version string. Must match a platform-approved value.</td>
+</tr>
+<tr>
+<td><code>iam_id</code></td>
+<td>Required</td>
+<td>Stable, immutable identifier. Lowercase kebab-case.</td>
+</tr>
+<tr>
+<td><code>version</code></td>
+<td>Required</td>
+<td>Semantic version of this role definition.</td>
+</tr>
+<tr>
+<td><code>status</code></td>
+<td>Required</td>
+<td>Lifecycle state: <code>draft</code> | <code>active</code> | <code>deprecated</code> | <code>disabled</code>.</td>
+</tr>
+<tr>
+<td><code>meta</code></td>
+<td>Required</td>
+<td>Descriptive metadata. <code>name</code>, <code>description</code>, and <code>owner</code> are required inside.</td>
+</tr>
+<tr>
+<td><code>cloud</code></td>
+<td>Recommended</td>
+<td>Cloud provider identity link (ARN, client ID, or service account).</td>
+</tr>
+<tr>
+<td><code>tools</code></td>
+<td>Optional</td>
+<td>Tools this role permits agents to use.</td>
+</tr>
+<tr>
+<td><code>knowledge_bases</code></td>
+<td>Optional</td>
+<td>Knowledge bases this role permits agents to query.</td>
+</tr>
+<tr>
+<td><code>collections</code></td>
+<td>Optional</td>
+<td>Memory collections this role permits agents to access.</td>
+</tr>
+</tbody>
+</table>
 <hr />
 <h2 id="yaml-front-matter">YAML front matter<a class="headerlink" href="#yaml-front-matter" title="Permanent link">&para;</a></h2>
 <h3 id="top-level-required-fields">Top-level required fields<a class="headerlink" href="#top-level-required-fields" title="Permanent link">&para;</a></h3>
@@ -1867,8 +1936,8 @@ Semantic version. Patch for descriptions or annotation changes; minor for adding
 </span></code></pre></div>
 Lifecycle state. Enum: <code>draft</code> | <code>active</code> | <code>deprecated</code> | <code>disabled</code>. Agents referencing a <code>disabled</code> role fail hard validation. Agents referencing a <code>deprecated</code> role receive a lint warning.</p>
 <hr />
-<h3 id="meta-required"><code>meta</code> (required)<a class="headerlink" href="#meta-required" title="Permanent link">&para;</a></h3>
-<p>Descriptive metadata of the IAM role.</p>
+<h3 id="meta"><code>meta</code><a class="headerlink" href="#meta" title="Permanent link">&para;</a></h3>
+<p>Descriptive metadata of the IAM role (required).</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nt">meta</span><span class="p">:</span>
 </span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Support</span><span class="nv"> </span><span class="s">Agent</span><span class="nv"> </span><span class="s">Role&quot;</span><span class="w">            </span><span class="c1"># Human-readable display name (required)</span>
 </span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">&gt;</span><span class="w">                         </span><span class="c1"># Two to four sentences (required)</span>
@@ -1881,8 +1950,8 @@ Lifecycle state. Enum: <code>draft</code> | <code>active</code> | <code>deprecat
 </span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="w">  </span><span class="nt">last_updated</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;2025-04-01&quot;</span><span class="w">           </span><span class="c1"># ISO 8601 date (recommended)</span>
 </span></code></pre></div>
 <hr />
-<h3 id="cloud-recommended"><code>cloud</code> (recommended)<a class="headerlink" href="#cloud-recommended" title="Permanent link">&para;</a></h3>
-<p>Links this AML role to its actual execution identity in the cloud provider. The structure varies by provider.</p>
+<h3 id="cloud"><code>cloud</code><a class="headerlink" href="#cloud" title="Permanent link">&para;</a></h3>
+<p>Links this AML role to its actual execution identity in the cloud provider (recommended). The structure varies by provider.</p>
 <p><strong>AWS</strong> — reference an IAM role by ARN:</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nt">cloud</span><span class="p">:</span>
 </span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">  </span><span class="nt">provider</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;aws&quot;</span>
@@ -1900,7 +1969,7 @@ Lifecycle state. Enum: <code>draft</code> | <code>active</code> | <code>deprecat
 </span></code></pre></div>
 <p><code>provider</code> is an enum: <code>aws</code> | <code>azure</code> | <code>gcp</code>. When <code>cloud</code> is present, the provider-specific identifier field is required (<code>role_arn</code> for AWS, <code>client_id</code> for Azure, <code>service_account</code> for GCP). Omitting <code>cloud</code> is permitted but produces a lint warning.</p>
 <hr />
-<h3 id="tools-optional"><code>tools</code> (optional)<a class="headerlink" href="#tools-optional" title="Permanent link">&para;</a></h3>
+<h3 id="tools"><code>tools</code><a class="headerlink" href="#tools" title="Permanent link">&para;</a></h3>
 <p>Declares the set of tools this role permits an agent to use. An agent referencing this role may only call tools listed here. References to tools outside this set are hard validation errors.</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="nt">tools</span><span class="p">:</span>
 </span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">ref</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;search-product-kb&quot;</span>
@@ -1909,7 +1978,7 @@ Lifecycle state. Enum: <code>draft</code> | <code>active</code> | <code>deprecat
 </span></code></pre></div>
 <p><code>ref</code> must resolve to a registered <code>.tool.md</code> file with <code>status: active</code> or <code>status: deprecated</code>. References to <code>disabled</code> tools are hard validation errors.</p>
 <hr />
-<h3 id="knowledge_bases-optional"><code>knowledge_bases</code> (optional)<a class="headerlink" href="#knowledge_bases-optional" title="Permanent link">&para;</a></h3>
+<h3 id="knowledge_bases"><code>knowledge_bases</code><a class="headerlink" href="#knowledge_bases" title="Permanent link">&para;</a></h3>
 <p>Declares the set of knowledge bases this role permits an agent to query. An agent referencing this role may only retrieve from knowledge bases listed here. References to KBs outside this set are hard validation errors.</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="nt">knowledge_bases</span><span class="p">:</span>
 </span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">ref</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;product-docs&quot;</span>
@@ -1918,7 +1987,7 @@ Lifecycle state. Enum: <code>draft</code> | <code>active</code> | <code>deprecat
 <p><code>ref</code> must resolve to a registered <code>.kb.md</code> file with <code>status: active</code> or <code>status: deprecated</code>. References to <code>disabled</code> KBs are hard validation errors.</p>
 <p>If <code>knowledge_bases</code> is omitted, the agent has no KB access by default.</p>
 <hr />
-<h3 id="collections-optional"><code>collections</code> (optional)<a class="headerlink" href="#collections-optional" title="Permanent link">&para;</a></h3>
+<h3 id="collections"><code>collections</code><a class="headerlink" href="#collections" title="Permanent link">&para;</a></h3>
 <p>Declares the set of memory collections this role permits an agent to access. An agent referencing this role may only access collections listed here. References to collections outside this set are hard validation errors.</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="nt">collections</span><span class="p">:</span>
 </span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">ref</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;customer-preferences&quot;</span>

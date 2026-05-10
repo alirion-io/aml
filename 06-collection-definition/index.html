@@ -697,18 +697,35 @@
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#yaml-front-matter-complete-field-reference" class="md-nav__link">
+    <nav class="md-nav" aria-label="File structure">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#top-level-fields-at-a-glance" class="md-nav__link">
     <span class="md-ellipsis">
       
-        YAML front matter — complete field reference
+        Top-level fields at a glance
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="YAML front matter — complete field reference">
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#yaml-front-matter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        YAML front matter
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="YAML front matter">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -723,10 +740,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#meta-descriptive-metadata-required" class="md-nav__link">
+  <a href="#meta" class="md-nav__link">
     <span class="md-ellipsis">
       
-        meta — descriptive metadata (required)
+        meta
       
     </span>
   </a>
@@ -734,10 +751,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#scope-lifetime-and-sharing-required" class="md-nav__link">
+  <a href="#scope" class="md-nav__link">
     <span class="md-ellipsis">
       
-        scope — lifetime and sharing (required)
+        scope
       
     </span>
   </a>
@@ -745,10 +762,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#backend-storage-configuration-required" class="md-nav__link">
+  <a href="#backend" class="md-nav__link">
     <span class="md-ellipsis">
       
-        backend — storage configuration (required)
+        backend
       
     </span>
   </a>
@@ -756,10 +773,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#writeback-write-policy-required" class="md-nav__link">
+  <a href="#writeback" class="md-nav__link">
     <span class="md-ellipsis">
       
-        writeback — write policy (required)
+        writeback
       
     </span>
   </a>
@@ -811,10 +828,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#minimal-complete-example-agentcore-memory-backend" class="md-nav__link">
+  <a href="#example-agentcore-memory-backend" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Minimal complete example — AgentCore Memory backend
+        Example — AgentCore Memory backend
       
     </span>
   </a>
@@ -822,10 +839,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#minimal-complete-example-valkey-backend" class="md-nav__link">
+  <a href="#example-valkey-backend" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Minimal complete example — Valkey backend
+        Example — Valkey backend
       
     </span>
   </a>
@@ -1837,11 +1854,6 @@
 
 
 <h1 id="memory-collection-specification">Memory Collection Specification<a class="headerlink" href="#memory-collection-specification" title="Permanent link">&para;</a></h1>
-<blockquote>
-<p><strong>File naming</strong>: <code>collections/&lt;collection_id&gt;.collection.md</code></p>
-<p><strong>Audience</strong>: Platform engineers</p>
-</blockquote>
-<hr />
 <h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
 <p>A memory collection definition file describes one registered memory collection that agents are permitted to read from and write to. It is the single authoritative source of truth for that collection's backing store, scope, retrieval configuration, and writeback rules.</p>
 <p>Collection files are authored by platform engineers and approved by the platform team. Agent files reference collections by <code>collection_id</code>. When a collection's backend changes (for example, migrating from AgentCore Memory to a different store), only the collection file changes; the compiler re-validates all referencing agents automatically.</p>
@@ -1900,8 +1912,60 @@
 </span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a># Notes             (optional editorial section)
 </span></code></pre></div>
 <p>The Markdown body is entirely editorial. The compiler ignores it. Runtime behavior is determined solely by the YAML front matter.</p>
+<h3 id="top-level-fields-at-a-glance">Top-level fields at a glance<a class="headerlink" href="#top-level-fields-at-a-glance" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>spec_version</code></td>
+<td>Required</td>
+<td>AML version string. Must match a platform-approved value.</td>
+</tr>
+<tr>
+<td><code>collection_id</code></td>
+<td>Required</td>
+<td>Stable, immutable identifier. Lowercase kebab-case.</td>
+</tr>
+<tr>
+<td><code>version</code></td>
+<td>Required</td>
+<td>Semantic version of this collection definition.</td>
+</tr>
+<tr>
+<td><code>status</code></td>
+<td>Required</td>
+<td>Lifecycle state: <code>draft</code> | <code>active</code> | <code>deprecated</code> | <code>disabled</code>.</td>
+</tr>
+<tr>
+<td><code>meta</code></td>
+<td>Required</td>
+<td>Descriptive metadata. <code>name</code>, <code>description</code>, and <code>owner</code> are required inside.</td>
+</tr>
+<tr>
+<td><code>scope</code></td>
+<td>Required</td>
+<td>Lifetime and sharing policy (<code>session</code>, <code>project</code>, or <code>user</code>).</td>
+</tr>
+<tr>
+<td><code>backend</code></td>
+<td>Required</td>
+<td>Storage configuration. <code>type</code> determines required sub-fields.</td>
+</tr>
+<tr>
+<td><code>writeback</code></td>
+<td>Required</td>
+<td>Write policy; controls whether agents may write to this collection.</td>
+</tr>
+</tbody>
+</table>
 <hr />
-<h2 id="yaml-front-matter-complete-field-reference">YAML front matter — complete field reference<a class="headerlink" href="#yaml-front-matter-complete-field-reference" title="Permanent link">&para;</a></h2>
+<h2 id="yaml-front-matter">YAML front matter<a class="headerlink" href="#yaml-front-matter" title="Permanent link">&para;</a></h2>
 <h3 id="top-level-required-fields">Top-level required fields<a class="headerlink" href="#top-level-required-fields" title="Permanent link">&para;</a></h3>
 <p><div class="language-yaml highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nt">spec_version</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;1.2&quot;</span>
 </span></code></pre></div>
@@ -1916,7 +1980,8 @@ Semantic version of this collection definition. Patch for metadata corrections; 
 </span></code></pre></div>
 Enum: <code>draft</code> | <code>active</code> | <code>deprecated</code> | <code>disabled</code>. Agents referencing a <code>disabled</code> collection fail hard validation. Agents referencing a <code>deprecated</code> collection receive a lint warning.</p>
 <hr />
-<h3 id="meta-descriptive-metadata-required"><code>meta</code> — descriptive metadata (required)<a class="headerlink" href="#meta-descriptive-metadata-required" title="Permanent link">&para;</a></h3>
+<h3 id="meta"><code>meta</code><a class="headerlink" href="#meta" title="Permanent link">&para;</a></h3>
+<p>Descriptive metadata of a collection (required).</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nt">meta</span><span class="p">:</span>
 </span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Customer</span><span class="nv"> </span><span class="s">Preferences&quot;</span><span class="w">       </span><span class="c1"># Human-readable display name (required)</span>
 </span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">&gt;</span><span class="w">                     </span><span class="c1"># Two to four sentences (required)</span>
@@ -1929,7 +1994,8 @@ Enum: <code>draft</code> | <code>active</code> | <code>deprecated</code> | <code
 </span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="w">  </span><span class="nt">last_updated</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;2026-04-01&quot;</span>
 </span></code></pre></div>
 <hr />
-<h3 id="scope-lifetime-and-sharing-required"><code>scope</code> — lifetime and sharing (required)<a class="headerlink" href="#scope-lifetime-and-sharing-required" title="Permanent link">&para;</a></h3>
+<h3 id="scope"><code>scope</code><a class="headerlink" href="#scope" title="Permanent link">&para;</a></h3>
+<p>Lifetime and sharing of a collection (required).</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nt">scope</span><span class="p">:</span>
 </span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">  </span><span class="nt">lifetime</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;project&quot;</span><span class="w">        </span><span class="c1"># session | project | user</span>
 </span></code></pre></div>
@@ -1962,8 +2028,8 @@ Enum: <code>draft</code> | <code>active</code> | <code>deprecated</code> | <code
 </table>
 <p>An agent referencing this collection must have <code>memory.mode</code> set to the same or broader lifetime. For example, a collection with <code>lifetime: "project"</code> cannot be accessed by an agent whose <code>memory.mode</code> is <code>"session"</code>. This is a hard validation error.</p>
 <hr />
-<h3 id="backend-storage-configuration-required"><code>backend</code> — storage configuration (required)<a class="headerlink" href="#backend-storage-configuration-required" title="Permanent link">&para;</a></h3>
-<p>The <code>backend</code> section declares the physical storage system and the credentials or resource identifiers needed to access it. The <code>type</code> field selects which sub-fields apply.</p>
+<h3 id="backend"><code>backend</code><a class="headerlink" href="#backend" title="Permanent link">&para;</a></h3>
+<p>The <code>backend</code> section declares the physical storage system and the credentials or resource identifiers needed to access it (required). The <code>type</code> field selects which sub-fields apply.</p>
 <p><strong>Backend type is constrained by <code>scope.lifetime</code>.</strong> Not all backends are appropriate for all scopes. Using the wrong backend for a scope (e.g., a low-latency key store for user lifetime memory that needs semantic retrieval) is a hard validation error:</p>
 <table>
 <thead>
@@ -2209,7 +2275,8 @@ Enum: <code>draft</code> | <code>active</code> | <code>deprecated</code> | <code
 <hr />
 <p>All <code>{actorId}</code>, <code>{projectId}</code>, and <code>{sessionId}</code> substitutions are performed by the runtime before calling your endpoint — your implementation receives already-resolved values. Endpoint URLs and function ARNs are never hardcoded in the collection file; credentials are always resolved through the secrets manager at compile time.</p>
 <hr />
-<h3 id="writeback-write-policy-required"><code>writeback</code> — write policy (required)<a class="headerlink" href="#writeback-write-policy-required" title="Permanent link">&para;</a></h3>
+<h3 id="writeback"><code>writeback</code><a class="headerlink" href="#writeback" title="Permanent link">&para;</a></h3>
+<p>Write policy (required).</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="nt">writeback</span><span class="p">:</span>
 </span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="w">  </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 </span></code></pre></div>
@@ -2240,7 +2307,7 @@ Enum: <code>draft</code> | <code>active</code> | <code>deprecated</code> | <code
 <li><code>backend.retrieval_config</code> absent for <code>agentcore_memory</code> backend (defaults will be used — verify they match the resource's namespace configuration).</li>
 </ul>
 <hr />
-<h2 id="minimal-complete-example-agentcore-memory-backend">Minimal complete example — AgentCore Memory backend<a class="headerlink" href="#minimal-complete-example-agentcore-memory-backend" title="Permanent link">&para;</a></h2>
+<h2 id="example-agentcore-memory-backend">Example — AgentCore Memory backend<a class="headerlink" href="#example-agentcore-memory-backend" title="Permanent link">&para;</a></h2>
 <div class="language-markdown highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>---
 </span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>spec_version: &quot;1.2&quot;
 </span><span id="__span-19-3"><a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>collection_id: &quot;customer-preferences&quot;
@@ -2282,7 +2349,7 @@ Enum: <code>draft</code> | <code>active</code> | <code>deprecated</code> | <code
 </span><span id="__span-19-39"><a id="__codelineno-19-39" name="__codelineno-19-39" href="#__codelineno-19-39"></a>This collection contains PII (actor identifiers mapped to preference data) and is subject to GDPR right-to-erasure requirements. The platform&#39;s memory service must support per-actor data deletion. Access rights are controlled by the IAM role assigned to each agent that references this collection.
 </span></code></pre></div>
 <hr />
-<h2 id="minimal-complete-example-valkey-backend">Minimal complete example — Valkey backend<a class="headerlink" href="#minimal-complete-example-valkey-backend" title="Permanent link">&para;</a></h2>
+<h2 id="example-valkey-backend">Example — Valkey backend<a class="headerlink" href="#example-valkey-backend" title="Permanent link">&para;</a></h2>
 <div class="language-markdown highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>---
 </span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>spec_version: &quot;1.2&quot;
 </span><span id="__span-20-3"><a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a>collection_id: &quot;session-state-cache&quot;

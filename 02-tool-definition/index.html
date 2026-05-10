@@ -568,18 +568,35 @@
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#yaml-front-matter-complete-field-reference" class="md-nav__link">
+    <nav class="md-nav" aria-label="File structure">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#top-level-fields-at-a-glance" class="md-nav__link">
     <span class="md-ellipsis">
       
-        YAML front matter — complete field reference
+        Top-level fields at a glance
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="YAML front matter — complete field reference">
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#yaml-front-matter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        YAML front matter
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="YAML front matter">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -594,10 +611,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#meta-descriptive-metadata-required" class="md-nav__link">
+  <a href="#meta" class="md-nav__link">
     <span class="md-ellipsis">
       
-        meta — descriptive metadata (required)
+        meta
       
     </span>
   </a>
@@ -605,10 +622,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#type-behavioral-contract-required" class="md-nav__link">
+  <a href="#type" class="md-nav__link">
     <span class="md-ellipsis">
       
-        type — behavioral contract (required)
+        type
       
     </span>
   </a>
@@ -616,10 +633,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#interface-input-and-output-contract-required" class="md-nav__link">
+  <a href="#interface" class="md-nav__link">
     <span class="md-ellipsis">
       
-        interface — input and output contract (required)
+        interface
       
     </span>
   </a>
@@ -627,10 +644,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#transport-invocation-details-required-unless-type-is-function" class="md-nav__link">
+  <a href="#transport" class="md-nav__link">
     <span class="md-ellipsis">
       
-        transport — invocation details (required unless type is function)
+        transport
       
     </span>
   </a>
@@ -638,10 +655,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#use_guidance-when-to-use-required" class="md-nav__link">
+  <a href="#use_guidance" class="md-nav__link">
     <span class="md-ellipsis">
       
-        use_guidance — when to use (required)
+        use_guidance
       
     </span>
   </a>
@@ -693,10 +710,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#minimal-complete-example-read-only-retrieval-tool" class="md-nav__link">
+  <a href="#example" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Minimal complete example — read-only retrieval tool
+        Example
       
     </span>
   </a>
@@ -1820,11 +1837,6 @@
 
 
 <h1 id="tool-definition-specification">Tool Definition Specification<a class="headerlink" href="#tool-definition-specification" title="Permanent link">&para;</a></h1>
-<blockquote>
-<p><strong>File naming</strong>: <code>tools/&lt;tool_id&gt;.tool.md</code></p>
-<p><strong>Audience</strong>: Infrastructure engineers</p>
-</blockquote>
-<hr />
 <h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
 <p>Think of a tool as a specific action an AI agent can take in the real world — like sending an email, looking up a customer record, or submitting a form. Just as a human employee needs to know which systems they are allowed to use and how to use them, an agent needs a clear description of each tool at its disposal. A tool definition is that description: it tells the agent what the tool does, what information it needs to run it, and any rules or limits that apply.</p>
 <p>More technically, a tool is any callable unit the agent can invoke at runtime — a function, an external API, or a backend service.</p>
@@ -1841,8 +1853,70 @@
 </span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a># Notes             (optional editorial section)
 </span></code></pre></div>
 <p>The Markdown body is entirely editorial. The compiler ignores it. Runtime behavior is determined solely by the YAML front matter.</p>
+<h3 id="top-level-fields-at-a-glance">Top-level fields at a glance<a class="headerlink" href="#top-level-fields-at-a-glance" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>spec_version</code></td>
+<td>Required</td>
+<td>AML version string. Must match a platform-approved value.</td>
+</tr>
+<tr>
+<td><code>tool_id</code></td>
+<td>Required</td>
+<td>Stable, immutable identifier. Lowercase kebab-case.</td>
+</tr>
+<tr>
+<td><code>version</code></td>
+<td>Required</td>
+<td>Semantic version of this tool definition.</td>
+</tr>
+<tr>
+<td><code>status</code></td>
+<td>Required</td>
+<td>Lifecycle state: <code>draft</code> | <code>active</code> | <code>deprecated</code> | <code>disabled</code>.</td>
+</tr>
+<tr>
+<td><code>meta</code></td>
+<td>Required</td>
+<td>Descriptive metadata. <code>name</code>, <code>description</code>, and <code>owner</code> are required inside.</td>
+</tr>
+<tr>
+<td><code>type</code></td>
+<td>Required</td>
+<td>Behavioral contract: <code>retrieval</code> | <code>action</code> | <code>function</code> | <code>human</code>.</td>
+</tr>
+<tr>
+<td><code>interface</code></td>
+<td>Required</td>
+<td>Input/output schema. Both <code>input</code> and <code>output</code> sub-fields are required.</td>
+</tr>
+<tr>
+<td><code>transport</code></td>
+<td>Conditional</td>
+<td>Invocation protocol and credentials. Required for all types except <code>function</code>.</td>
+</tr>
+<tr>
+<td><code>error_codes</code></td>
+<td>Optional</td>
+<td>Per-status-code handling hints for the model.</td>
+</tr>
+<tr>
+<td><code>use_guidance</code></td>
+<td>Required</td>
+<td>Behavioral hints (<code>use_when</code>, <code>avoid_when</code>, <code>side_effects</code>).</td>
+</tr>
+</tbody>
+</table>
 <hr />
-<h2 id="yaml-front-matter-complete-field-reference">YAML front matter — complete field reference<a class="headerlink" href="#yaml-front-matter-complete-field-reference" title="Permanent link">&para;</a></h2>
+<h2 id="yaml-front-matter">YAML front matter<a class="headerlink" href="#yaml-front-matter" title="Permanent link">&para;</a></h2>
 <h3 id="top-level-required-fields">Top-level required fields<a class="headerlink" href="#top-level-required-fields" title="Permanent link">&para;</a></h3>
 <p><div class="language-yaml highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nt">spec_version</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;1.2&quot;</span>
 </span></code></pre></div>
@@ -1857,7 +1931,8 @@ Semantic version of this tool definition. Increment on every published change. M
 </span></code></pre></div>
 Lifecycle state. Enum: <code>draft</code> | <code>active</code> | <code>deprecated</code> | <code>disabled</code>. Agents referencing a <code>disabled</code> tool fail hard validation. Agents referencing a <code>deprecated</code> tool receive a lint warning.</p>
 <hr />
-<h3 id="meta-descriptive-metadata-required"><code>meta</code> — descriptive metadata (required)<a class="headerlink" href="#meta-descriptive-metadata-required" title="Permanent link">&para;</a></h3>
+<h3 id="meta"><code>meta</code><a class="headerlink" href="#meta" title="Permanent link">&para;</a></h3>
+<p>Descriptive metadata of the tool (required)</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nt">meta</span><span class="p">:</span>
 </span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Send</span><span class="nv"> </span><span class="s">Email&quot;</span><span class="w">                </span><span class="c1"># Human-readable display name (required)</span>
 </span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">&gt;</span><span class="w">                    </span><span class="c1"># Two to five sentences, agent&#39;s perspective (required)</span>
@@ -1869,7 +1944,8 @@ Lifecycle state. Enum: <code>draft</code> | <code>active</code> | <code>deprecat
 </span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="w">  </span><span class="nt">last_updated</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;2025-04-01&quot;</span><span class="w">        </span><span class="c1"># ISO 8601 date (recommended)</span>
 </span></code></pre></div>
 <hr />
-<h3 id="type-behavioral-contract-required"><code>type</code> — behavioral contract (required)<a class="headerlink" href="#type-behavioral-contract-required" title="Permanent link">&para;</a></h3>
+<h3 id="type"><code>type</code><a class="headerlink" href="#type" title="Permanent link">&para;</a></h3>
+<p>Behavioral contract of the tool (required).</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;action&quot;</span>
 </span></code></pre></div>
 <p><code>type</code> describes the <strong>behavioral semantics</strong> of the tool — what it means for the runtime and the model. It is strictly separate from the invocation protocol, which is declared in the <code>transport</code> block.</p>
@@ -1904,9 +1980,10 @@ Lifecycle state. Enum: <code>draft</code> | <code>active</code> | <code>deprecat
 <p>The invocation protocol (<code>rest-api</code>, <code>mcp</code>, <code>lambda</code>, <code>grpc</code>, etc.) belongs in <code>transport.type</code>, not here. A <code>retrieval</code> tool can be backed by a REST API, an MCP server, or a database — <code>type</code> does not constrain that choice.</p>
 </div>
 <hr />
-<h3 id="interface-input-and-output-contract-required"><code>interface</code> — input and output contract (required)<a class="headerlink" href="#interface-input-and-output-contract-required" title="Permanent link">&para;</a></h3>
+<h3 id="interface"><code>interface</code><a class="headerlink" href="#interface" title="Permanent link">&para;</a></h3>
+<p>Input and output contract (required).</p>
 <p>Both <code>interface.input</code> and <code>interface.output</code> are required. They follow JSON Schema syntax and are written from the model's perspective. <code>interface.input</code> is used by the compiler to validate agent configurations and by the model at runtime to construct correct tool calls. <code>interface.output</code> is required so the model can interpret responses without ambiguity — a missing output schema is a hard validation failure. See <a href="../08-json-schema/">JSON Schema in YAML</a> for the full field reference, supported types, constraints, and worked examples.</p>
-<h4 id="interfaceinput-input-parameters-required"><code>interface.input</code> — input parameters (required)<a class="headerlink" href="#interfaceinput-input-parameters-required" title="Permanent link">&para;</a></h4>
+<h4 id="interfaceinput"><code>interface.input</code><a class="headerlink" href="#interfaceinput" title="Permanent link">&para;</a></h4>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="nt">interface</span><span class="p">:</span>
 </span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">  </span><span class="nt">input</span><span class="p">:</span>
 </span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">object</span>
@@ -1930,7 +2007,7 @@ Lifecycle state. Enum: <code>draft</code> | <code>active</code> | <code>deprecat
 </span><span id="__span-7-21"><a id="__codelineno-7-21" name="__codelineno-7-21" href="#__codelineno-7-21"></a><span class="w">        </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Optional</span><span class="nv"> </span><span class="s">template</span><span class="nv"> </span><span class="s">ID</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">use</span><span class="nv"> </span><span class="s">instead</span><span class="nv"> </span><span class="s">of</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">free-form</span><span class="nv"> </span><span class="s">body.&quot;</span>
 </span><span id="__span-7-22"><a id="__codelineno-7-22" name="__codelineno-7-22" href="#__codelineno-7-22"></a><span class="w">    </span><span class="nt">required</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;to&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;subject&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;body&quot;</span><span class="p p-Indicator">]</span>
 </span></code></pre></div>
-<h4 id="interfaceoutput-expected-output-shape-required"><code>interface.output</code> — expected output shape (required)<a class="headerlink" href="#interfaceoutput-expected-output-shape-required" title="Permanent link">&para;</a></h4>
+<h4 id="interfaceoutput"><code>interface.output</code><a class="headerlink" href="#interfaceoutput" title="Permanent link">&para;</a></h4>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nt">interface</span><span class="p">:</span>
 </span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">  </span><span class="nt">output</span><span class="p">:</span>
 </span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">object</span>
@@ -1963,7 +2040,8 @@ Lifecycle state. Enum: <code>draft</code> | <code>active</code> | <code>deprecat
 <p><code>interface.output</code> accepts the same JSON Schema syntax as <code>interface.input</code>. See <a href="../08-json-schema/">JSON Schema in YAML</a> for the full field reference, supported types, constraints, and worked examples.</p>
 </div>
 <hr />
-<h3 id="transport-invocation-details-required-unless-type-is-function"><code>transport</code> — invocation details (required unless <code>type</code> is <code>function</code>)<a class="headerlink" href="#transport-invocation-details-required-unless-type-is-function" title="Permanent link">&para;</a></h3>
+<h3 id="transport"><code>transport</code><a class="headerlink" href="#transport" title="Permanent link">&para;</a></h3>
+<p>Required when <code>type</code> is not <code>function</code>.</p>
 <p>The transport block defines <strong>how</strong> the tool is called: the protocol, endpoint, call parameters, and authentication. It is orthogonal to <code>type</code>, which defines behavioral semantics. A <code>retrieval</code> tool and an <code>action</code> tool can share the same transport protocol.</p>
 <p>For <code>function</code> type tools, the transport is managed by the platform SDK and this section may be omitted. For all other types, the transport block is required.</p>
 <p>All transport variants share the <code>type</code> discriminator field and a nested <code>credentials</code> block. The remaining fields are specific to each protocol.</p>
@@ -2177,7 +2255,8 @@ Lifecycle state. Enum: <code>draft</code> | <code>active</code> | <code>deprecat
 <h4 id="transportcredentials-authentication"><code>transport.credentials</code> — authentication<a class="headerlink" href="#transportcredentials-authentication" title="Permanent link">&para;</a></h4>
 <p>See <a href="../09-transport-credentials/">Transport &amp; Credentials</a> for the full <code>credentials</code> block reference, including all credential schemes (<code>none</code>, <code>iam-role</code>, <code>api-key</code>, <code>bearer-token</code>, <code>oauth2</code>, <code>service-account</code>), secret sources (<code>env</code>, <code>aws_secrets_manager</code>, <code>gcp_secret_manager</code>, <code>azure_key_vault</code>), and connection objects for database and cloud transports.</p>
 <hr />
-<h3 id="use_guidance-when-to-use-required"><code>use_guidance</code> — when to use (required)<a class="headerlink" href="#use_guidance-when-to-use-required" title="Permanent link">&para;</a></h3>
+<h3 id="use_guidance"><code>use_guidance</code><a class="headerlink" href="#use_guidance" title="Permanent link">&para;</a></h3>
+<p>Explain to the agent when to use or when to avoid the tool (required).</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="nt">use_guidance</span><span class="p">:</span>
 </span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="w">  </span><span class="nt">use_when</span><span class="p">:</span>
 </span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;user</span><span class="nv"> </span><span class="s">has</span><span class="nv"> </span><span class="s">confirmed</span><span class="nv"> </span><span class="s">they</span><span class="nv"> </span><span class="s">want</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">confirmation</span><span class="nv"> </span><span class="s">email</span><span class="nv"> </span><span class="s">sent&quot;</span>
@@ -2217,7 +2296,8 @@ Lifecycle state. Enum: <code>draft</code> | <code>active</code> | <code>deprecat
 <li><code>status: "deprecated"</code> without a <code>meta.last_updated</code> date.</li>
 </ul>
 <hr />
-<h2 id="minimal-complete-example-read-only-retrieval-tool">Minimal complete example — read-only retrieval tool<a class="headerlink" href="#minimal-complete-example-read-only-retrieval-tool" title="Permanent link">&para;</a></h2>
+<h2 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h2>
+<p>A read-only retrieval tool.</p>
 <div class="language-markdown highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>---
 </span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>spec_version: &quot;1.2&quot;
 </span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>tool_id: &quot;search-product-kb&quot;

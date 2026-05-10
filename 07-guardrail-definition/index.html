@@ -700,10 +700,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#how-guardrails-are-invoked" class="md-nav__link">
+  <a href="#invoking-guardrails" class="md-nav__link">
     <span class="md-ellipsis">
       
-        How guardrails are invoked
+        Invoking guardrails
       
     </span>
   </a>
@@ -723,10 +723,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#only-rest-api-and-lambda-are-supported-transport-types" class="md-nav__link">
+  <a href="#only-rest-api-and-lambda" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Only rest-api and lambda are supported transport types
+        Only rest-api and lambda
       
     </span>
   </a>
@@ -734,10 +734,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#built-in-guardrails-omit-transport-no-special-type-needed" class="md-nav__link">
+  <a href="#no-transport-for-built-in-guardrails" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Built-in guardrails omit transport — no special type needed
+        No transport for built-in guardrails
       
     </span>
   </a>
@@ -758,18 +758,35 @@
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#yaml-front-matter-complete-field-reference" class="md-nav__link">
+    <nav class="md-nav" aria-label="File structure">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#top-level-fields-at-a-glance" class="md-nav__link">
     <span class="md-ellipsis">
       
-        YAML front matter — complete field reference
+        Top-level fields at a glance
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="YAML front matter — complete field reference">
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#yaml-front-matter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        YAML front matter
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="YAML front matter">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -784,10 +801,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#meta-descriptive-metadata-required" class="md-nav__link">
+  <a href="#meta" class="md-nav__link">
     <span class="md-ellipsis">
       
-        meta — descriptive metadata (required)
+        meta
       
     </span>
   </a>
@@ -795,10 +812,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#behaviour-guardrail-contract-required" class="md-nav__link">
+  <a href="#behaviour" class="md-nav__link">
     <span class="md-ellipsis">
       
-        behaviour — guardrail contract (required)
+        behaviour
       
     </span>
   </a>
@@ -806,10 +823,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#transport-invocation-details-required-for-external-guardrails" class="md-nav__link">
+  <a href="#transport" class="md-nav__link">
     <span class="md-ellipsis">
       
-        transport — invocation details (required for external guardrails)
+        transport
       
     </span>
   </a>
@@ -817,10 +834,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#invocation-execution-settings-required-when-transport-is-present" class="md-nav__link">
+  <a href="#invocation" class="md-nav__link">
     <span class="md-ellipsis">
       
-        invocation — execution settings (required when transport is present)
+        invocation
       
     </span>
   </a>
@@ -828,10 +845,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#fallback-degraded-mode-behavior-recommended-for-external-transports" class="md-nav__link">
+  <a href="#fallback" class="md-nav__link">
     <span class="md-ellipsis">
       
-        fallback — degraded-mode behavior (recommended for external transports)
+        fallback
       
     </span>
   </a>
@@ -944,10 +961,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#full-example" class="md-nav__link">
+  <a href="#example" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Full example
+        Example
       
     </span>
   </a>
@@ -1942,11 +1959,6 @@
 
 
 <h1 id="guardrail-definition-specification">Guardrail Definition Specification<a class="headerlink" href="#guardrail-definition-specification" title="Permanent link">&para;</a></h1>
-<blockquote>
-<p><strong>File naming</strong>: <code>guardrails/&lt;guardrail_id&gt;.guardrail.md</code></p>
-<p><strong>Audience</strong>: Platform engineers, AI safety teams, product owners</p>
-</blockquote>
-<hr />
 <h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
 <blockquote>
 <p><strong>A note on naming</strong>: The term <em>guardrail</em> is borrowed from the AI safety world, where it primarily connotes blocking and filtering. In AML, the term is intentionally broader: a guardrail is any runtime-invoked backend that inspects, transforms, tags, or enriches agent data. Use cases range from PII redaction and content moderation to topic classification, sentiment scoring, and metadata injection. If the name feels too narrow for your use case, the underlying concept is simply a <em>runtime pipeline hook</em>.</p>
@@ -1961,7 +1973,7 @@
 </ul>
 <p>A guardrail definition file maps a stable identifier (e.g., <code>pii-scan</code>) to a transport backend, invocation policy, and result type. Agent files reference guardrails by ID — they never copy guardrail configuration inline. When a guardrail backend changes, only the guardrail definition file changes; the compiler re-validates all referencing agents automatically.</p>
 <hr />
-<h2 id="how-guardrails-are-invoked">How guardrails are invoked<a class="headerlink" href="#how-guardrails-are-invoked" title="Permanent link">&para;</a></h2>
+<h2 id="invoking-guardrails">Invoking guardrails<a class="headerlink" href="#invoking-guardrails" title="Permanent link">&para;</a></h2>
 <p>When the agent runtime reaches a guardrail-instrumented pipeline position (defined in the agent's <code>guardrails</code> section), it passes the relevant content as the guardrail's input payload. Four positions are supported:</p>
 <table>
 <thead>
@@ -2014,7 +2026,8 @@
 <hr />
 <h2 id="design-decisions">Design decisions<a class="headerlink" href="#design-decisions" title="Permanent link">&para;</a></h2>
 <p>AML's guardrail spec makes two deliberate choices that diverge from how managed AI platforms typically expose guardrails. This section explains the reasoning so the constraints are understood rather than just followed.</p>
-<h3 id="only-rest-api-and-lambda-are-supported-transport-types">Only <code>rest-api</code> and <code>lambda</code> are supported transport types<a class="headerlink" href="#only-rest-api-and-lambda-are-supported-transport-types" title="Permanent link">&para;</a></h3>
+<h3 id="only-rest-api-and-lambda">Only <code>rest-api</code> and <code>lambda</code><a class="headerlink" href="#only-rest-api-and-lambda" title="Permanent link">&para;</a></h3>
+<p>Only <code>rest-api</code> and <code>lambda</code> are supported transport types. </p>
 <p>Platforms such as AWS Bedrock, Azure AI Content Safety, and GCP Natural Language API offer native guardrail or moderation endpoints with their own request/response shapes, versioning schemes, and severity scales. Supporting them as first-class transport types would require the AML runtime to understand each provider's response envelope — and update that logic every time a provider changes their API.</p>
 <p>Instead, AML defines a <a href="#standard-guardrail-output-format">standard output format</a> and requires all guardrail backends to return that shape. Provider-specific calls — including any normalisation from a provider's native scale (e.g., Azure's 0–6) to AML's 0–10 scale — belong in a Lambda function or REST API that the team owns and versions independently.</p>
 <p>This makes the runtime simple and stable. It also makes the normalisation logic explicit, testable, and auditable: it lives in a Lambda you control, not inside the platform.</p>
@@ -2022,7 +2035,7 @@
 <p class="admonition-title">Using AWS Bedrock, Azure or GCP?</p>
 <p>Write a Lambda that calls the provider API, maps the response to the AML output format, and configure this guardrail to call that Lambda. The Lambda's IAM role can hold the provider credentials. The Lambda ARN is pinned in the guardrail definition — versioning and rollback are handled via Lambda aliases or versions.</p>
 </div>
-<h3 id="built-in-guardrails-omit-transport-no-special-type-needed">Built-in guardrails omit <code>transport</code> — no special type needed<a class="headerlink" href="#built-in-guardrails-omit-transport-no-special-type-needed" title="Permanent link">&para;</a></h3>
+<h3 id="no-transport-for-built-in-guardrails">No <code>transport</code> for built-in guardrails<a class="headerlink" href="#no-transport-for-built-in-guardrails" title="Permanent link">&para;</a></h3>
 <p>Platform-built checks (jailbreak detection, token budget enforcement, etc.) follow the same pattern as tool <code>type: "function"</code>: they are in-process by definition and do not need an external call. Declaring their absence via a <code>transport: { type: "platform-native" }</code> block would be noise — it adds syntax to say "no transport".</p>
 <p>The rule is simple: if <code>transport</code> is present, the guardrail makes an external call and <code>invocation</code> is required. If <code>transport</code> is absent, the runtime invokes it in-process. No special transport type, no exception-handling in the schema.</p>
 <hr />
@@ -2034,8 +2047,65 @@
 </span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>[optional prose — what this guardrail checks, when to use it, usage guidance]
 </span></code></pre></div>
 <p>The Markdown body is optional and intended for the guardrail registry documentation UI. It does not affect runtime behavior.</p>
+<h3 id="top-level-fields-at-a-glance">Top-level fields at a glance<a class="headerlink" href="#top-level-fields-at-a-glance" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>spec_version</code></td>
+<td>Required</td>
+<td>AML version string. Must match a platform-approved value.</td>
+</tr>
+<tr>
+<td><code>guardrail_id</code></td>
+<td>Required</td>
+<td>Stable, immutable identifier. Lowercase kebab-case.</td>
+</tr>
+<tr>
+<td><code>version</code></td>
+<td>Required</td>
+<td>Semantic version of this guardrail definition.</td>
+</tr>
+<tr>
+<td><code>status</code></td>
+<td>Required</td>
+<td>Lifecycle state: <code>active</code> | <code>deprecated</code> | <code>disabled</code>.</td>
+</tr>
+<tr>
+<td><code>meta</code></td>
+<td>Required</td>
+<td>Descriptive metadata. <code>name</code> is required inside.</td>
+</tr>
+<tr>
+<td><code>behaviour</code></td>
+<td>Required</td>
+<td>Result type and content modalities this guardrail processes.</td>
+</tr>
+<tr>
+<td><code>transport</code></td>
+<td>Conditional</td>
+<td>Invocation details. Required for external guardrails; omit for platform-built checks.</td>
+</tr>
+<tr>
+<td><code>invocation</code></td>
+<td>Conditional</td>
+<td>Execution settings (timeout, error policy). Required when <code>transport</code> is present.</td>
+</tr>
+<tr>
+<td><code>fallback</code></td>
+<td>Recommended</td>
+<td>Degraded-mode behavior when the primary transport is unavailable.</td>
+</tr>
+</tbody>
+</table>
 <hr />
-<h2 id="yaml-front-matter-complete-field-reference">YAML front matter — complete field reference<a class="headerlink" href="#yaml-front-matter-complete-field-reference" title="Permanent link">&para;</a></h2>
+<h2 id="yaml-front-matter">YAML front matter<a class="headerlink" href="#yaml-front-matter" title="Permanent link">&para;</a></h2>
 <h3 id="top-level-required-fields">Top-level required fields<a class="headerlink" href="#top-level-required-fields" title="Permanent link">&para;</a></h3>
 <p><div class="language-yaml highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nt">spec_version</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;1.2&quot;</span>
 </span></code></pre></div>
@@ -2050,7 +2120,8 @@ Semantic version of this guardrail definition (MAJOR.MINOR.PATCH). Increment whe
 </span></code></pre></div>
 Lifecycle state. Enum: <code>active</code> | <code>deprecated</code> | <code>disabled</code>. A <code>deprecated</code> guardrail triggers a lint warning on any agent that references it. A <code>disabled</code> guardrail causes a hard compile error.</p>
 <hr />
-<h3 id="meta-descriptive-metadata-required"><code>meta</code> — descriptive metadata (required)<a class="headerlink" href="#meta-descriptive-metadata-required" title="Permanent link">&para;</a></h3>
+<h3 id="meta"><code>meta</code><a class="headerlink" href="#meta" title="Permanent link">&para;</a></h3>
+<p>Descriptive metadata (required).</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nt">meta</span><span class="p">:</span>
 </span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;PII</span><span class="nv"> </span><span class="s">Scan</span><span class="nv"> </span><span class="s">(Bedrock)&quot;</span><span class="w">              </span><span class="c1"># Required — display name in the registry UI</span>
 </span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">&gt;</span><span class="w">                          </span><span class="c1"># Optional — informational only, never sent to the model</span>
@@ -2063,7 +2134,8 @@ Lifecycle state. Enum: <code>active</code> | <code>deprecated</code> | <code>dis
 <p><code>meta.name</code> is the only required sub-field. All others are optional but recommended.</p>
 <p><code>meta.description</code> is informational only — it is displayed in the guardrail registry UI and used for documentation, but is <strong>never injected into the model's context</strong>. The model has no knowledge that guardrails are running.</p>
 <hr />
-<h3 id="behaviour-guardrail-contract-required"><code>behaviour</code> — guardrail contract (required)<a class="headerlink" href="#behaviour-guardrail-contract-required" title="Permanent link">&para;</a></h3>
+<h3 id="behaviour"><code>behaviour</code><a class="headerlink" href="#behaviour" title="Permanent link">&para;</a></h3>
+<p>Describes the guardrail contract (required).</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="nt">behaviour</span><span class="p">:</span>
 </span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">  </span><span class="nt">result_type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;score&quot;</span>
 </span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">  </span><span class="nt">content_types</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;text&quot;</span><span class="p p-Indicator">]</span>
@@ -2109,7 +2181,8 @@ Lifecycle state. Enum: <code>active</code> | <code>deprecated</code> | <code>dis
 <p><strong><code>behaviour.content_types</code></strong> lists the content modalities this guardrail is able to process. Supported values: <code>text</code> | <code>image</code> | <code>video</code> | <code>document</code>.</p>
 <p>The runtime uses this to match the guardrail against agent interface parameters. At the attached pipeline position, only parameters whose type matches an entry in <code>behaviour.content_types</code> are passed to the guardrail. Attaching a guardrail to a position where no parameters match its declared content types is a hard compile error. Note that types that can be easily converted to test like numbers are considered as text by guardrails.</p>
 <hr />
-<h3 id="transport-invocation-details-required-for-external-guardrails"><code>transport</code> — invocation details (required for external guardrails)<a class="headerlink" href="#transport-invocation-details-required-for-external-guardrails" title="Permanent link">&para;</a></h3>
+<h3 id="transport"><code>transport</code><a class="headerlink" href="#transport" title="Permanent link">&para;</a></h3>
+<p>Invocation details of the guardrails (required for external guardrails).</p>
 <p>The <code>transport</code> block defines how the guardrail is called. Two transport types are supported, both identical in definition to their <a href="../02-tool-definition/#transport----invocation-details-required-unless-type-is-function">tool transport</a> counterparts:</p>
 <table>
 <thead>
@@ -2133,7 +2206,8 @@ Lifecycle state. Enum: <code>active</code> | <code>deprecated</code> | <code>dis
 <p><strong>Provider-specific backends</strong> (AWS Bedrock Guardrails, Azure AI Content Safety, GCP Natural Language, etc.) are not directly supported as transport types. Wrap them in a Lambda function or REST API that calls the provider and returns a response conforming to the <a href="#standard-guardrail-output-format">standard output format</a>. This keeps the AML runtime agnostic to provider-specific response envelopes and normalisation logic.</p>
 <p><strong>Platform-built checks</strong> follow the same pattern as tool <code>type: "function"</code>: omit the <code>transport</code> block entirely. When <code>transport</code> is absent, the runtime invokes the guardrail in-process. Built-in guardrails never time out, never require credentials, and do not need an <code>invocation</code> block.</p>
 <hr />
-<h3 id="invocation-execution-settings-required-when-transport-is-present"><code>invocation</code> — execution settings (required when <code>transport</code> is present)<a class="headerlink" href="#invocation-execution-settings-required-when-transport-is-present" title="Permanent link">&para;</a></h3>
+<h3 id="invocation"><code>invocation</code><a class="headerlink" href="#invocation" title="Permanent link">&para;</a></h3>
+<p>Execution settings (required when <code>transport</code> is present).</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nt">invocation</span><span class="p">:</span>
 </span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">  </span><span class="nt">timeout_ms</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">300</span>
 </span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="w">  </span><span class="nt">on_timeout</span><span class="p">:</span>
@@ -2207,7 +2281,8 @@ Lifecycle state. Enum: <code>active</code> | <code>deprecated</code> | <code>dis
 </table>
 <p>For security-critical guardrails (PII, prompt injection, unsafe content) set both <code>on_timeout.severity</code> and <code>on_provider_error.severity</code> to <code>10</code>. For supplementary or quality checks, consider <code>5</code> to allow lenient agents to continue while strict agents still block.</p>
 <hr />
-<h3 id="fallback-degraded-mode-behavior-recommended-for-external-transports"><code>fallback</code> — degraded-mode behavior (recommended for external transports)<a class="headerlink" href="#fallback-degraded-mode-behavior-recommended-for-external-transports" title="Permanent link">&para;</a></h3>
+<h3 id="fallback"><code>fallback</code><a class="headerlink" href="#fallback" title="Permanent link">&para;</a></h3>
+<p>Degraded-mode behavior (recommended for external transports).</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="nt">fallback</span><span class="p">:</span>
 </span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="w">  </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 </span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="w">  </span><span class="nt">fallback_guardrail_id</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;pii-scan-lite&quot;</span><span class="w">   </span><span class="c1"># guardrail_id of the fallback guardrail</span>
@@ -2420,7 +2495,7 @@ Lifecycle state. Enum: <code>active</code> | <code>deprecated</code> | <code>dis
 <li>Agent call-site <code>severity_threshold</code> absent for a <code>score</code> guardrail.</li>
 </ul>
 <hr />
-<h2 id="full-example">Full example<a class="headerlink" href="#full-example" title="Permanent link">&para;</a></h2>
+<h2 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h2>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="nn">---</span>
 </span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="nt">spec_version</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;1.2&quot;</span>
 </span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="nt">guardrail_id</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;pii-scan&quot;</span>

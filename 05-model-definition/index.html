@@ -652,13 +652,30 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="File structure">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#top-level-fields-at-a-glance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Top-level fields at a glance
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
-  <a href="#description-prose-body" class="md-nav__link">
+  <a href="#description" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Description (prose body)
+        Description
       
     </span>
   </a>
@@ -666,15 +683,15 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#yaml-front-matter-complete-field-reference" class="md-nav__link">
+  <a href="#yaml-front-matter" class="md-nav__link">
     <span class="md-ellipsis">
       
-        YAML front matter — complete field reference
+        YAML front matter
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="YAML front matter — complete field reference">
+    <nav class="md-nav" aria-label="YAML front matter">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -689,10 +706,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#meta-descriptive-metadata-required" class="md-nav__link">
+  <a href="#meta" class="md-nav__link">
     <span class="md-ellipsis">
       
-        meta — descriptive metadata (required)
+        meta
       
     </span>
   </a>
@@ -700,10 +717,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#provider-provider-declaration-required" class="md-nav__link">
+  <a href="#provider" class="md-nav__link">
     <span class="md-ellipsis">
       
-        provider — provider declaration (required)
+        provider
       
     </span>
   </a>
@@ -711,10 +728,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#capabilities-model-capability-declaration-recommended" class="md-nav__link">
+  <a href="#capabilities" class="md-nav__link">
     <span class="md-ellipsis">
       
-        capabilities — model capability declaration (recommended)
+        capabilities
       
     </span>
   </a>
@@ -722,10 +739,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#defaults-default-inference-parameters-optional" class="md-nav__link">
+  <a href="#defaults" class="md-nav__link">
     <span class="md-ellipsis">
       
-        defaults — default inference parameters (optional)
+        defaults
       
     </span>
   </a>
@@ -1803,11 +1820,6 @@
 
 
 <h1 id="model-definition-specification">Model Definition Specification<a class="headerlink" href="#model-definition-specification" title="Permanent link">&para;</a></h1>
-<blockquote>
-<p><strong>File naming</strong>: <code>models/&lt;model_id&gt;.model.md</code></p>
-<p><strong>Audience</strong>: Platform engineers, ML engineers, product owners</p>
-</blockquote>
-<hr />
 <h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
 <p>A model definition file declares one named model that agents can reference. It maps a stable, human-readable model identifier (e.g., <code>claude-4-sonnet</code>) to a specific provider, provider-level model name, and configuration. The compiler resolves model references from agent definitions and injects the correct provider configuration into the compiled payload. The runtime never reads raw model identifiers — it only executes compiled payloads.</p>
 <p>This indirection serves two purposes. First, it decouples agent files from provider-specific naming conventions: an agent author writes <code>model: "claude-4-sonnet"</code> rather than <code>model_id: "us.anthropic.claude-sonnet-4-20250514-v1:0"</code>. Second, it allows the platform team to update provider configurations, swap regions, or rotate API key references in a single file without touching any agent definition.</p>
@@ -1822,8 +1834,60 @@
 </span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>[optional prose — what this model is, when to use it, usage guidance]
 </span></code></pre></div>
 <p>The prose body is optional and intended for the model registry documentation UI. It does not affect runtime behavior.</p>
+<h3 id="top-level-fields-at-a-glance">Top-level fields at a glance<a class="headerlink" href="#top-level-fields-at-a-glance" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>spec_version</code></td>
+<td>Required</td>
+<td>AML version string. Must match a platform-approved value.</td>
+</tr>
+<tr>
+<td><code>model_id</code></td>
+<td>Required</td>
+<td>Stable, immutable identifier. Lowercase kebab-case.</td>
+</tr>
+<tr>
+<td><code>version</code></td>
+<td>Required</td>
+<td>Semantic version of this model definition.</td>
+</tr>
+<tr>
+<td><code>status</code></td>
+<td>Required</td>
+<td>Lifecycle state: <code>active</code> | <code>deprecated</code> | <code>disabled</code>.</td>
+</tr>
+<tr>
+<td><code>meta</code></td>
+<td>Required</td>
+<td>Descriptive metadata. <code>name</code> is required inside.</td>
+</tr>
+<tr>
+<td><code>provider</code></td>
+<td>Required</td>
+<td>Provider declaration and configuration. <code>type</code> and <code>config</code> are required inside.</td>
+</tr>
+<tr>
+<td><code>capabilities</code></td>
+<td>Recommended</td>
+<td>Model capability declarations used for compile-time validation.</td>
+</tr>
+<tr>
+<td><code>defaults</code></td>
+<td>Optional</td>
+<td>Default inference parameters; overridable by agent <code>runtime</code> fields.</td>
+</tr>
+</tbody>
+</table>
 <hr />
-<h2 id="description-prose-body">Description (prose body)<a class="headerlink" href="#description-prose-body" title="Permanent link">&para;</a></h2>
+<h2 id="description">Description<a class="headerlink" href="#description" title="Permanent link">&para;</a></h2>
 <p>The <code># Description</code> heading opens the optional Markdown body that follows the closing <code>---</code> of the YAML front matter. It has no effect on compilation or runtime behavior — it exists exclusively for human readers and the model registry documentation UI.</p>
 <p><strong>What to include:</strong></p>
 <ul>
@@ -1834,7 +1898,7 @@
 </ul>
 <p>Keep the description focused and actionable. Aim for two to four short paragraphs. Avoid duplicating the one-to-two sentence summary already in <code>meta.description</code> — the prose body is the right place to expand on context, trade-offs, and usage guidance that would not fit there.</p>
 <hr />
-<h2 id="yaml-front-matter-complete-field-reference">YAML front matter — complete field reference<a class="headerlink" href="#yaml-front-matter-complete-field-reference" title="Permanent link">&para;</a></h2>
+<h2 id="yaml-front-matter">YAML front matter<a class="headerlink" href="#yaml-front-matter" title="Permanent link">&para;</a></h2>
 <h3 id="top-level-required-fields">Top-level required fields<a class="headerlink" href="#top-level-required-fields" title="Permanent link">&para;</a></h3>
 <p><div class="language-yaml highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nt">spec_version</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;1.2&quot;</span>
 </span></code></pre></div>
@@ -1849,7 +1913,8 @@ Semantic version of this model definition (MAJOR.MINOR.PATCH). Increment wheneve
 </span></code></pre></div>
 Lifecycle state. Enum: <code>active</code> | <code>deprecated</code> | <code>disabled</code>. A <code>deprecated</code> model can still be compiled but triggers a lint warning on any agent that references it. A <code>disabled</code> model causes a hard compile error.</p>
 <hr />
-<h3 id="meta-descriptive-metadata-required"><code>meta</code> — descriptive metadata (required)<a class="headerlink" href="#meta-descriptive-metadata-required" title="Permanent link">&para;</a></h3>
+<h3 id="meta"><code>meta</code><a class="headerlink" href="#meta" title="Permanent link">&para;</a></h3>
+<p>Descriptive metadata of the model (required).</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nt">meta</span><span class="p">:</span>
 </span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Claude</span><span class="nv"> </span><span class="s">4</span><span class="nv"> </span><span class="s">Sonnet</span><span class="nv"> </span><span class="s">(Bedrock,</span><span class="nv"> </span><span class="s">us-east-1)&quot;</span><span class="w">  </span><span class="c1"># Required — display name in the registry UI</span>
 </span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Balanced</span><span class="nv"> </span><span class="s">model</span><span class="nv"> </span><span class="s">for</span><span class="nv"> </span><span class="s">intelligence</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">speed</span><span class="nv"> </span><span class="s">via</span><span class="nv"> </span><span class="s">Amazon</span><span class="nv"> </span><span class="s">Bedrock.&quot;</span><span class="w">  </span><span class="c1"># Optional</span>
@@ -1859,7 +1924,8 @@ Lifecycle state. Enum: <code>active</code> | <code>deprecated</code> | <code>dis
 </span></code></pre></div>
 <p><code>meta.name</code> is the only required sub-field. All others are optional but recommended for registry discoverability.</p>
 <hr />
-<h3 id="provider-provider-declaration-required"><code>provider</code> — provider declaration (required)<a class="headerlink" href="#provider-provider-declaration-required" title="Permanent link">&para;</a></h3>
+<h3 id="provider"><code>provider</code><a class="headerlink" href="#provider" title="Permanent link">&para;</a></h3>
+<p>The provider of the model (required).</p>
 <p>A single <code>provider</code> object with two required sub-fields: <code>type</code> selects the provider, <code>config</code> holds the provider-specific settings whose shape is validated against the declared <code>type</code>. Any secret values inside <code>config</code> (API keys, tokens, endpoint URLs) must use a <code>credentials</code> block — literal values are a hard validation error.</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nt">provider</span><span class="p">:</span>
 </span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">  </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;bedrock&quot;</span><span class="w">       </span><span class="c1"># Required — selects the provider; determines the required shape of config</span>
@@ -2034,7 +2100,7 @@ Lifecycle state. Enum: <code>active</code> | <code>deprecated</code> | <code>dis
 </span><span id="__span-17-11"><a id="__codelineno-17-11" name="__codelineno-17-11" href="#__codelineno-17-11"></a><span class="w">        </span><span class="nt">region</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;us-east-1&quot;</span>
 </span></code></pre></div>
 <p>Custom providers must implement the Strands <code>Model</code> interface. They are registered by platform engineers and are not available to self-service authors.</p>
-<h4 id="credentials-authenticating-to-providers"><code>credentials</code> — authenticating to providers<a class="headerlink" href="#credentials-authenticating-to-providers" title="Permanent link">&para;</a></h4>
+<h4 id="credentials"><code>credentials</code><a class="headerlink" href="#credentials" title="Permanent link">&para;</a></h4>
 <p>Every <code>credentials</code> field across all providers uses the same structure: a <code>source</code> field selects the backend; all other fields depend on it. This applies uniformly whether the provider uses an API key, a cloud secret manager, or AWS identity-based auth.</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="c1"># AWS IAM role — no secret needed (Bedrock only)</span>
 </span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="nt">credentials</span><span class="p">:</span>
@@ -2076,7 +2142,8 @@ Lifecycle state. Enum: <code>active</code> | <code>deprecated</code> | <code>dis
 <p><code>source</code> enum: <code>iam_role</code> | <code>service-account</code> | <code>env</code> | <code>aws_secrets_manager</code> | <code>gcp_secret_manager</code> | <code>azure_key_vault</code>.</p>
 <p>The runtime resolves <code>credentials</code> once at agent startup and caches the value for the duration of the run. The resolved value is never written to logs or persisted. A <code>credentials</code> block that fails to resolve at startup is a hard runtime error — the agent will not start.</p>
 <hr />
-<h3 id="capabilities-model-capability-declaration-recommended"><code>capabilities</code> — model capability declaration (recommended)<a class="headerlink" href="#capabilities-model-capability-declaration-recommended" title="Permanent link">&para;</a></h3>
+<h3 id="capabilities"><code>capabilities</code><a class="headerlink" href="#capabilities" title="Permanent link">&para;</a></h3>
+<p>Model capability declaration (recommended).</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="nt">capabilities</span><span class="p">:</span>
 </span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="w">  </span><span class="nt">context_window</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">200000</span><span class="w">        </span><span class="c1"># Max input context in tokens</span>
 </span><span id="__span-19-3"><a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a><span class="w">  </span><span class="nt">max_output_tokens</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">16000</span><span class="w">      </span><span class="c1"># Max tokens the model can generate per call</span>
@@ -2128,7 +2195,7 @@ Lifecycle state. Enum: <code>active</code> | <code>deprecated</code> | <code>dis
 </table>
 <p>The compiler uses <code>capabilities</code> to validate agent definitions. For example, if an agent declares knowledge bases with document retrieval but the model does not list <code>"document"</code> in <code>modalities</code>, the compiler emits a lint warning. If <code>supports_tools: false</code>, any agent referencing this model with a non-empty <code>tools</code> section is a hard validation error.</p>
 <hr />
-<h3 id="defaults-default-inference-parameters-optional"><code>defaults</code> — default inference parameters (optional)<a class="headerlink" href="#defaults-default-inference-parameters-optional" title="Permanent link">&para;</a></h3>
+<h3 id="defaults"><code>defaults</code><a class="headerlink" href="#defaults" title="Permanent link">&para;</a></h3>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="nt">defaults</span><span class="p">:</span>
 </span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="w">  </span><span class="nt">temperature</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.7</span><span class="w">          </span><span class="c1"># Default temperature; overridden by agent runtime.temperature</span>
 </span><span id="__span-20-3"><a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a><span class="w">  </span><span class="nt">max_tokens</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">4096</span><span class="w">          </span><span class="c1"># Default max output tokens; overridden by agent runtime.max_output_tokens</span>
@@ -2260,7 +2327,7 @@ Lifecycle state. Enum: <code>active</code> | <code>deprecated</code> | <code>dis
 </span><span id="__span-22-28"><a id="__codelineno-22-28" name="__codelineno-22-28" href="#__codelineno-22-28"></a><span class="w">  </span><span class="nt">temperature</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.7</span>
 </span><span id="__span-22-29"><a id="__codelineno-22-29" name="__codelineno-22-29" href="#__codelineno-22-29"></a><span class="w">  </span><span class="nt">max_tokens</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">4096</span>
 </span></code></pre></div>
-<h1 id="description">Description<a class="headerlink" href="#description" title="Permanent link">&para;</a></h1>
+<h1 id="description_1">Description<a class="headerlink" href="#description_1" title="Permanent link">&para;</a></h1>
 <p>Claude 4 Sonnet is Anthropic's balanced model for intelligence and speed, accessed via Amazon Bedrock in <code>us-east-1</code>. It supports text and image inputs, native tool use, and a 200,000-token context window.</p>
 <p>Use this model for general-purpose agent workloads that require strong reasoning, tool orchestration, or document understanding without the latency or cost of a larger frontier model. Prefer <code>claude-4-opus</code> when maximum reasoning depth matters more than throughput.</p>
 <p>Credentials use <code>source: "iam_role"</code> — the runtime assumes the IAM role declared in the agent definition and requires no extra secret configuration. For local development, set <code>source: "service-account"</code> and store a JSON object with <code>access_key_id</code> and <code>secret_access_key</code> in a secret manager or local secret source — see the <a href="../09-transport-credentials/#service-account">Transport &amp; Credentials reference</a>.</p>

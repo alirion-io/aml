@@ -613,18 +613,35 @@
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#yaml-front-matter-complete-field-reference" class="md-nav__link">
+    <nav class="md-nav" aria-label="File structure">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#top-level-fields-at-a-glance" class="md-nav__link">
     <span class="md-ellipsis">
       
-        YAML front matter — complete field reference
+        Top-level fields at a glance
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="YAML front matter — complete field reference">
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#yaml-front-matter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        YAML front matter
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="YAML front matter">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -639,10 +656,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#meta-descriptive-metadata-required" class="md-nav__link">
+  <a href="#meta" class="md-nav__link">
     <span class="md-ellipsis">
       
-        meta — descriptive metadata (required)
+        meta
       
     </span>
   </a>
@@ -650,10 +667,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#source-storage-and-location-required" class="md-nav__link">
+  <a href="#source" class="md-nav__link">
     <span class="md-ellipsis">
       
-        source — storage and location (required)
+        source
       
     </span>
   </a>
@@ -661,10 +678,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#scope-content-boundaries-required" class="md-nav__link">
+  <a href="#scope" class="md-nav__link">
     <span class="md-ellipsis">
       
-        scope — content boundaries (required)
+        scope
       
     </span>
   </a>
@@ -672,10 +689,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#classification-content-trust-and-data-properties-required" class="md-nav__link">
+  <a href="#classification" class="md-nav__link">
     <span class="md-ellipsis">
       
-        classification — content trust and data properties (required)
+        classification
       
     </span>
   </a>
@@ -683,10 +700,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#retrieval_defaults-retrieval-policy-required" class="md-nav__link">
+  <a href="#retrieval_defaults" class="md-nav__link">
     <span class="md-ellipsis">
       
-        retrieval_defaults — retrieval policy (required)
+        retrieval_defaults
       
     </span>
   </a>
@@ -694,10 +711,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#retrieval-when-to-use-required" class="md-nav__link">
+  <a href="#retrieval" class="md-nav__link">
     <span class="md-ellipsis">
       
-        retrieval — when to use (required)
+        retrieval
       
     </span>
   </a>
@@ -705,10 +722,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#freshness-staleness-policy-optional" class="md-nav__link">
+  <a href="#freshness" class="md-nav__link">
     <span class="md-ellipsis">
       
-        freshness — staleness policy (optional)
+        freshness
       
     </span>
   </a>
@@ -760,10 +777,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#minimal-complete-example-product-documentation-kb" class="md-nav__link">
+  <a href="#example" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Minimal complete example — product documentation KB
+        Example
       
     </span>
   </a>
@@ -1859,11 +1876,6 @@
 
 
 <h1 id="knowledge-base-definition-specification">Knowledge Base Definition Specification<a class="headerlink" href="#knowledge-base-definition-specification" title="Permanent link">&para;</a></h1>
-<blockquote>
-<p><strong>File naming</strong>: <code>knowledge/&lt;kb_id&gt;.kb.md</code></p>
-<p><strong>Audience</strong>: AI ops</p>
-</blockquote>
-<hr />
 <h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
 <p>A knowledge base definition file describes one approved retrieval source that agents are permitted to use. It declares the content scope, storage type, retrieval defaults, freshness requirements, and usage guidance for a single knowledge source.</p>
 <p>KB files are authored by knowledge owners — typically the team responsible for the underlying content (e.g., the brand team for brand guidelines, the legal team for legal policies) — and approved by the platform team. Agent files reference knowledge bases by ID and may override retrieval settings, but only in a more restrictive direction.</p>
@@ -1931,8 +1943,75 @@
 </span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a># Notes             (optional editorial section)
 </span></code></pre></div>
 <p>The Markdown body is entirely editorial. The compiler ignores it.</p>
+<h3 id="top-level-fields-at-a-glance">Top-level fields at a glance<a class="headerlink" href="#top-level-fields-at-a-glance" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>spec_version</code></td>
+<td>Required</td>
+<td>AML version string. Must match a platform-approved value.</td>
+</tr>
+<tr>
+<td><code>kb_id</code></td>
+<td>Required</td>
+<td>Stable, immutable identifier. Lowercase kebab-case.</td>
+</tr>
+<tr>
+<td><code>version</code></td>
+<td>Required</td>
+<td>Semantic version of this KB definition.</td>
+</tr>
+<tr>
+<td><code>status</code></td>
+<td>Required</td>
+<td>Lifecycle state: <code>draft</code> | <code>active</code> | <code>deprecated</code> | <code>disabled</code>.</td>
+</tr>
+<tr>
+<td><code>meta</code></td>
+<td>Required</td>
+<td>Descriptive metadata. <code>name</code>, <code>description</code>, and <code>owner</code> are required inside.</td>
+</tr>
+<tr>
+<td><code>source</code></td>
+<td>Required</td>
+<td>Storage type, URI, and freshness settings.</td>
+</tr>
+<tr>
+<td><code>scope</code></td>
+<td>Required</td>
+<td>Content boundaries (domains, include/exclude, languages).</td>
+</tr>
+<tr>
+<td><code>classification</code></td>
+<td>Required</td>
+<td>Trust level and data sensitivity properties.</td>
+</tr>
+<tr>
+<td><code>retrieval_defaults</code></td>
+<td>Required</td>
+<td>Default retrieval parameters inherited by agents.</td>
+</tr>
+<tr>
+<td><code>retrieval</code></td>
+<td>Required</td>
+<td><code>use_when</code> and <code>avoid_when</code> hints for the model.</td>
+</tr>
+<tr>
+<td><code>freshness</code></td>
+<td>Optional</td>
+<td>Staleness policy and fallback behavior.</td>
+</tr>
+</tbody>
+</table>
 <hr />
-<h2 id="yaml-front-matter-complete-field-reference">YAML front matter — complete field reference<a class="headerlink" href="#yaml-front-matter-complete-field-reference" title="Permanent link">&para;</a></h2>
+<h2 id="yaml-front-matter">YAML front matter<a class="headerlink" href="#yaml-front-matter" title="Permanent link">&para;</a></h2>
 <h3 id="top-level-required-fields">Top-level required fields<a class="headerlink" href="#top-level-required-fields" title="Permanent link">&para;</a></h3>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nt">spec_version</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;1.2&quot;</span>
 </span></code></pre></div>
@@ -1946,7 +2025,8 @@ Semantic version of this KB definition. Patch for metadata corrections; minor fo
 </span></code></pre></div>
 Enum: <code>draft</code> | <code>active</code> | <code>deprecated</code> | <code>disabled</code>. Agents referencing a <code>disabled</code> KB fail hard validation.</p>
 <hr />
-<h3 id="meta-descriptive-metadata-required"><code>meta</code> — descriptive metadata (required)<a class="headerlink" href="#meta-descriptive-metadata-required" title="Permanent link">&para;</a></h3>
+<h3 id="meta"><code>meta</code><a class="headerlink" href="#meta" title="Permanent link">&para;</a></h3>
+<p>Descriptive metadata (required)</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nt">meta</span><span class="p">:</span>
 </span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Product</span><span class="nv"> </span><span class="s">Documentation&quot;</span><span class="w">       </span><span class="c1"># Human-readable name (required)</span>
 </span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">&gt;</span><span class="w">                      </span><span class="c1"># Two to four sentences (required)</span>
@@ -1959,7 +2039,8 @@ Enum: <code>draft</code> | <code>active</code> | <code>deprecated</code> | <code
 </span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="w">  </span><span class="nt">last_updated</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;2025-04-01&quot;</span>
 </span></code></pre></div>
 <hr />
-<h3 id="source-storage-and-location-required"><code>source</code> — storage and location (required)<a class="headerlink" href="#source-storage-and-location-required" title="Permanent link">&para;</a></h3>
+<h3 id="source"><code>source</code><a class="headerlink" href="#source" title="Permanent link">&para;</a></h3>
+<p>Storage and location (required).</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nt">source</span><span class="p">:</span>
 </span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">  </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;vector_store&quot;</span><span class="w">            </span><span class="c1"># See type taxonomy below</span>
 </span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">  </span><span class="nt">uri</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;kb://product-docs&quot;</span><span class="w">        </span><span class="c1"># Stable, platform-resolved address the runtime uses to query this KB (required if available)</span>
@@ -2009,7 +2090,8 @@ Enum: <code>draft</code> | <code>active</code> | <code>deprecated</code> | <code
 </table>
 <p><code>freshness_window_days</code> is optional but required (lint warning if absent) for time-sensitive domains such as <code>legal</code>, <code>pricing</code>, <code>compliance</code>, <code>regulatory</code>, and <code>product_releases</code>.</p>
 <hr />
-<h3 id="scope-content-boundaries-required"><code>scope</code> — content boundaries (required)<a class="headerlink" href="#scope-content-boundaries-required" title="Permanent link">&para;</a></h3>
+<h3 id="scope"><code>scope</code><a class="headerlink" href="#scope" title="Permanent link">&para;</a></h3>
+<p>Content boundaries (required).</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="nt">scope</span><span class="p">:</span>
 </span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">  </span><span class="nt">domains</span><span class="p">:</span>
 </span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;product_features&quot;</span>
@@ -2031,7 +2113,8 @@ Enum: <code>draft</code> | <code>active</code> | <code>deprecated</code> | <code
 </span></code></pre></div>
 <p><code>domains</code> is a controlled vocabulary maintained by the platform team. The compiler validates that all listed domains are registered. <code>include</code> and <code>exclude</code> are editorial guidance to the model — they help the model decide whether a particular question is answerable from this KB. They are compiled into the retrieval context.</p>
 <hr />
-<h3 id="classification-content-trust-and-data-properties-required"><code>classification</code> — content trust and data properties (required)<a class="headerlink" href="#classification-content-trust-and-data-properties-required" title="Permanent link">&para;</a></h3>
+<h3 id="classification"><code>classification</code><a class="headerlink" href="#classification" title="Permanent link">&para;</a></h3>
+<p>Content trust and data properties (required).</p>
 <p>Access control — which agents may query this KB — is declared in IAM role definitions, not here. This section captures the trustworthiness of the content and its data sensitivity properties.</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nt">classification</span><span class="p">:</span>
 </span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">  </span><span class="nt">trust_level</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;authoritative&quot;</span><span class="w">    </span><span class="c1"># authoritative | supplemental | unverified</span>
@@ -2068,7 +2151,8 @@ Enum: <code>draft</code> | <code>active</code> | <code>deprecated</code> | <code
 </tbody>
 </table>
 <hr />
-<h3 id="retrieval_defaults-retrieval-policy-required"><code>retrieval_defaults</code> — retrieval policy (required)<a class="headerlink" href="#retrieval_defaults-retrieval-policy-required" title="Permanent link">&para;</a></h3>
+<h3 id="retrieval_defaults"><code>retrieval_defaults</code><a class="headerlink" href="#retrieval_defaults" title="Permanent link">&para;</a></h3>
+<p>Retrieval policy (required).</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="nt">retrieval_defaults</span><span class="p">:</span>
 </span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="w">  </span><span class="nt">search_mode</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;hybrid&quot;</span><span class="w">           </span><span class="c1"># keyword | semantic | hybrid</span>
 </span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="w">  </span><span class="nt">max_chunks</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span><span class="w">                   </span><span class="c1"># Max retrieved chunks per query</span>
@@ -2085,7 +2169,8 @@ Enum: <code>draft</code> | <code>active</code> | <code>deprecated</code> | <code
 - <code>section</code>: natural document sections (e.g., heading-delimited blocks)
 - <code>document</code>: full documents (expensive; appropriate only for short documents)</p>
 <hr />
-<h3 id="retrieval-when-to-use-required"><code>retrieval</code> — when to use (required)<a class="headerlink" href="#retrieval-when-to-use-required" title="Permanent link">&para;</a></h3>
+<h3 id="retrieval"><code>retrieval</code><a class="headerlink" href="#retrieval" title="Permanent link">&para;</a></h3>
+<p>When to use (required).</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="nt">retrieval</span><span class="p">:</span>
 </span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="w">  </span><span class="nt">use_when</span><span class="p">:</span>
 </span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;question</span><span class="nv"> </span><span class="s">requires</span><span class="nv"> </span><span class="s">product</span><span class="nv"> </span><span class="s">feature</span><span class="nv"> </span><span class="s">details</span><span class="nv"> </span><span class="s">or</span><span class="nv"> </span><span class="s">API</span><span class="nv"> </span><span class="s">behavior&quot;</span>
@@ -2099,7 +2184,8 @@ Enum: <code>draft</code> | <code>active</code> | <code>deprecated</code> | <code
 <p><code>use_when</code> and <code>avoid_when</code> are natural-language hints compiled into the agent's retrieval context. They guide the agent in deciding whether querying this KB is appropriate for a given turn. They are not hard rules enforced by the runtime — they are instructions to the model, so they should be written as clear, specific conditions that a reasoning model can evaluate against the current conversation.</p>
 <p><code>use_when</code> entries describe situations where this KB is likely to contain a relevant and useful answer. <code>avoid_when</code> entries describe situations where retrieval would be wasteful, misleading, or out of scope — for example, when the question falls outside the KB's content boundaries, or when the answer is already present in the conversation context and a retrieval round-trip adds no value.</p>
 <hr />
-<h3 id="freshness-staleness-policy-optional"><code>freshness</code> — staleness policy (optional)<a class="headerlink" href="#freshness-staleness-policy-optional" title="Permanent link">&para;</a></h3>
+<h3 id="freshness"><code>freshness</code><a class="headerlink" href="#freshness" title="Permanent link">&para;</a></h3>
+<p>Staleness policy (optional)</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="nt">freshness</span><span class="p">:</span>
 </span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="w">  </span><span class="nt">window_days</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">7</span>
 </span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="w">  </span><span class="nt">on_stale</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;warn&quot;</span><span class="w">                </span><span class="c1"># warn | refuse | fallback</span>
@@ -2127,7 +2213,7 @@ Enum: <code>draft</code> | <code>active</code> | <code>deprecated</code> | <code
 <li><code>source.uri</code> absent for a <code>vector_store</code> or <code>vector_index</code> type.</li>
 </ul>
 <hr />
-<h2 id="minimal-complete-example-product-documentation-kb">Minimal complete example — product documentation KB<a class="headerlink" href="#minimal-complete-example-product-documentation-kb" title="Permanent link">&para;</a></h2>
+<h2 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h2>
 <div class="language-markdown highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>---
 </span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>spec_version: &quot;1.2&quot;
 </span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>kb_id: &quot;product-docs&quot;
